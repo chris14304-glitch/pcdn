@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J6QKE44R24"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J6QKE44R24');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — ChooseMyCoverage.com</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  /* ========== RESET & VARIABLES ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #0B1D3A;
+  --navy-mid: #132D54;
+  --navy-light: #1A3F6F;
+  --teal: #00C9A7;
+  --teal-dark: #00A88A;
+  --teal-glow: rgba(0, 201, 167, 0.15);
+  --amber: #FFB547;
+  --amber-soft: rgba(255, 181, 71, 0.12);
+  --white: #FFFFFF;
+  --gray-50: #F7F8FA;
+  --gray-100: #E8ECF1;
+  --gray-200: #C9D1DC;
+  --gray-400: #8896A7;
+  --gray-600: #5A6A7E;
+  --gray-800: #2D3B4E;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --shadow-sm: 0 2px 8px rgba(11, 29, 58, 0.06);
+  --shadow-md: 0 8px 30px rgba(11, 29, 58, 0.10);
+  --shadow-lg: 0 20px 60px rgba(11, 29, 58, 0.14);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--gray-800);
+  background: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+
+/* ========== NAV ========== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 0;
+  transition: all 0.4s ease;
+  background: rgba(11, 29, 58, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+}
+nav.scrolled {
+  padding: 12px 0;
+}
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 38px; height: 38px;
+  background: var(--teal);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--navy);
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(0, 201, 167, 0.3);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--teal); }
+.nav-cta {
+  background: var(--teal) !important;
+  color: var(--navy) !important;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600 !important;
+  transition: all 0.25s !important;
+  box-shadow: 0 0 20px rgba(0, 201, 167, 0.25);
+}
+.nav-cta:hover {
+  background: var(--white) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 201, 167, 0.35);
+}
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  margin: 5px 0;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* ========== PAGE HERO (Inner Pages) ========== */
+.page-hero {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 50%, var(--navy-light) 100%);
+  padding: 160px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0, 201, 167, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.page-hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.page-hero .container { position: relative; z-index: 2; }
+.page-hero .breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+.page-hero .breadcrumb a {
+  color: rgba(255,255,255,0.5);
+  transition: color 0.2s;
+}
+.page-hero .breadcrumb a:hover { color: var(--teal); }
+.page-hero .breadcrumb .sep { color: rgba(255,255,255,0.25); }
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--white);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.page-hero h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+.page-hero p {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.55);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ========== SECTION COMMON ========== */
+section { padding: 80px 0; }
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--teal);
+  border-radius: 2px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-primary {
+  background: var(--teal);
+  color: var(--navy);
+  box-shadow: 0 0 30px rgba(0, 201, 167, 0.3);
+}
+.btn-primary:hover {
+  background: #00DDB8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(0, 201, 167, 0.4);
+}
+.btn-outline-dark {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--gray-200);
+}
+.btn-outline-dark:hover {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+  background: var(--teal-glow);
+}
+.btn-outline-light {
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.btn-outline-light:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-glow);
+}
+
+/* ========== CONTENT AREA ========== */
+.content-section { padding: 80px 0; }
+.content-section.alt { background: var(--gray-50); }
+
+.content-narrow {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 40px 0 16px;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 32px 0 12px;
+}
+.prose p {
+  color: var(--gray-600);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.prose ul, .prose ol {
+  color: var(--gray-600);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+.prose li { margin-bottom: 6px; }
+.prose a {
+  color: var(--teal-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose a:hover { color: var(--navy); }
+.prose strong { color: var(--gray-800); }
+.prose .last-updated {
+  display: inline-block;
+  background: var(--teal-glow);
+  border: 1px solid rgba(0, 201, 167, 0.2);
+  color: var(--teal-dark);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+/* ========== CARDS ========== */
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  transition: all 0.35s ease;
+}
+.card:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.card-icon-wrap {
+  width: 56px; height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.card p {
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+/* ========== FORM STYLES ========== */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  color: var(--gray-600);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 7px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-100);
+  border-radius: var(--radius-md);
+  color: var(--gray-800);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all 0.25s;
+  outline: none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--gray-200); }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--teal);
+  background: var(--teal-glow);
+  box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.1);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300A88A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ========== CTA BANNER ========== */
+.cta-banner {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0, 201, 167, 0.08) 0%, transparent 70%);
+}
+.cta-banner .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.cta-banner h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--white);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.cta-banner p {
+  color: rgba(255,255,255,0.55);
+  font-size: 1.05rem;
+  margin-bottom: 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-banner .btn-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ========== FOOTER ========== */
+footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 64px 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand p {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-top: 16px;
+  max-width: 280px;
+}
+.footer-col h4 {
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.footer-col a {
+  display: block;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--teal); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.82rem;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .page-hero { padding: 130px 0 60px; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .cta-banner .btn-row { flex-direction: column; align-items: center; }
+}
+
+.blog-featured {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-top: 48px;
+}
+.featured-image {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.featured-image::before {
+  content: '';
+  position: absolute;
+  top: 20%; right: 15%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,201,167,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.featured-image .fi-icon {
+  font-size: 4rem;
+  position: relative;
+  z-index: 2;
+}
+.featured-content .blog-tag {
+  display: inline-block;
+  background: var(--teal-glow);
+  color: var(--teal-dark);
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.featured-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.featured-content p {
+  color: var(--gray-600);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.blog-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--gray-400);
+}
+.blog-meta .author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.blog-meta .author-avatar {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.65rem;
+}
+
+.blog-categories {
+  display: flex;
+  gap: 10px;
+  margin: 48px 0 32px;
+  flex-wrap: wrap;
+}
+.cat-btn {
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1.5px solid var(--gray-100);
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.cat-btn:hover, .cat-btn.active {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+  background: var(--teal-glow);
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.blog-card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.35s;
+  cursor: pointer;
+}
+.blog-card:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.blog-card-image {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+.blog-card-body {
+  padding: 28px;
+}
+.blog-card-body .blog-tag {
+  display: inline-block;
+  background: var(--teal-glow);
+  color: var(--teal-dark);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.blog-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.blog-card-body p {
+  color: var(--gray-600);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.blog-card-body .blog-meta { font-size: 0.8rem; }
+
+.load-more {
+  text-align: center;
+  margin-top: 48px;
+}
+
+@media (max-width: 1024px) {
+  .blog-featured { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}
+/* ========== ARTICLE READER OVERLAY ========== */
+.article-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--white);
+  z-index: 150;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.article-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.article-top-bar {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--gray-100);
+  padding: 12px 0;
+  z-index: 10;
+}
+.article-top-bar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.article-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 50px;
+  transition: all 0.2s;
+}
+.article-back-btn:hover { background: var(--gray-50); color: var(--navy); }
+.article-read-time {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+  font-weight: 500;
+}
+.article-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: var(--teal);
+  border-radius: 0 3px 3px 0;
+  width: 0%;
+  transition: width 0.08s linear;
+}
+.article-hero-banner {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 50%, var(--navy-light) 100%);
+  padding: 72px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+.article-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,201,167,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.article-hero-banner::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.article-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+  z-index: 2;
+}
+.article-hero-inner .blog-tag {
+  display: inline-block;
+  background: rgba(0,201,167,0.15);
+  border: 1px solid rgba(0,201,167,0.25);
+  color: var(--teal);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+.article-hero-inner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+.article-hero-inner .article-excerpt {
+  color: rgba(255,255,255,0.55);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.article-hero-inner .blog-meta { color: rgba(255,255,255,0.4); }
+.article-hero-inner .blog-meta .author { color: rgba(255,255,255,0.7); }
+.article-hero-inner .author-avatar {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.7rem;
+}
+.article-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 28px 80px;
+}
+.article-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 44px 0 16px;
+  line-height: 1.25;
+}
+.article-body h2:first-child { margin-top: 0; }
+.article-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 32px 0 10px;
+}
+.article-body p {
+  color: var(--gray-600);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article-body ul, .article-body ol {
+  color: var(--gray-600);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
+  padding-left: 24px;
+}
+.article-body li { margin-bottom: 8px; }
+.article-body strong { color: var(--gray-800); }
+.article-body blockquote {
+  border-left: 3px solid var(--teal);
+  background: var(--teal-glow);
+  padding: 20px 24px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 28px 0;
+  font-style: italic;
+  color: var(--gray-800);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.article-body .tip-box {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin: 28px 0;
+}
+.article-body .tip-box strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.article-body .tip-box p { margin-bottom: 0; }
+.article-body hr {
+  border: none;
+  height: 1px;
+  background: var(--gray-100);
+  margin: 40px 0;
+}
+.article-cta-box {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  text-align: center;
+  margin: 48px 0 0;
+}
+.article-cta-box h3 {
+  font-family: var(--font-display);
+  color: var(--white);
+  font-size: 1.3rem;
+  margin: 0 0 10px;
+}
+.article-cta-box p {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 24px;
+}
+.article-cta-box .btn-primary { display: inline-flex; }
+
+.blog-featured { cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; border-radius: var(--radius-xl); }
+.blog-featured:hover { transform: translateY(-4px); }
+
+.blog-card.hidden-card {
+  display: none;
+}
+
+/* ============================================================
+   Drop this entire <style> + HTML + <script> block into any
+   page on the site. It uses the same design tokens and is
+   fully self-contained.
+   ============================================================ */
+
+:root {
+  --navy: #0B1D3A;
+  --navy-mid: #132D54;
+  --navy-light: #1A3F6F;
+  --teal: #00C9A7;
+  --teal-dark: #00A88A;
+  --teal-glow: rgba(0, 201, 167, 0.15);
+  --amber: #FFB547;
+  --white: #FFFFFF;
+  --gray-50: #F7F8FA;
+  --gray-100: #E8ECF1;
+  --gray-200: #C9D1DC;
+  --gray-400: #8896A7;
+  --gray-600: #5A6A7E;
+  --gray-800: #2D3B4E;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --shadow-lg: 0 20px 60px rgba(11, 29, 58, 0.18);
+}
+
+/* ── Fab (floating action button) ───────────────────────── */
+.cmc-chat-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9998;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 6px 24px rgba(0, 201, 167, 0.35),
+    0 0 0 0 rgba(0, 201, 167, 0.4);
+  transition: all 0.35s cubic-bezier(.4,0,.2,1);
+  animation: cmc-fab-pulse 3s ease-in-out infinite;
+}
+.cmc-chat-fab:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 10px 36px rgba(0, 201, 167, 0.45),
+    0 0 0 6px rgba(0, 201, 167, 0.1);
+}
+.cmc-chat-fab.open {
+  animation: none;
+  transform: scale(0.92) rotate(90deg);
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: 0 6px 24px rgba(11, 29, 58, 0.3);
+}
+@keyframes cmc-fab-pulse {
+  0%, 100% { box-shadow: 0 6px 24px rgba(0,201,167,0.35), 0 0 0 0 rgba(0,201,167,0.25); }
+  50% { box-shadow: 0 6px 24px rgba(0,201,167,0.35), 0 0 0 10px rgba(0,201,167,0); }
+}
+.cmc-fab-icon {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+.cmc-chat-fab.open .cmc-fab-icon { transform: rotate(-90deg); }
+
+/* Unread badge */
+.cmc-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #FF4D6A;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2.5px solid var(--white);
+  transform: scale(1);
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+}
+.cmc-fab-badge.hidden { transform: scale(0); }
+
+/* ── Chat window ────────────────────────────────────────── */
+.cmc-chat-window {
+  position: fixed;
+  bottom: 104px;
+  right: 28px;
+  z-index: 9999;
+  width: 400px;
+  max-height: min(640px, calc(100vh - 140px));
+  border-radius: var(--radius-xl);
+  background: var(--white);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(11,29,58,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(16px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(.4,0,.2,1);
+  transform-origin: bottom right;
+}
+.cmc-chat-window.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.cmc-chat-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cmc-chat-header::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: -30%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(0,201,167,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.cmc-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+.cmc-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cmc-header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  box-shadow: 0 0 16px rgba(0,201,167,0.3);
+}
+.cmc-header-info h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.2;
+}
+.cmc-header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+.cmc-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ADE80;
+  animation: cmc-status-pulse 2s infinite;
+}
+@keyframes cmc-status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.cmc-header-status span {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+.cmc-header-actions {
+  display: flex;
+  gap: 4px;
+}
+.cmc-header-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+.cmc-header-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+}
+
+/* ── Messages area ──────────────────────────────────────── */
+.cmc-chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background:
+    linear-gradient(180deg, var(--gray-50) 0%, var(--white) 40%);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-200) transparent;
+}
+.cmc-chat-body::-webkit-scrollbar { width: 5px; }
+.cmc-chat-body::-webkit-scrollbar-track { background: transparent; }
+.cmc-chat-body::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 10px; }
+
+/* Message rows */
+.cmc-msg-row {
+  display: flex;
+  gap: 10px;
+  max-width: 88%;
+  animation: cmc-msg-in 0.35s cubic-bezier(.4,0,.2,1) forwards;
+  opacity: 0;
+}
+@keyframes cmc-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cmc-msg-row.bot { align-self: flex-start; }
+.cmc-msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.cmc-msg-avatar {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.cmc-msg-row.bot .cmc-msg-avatar {
+  background: var(--teal-glow);
+  color: var(--teal-dark);
+  border: 1px solid rgba(0,201,167,0.2);
+}
+.cmc-msg-row.user .cmc-msg-avatar {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.cmc-msg-bubble {
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  border-radius: 18px;
+  position: relative;
+}
+.cmc-msg-row.bot .cmc-msg-bubble {
+  background: var(--gray-50);
+  color: var(--gray-800);
+  border: 1px solid var(--gray-100);
+  border-bottom-left-radius: 6px;
+}
+.cmc-msg-row.user .cmc-msg-bubble {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  color: var(--white);
+  border-bottom-right-radius: 6px;
+}
+
+.cmc-msg-time {
+  font-size: 0.68rem;
+  color: var(--gray-400);
+  margin-top: 4px;
+  padding: 0 4px;
+}
+.cmc-msg-row.user .cmc-msg-time { text-align: right; }
+
+/* Typing indicator */
+.cmc-typing-row {
+  display: flex;
+  gap: 10px;
+  align-self: flex-start;
+  max-width: 88%;
+  animation: cmc-msg-in 0.3s ease forwards;
+}
+.cmc-typing-bubble {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+  border-radius: 18px;
+  border-bottom-left-radius: 6px;
+  padding: 14px 20px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.cmc-typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gray-300, #B0BEC5);
+  animation: cmc-typing-bounce 1.2s ease-in-out infinite;
+}
+.cmc-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.cmc-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes cmc-typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ── Quick replies / suggestions ────────────────────────── */
+.cmc-suggestions {
+  padding: 4px 20px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--white);
+}
+.cmc-suggestion-btn {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1.5px solid var(--gray-100);
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cmc-suggestion-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+  background: var(--teal-glow);
+}
+
+/* ── Input area ─────────────────────────────────────────── */
+.cmc-chat-input-area {
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--gray-100);
+  background: var(--white);
+}
+.cmc-input-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-100);
+  border-radius: 16px;
+  padding: 6px 6px 6px 18px;
+  transition: all 0.25s;
+}
+.cmc-input-wrap:focus-within {
+  border-color: var(--teal);
+  background: var(--teal-glow);
+  box-shadow: 0 0 0 3px rgba(0,201,167,0.1);
+}
+.cmc-chat-input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--gray-800);
+  padding: 10px 0;
+  outline: none;
+  resize: none;
+  max-height: 100px;
+  line-height: 1.4;
+}
+.cmc-chat-input::placeholder { color: var(--gray-400); }
+
+.cmc-send-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 12px;
+  border: none;
+  background: var(--teal);
+  color: var(--navy);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  box-shadow: 0 2px 10px rgba(0,201,167,0.25);
+}
+.cmc-send-btn:hover {
+  background: #00DDB8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,201,167,0.35);
+}
+.cmc-send-btn:disabled {
+  background: var(--gray-100);
+  color: var(--gray-400);
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+.cmc-send-btn svg { width: 18px; height: 18px; }
+
+.cmc-input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 0.68rem;
+  color: var(--gray-400);
+  gap: 4px;
+}
+.cmc-input-footer a {
+  color: var(--teal-dark);
+  text-decoration: none;
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cmc-chat-window {
+    width: calc(100vw - 16px);
+    right: 8px;
+    bottom: 96px;
+    max-height: calc(100vh - 116px);
+    border-radius: 20px;
+  }
+  .cmc-chat-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 58px;
+    height: 58px;
+  }
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<!-- ============================================================
+     CHAT WIDGET — Copy everything below into your pages
+     ============================================================ -->
+
+<!-- Floating action button -->
+<button class="cmc-chat-fab" id="cmcFab" onclick="cmcToggleChat()" aria-label="Open chat">
+  <span class="cmc-fab-badge" id="cmcBadge">1</span>
+  <svg class="cmc-fab-icon" id="cmcFabIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Chat icon (default) -->
+    <path class="cmc-icon-chat" d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    <!-- Close icon (when open) -->
+    <line class="cmc-icon-close" x1="18" y1="6" x2="6" y2="18" style="display:none"/>
+    <line class="cmc-icon-close" x1="6" y1="6" x2="18" y2="18" style="display:none"/>
+  </svg>
+</button>
+
+<!-- Chat window -->
+<div class="cmc-chat-window" id="cmcWindow">
+  <!-- Header -->
+  <div class="cmc-chat-header">
+    <div class="cmc-header-top">
+      <div class="cmc-header-brand">
+        <div class="cmc-header-avatar">C</div>
+        <div class="cmc-header-info">
+          <h3>CHOICE</h3>
+          <div class="cmc-header-status">
+            <div class="cmc-status-dot"></div>
+            <span>Online now</span>
+          </div>
+        </div>
+      </div>
+      <div class="cmc-header-actions">
+        <button class="cmc-header-btn" onclick="cmcClearChat()" title="New conversation">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </button>
+        <button class="cmc-header-btn" onclick="cmcToggleChat()" title="Minimize">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message body -->
+  <div class="cmc-chat-body" id="cmcBody"></div>
+
+  <!-- Quick suggestions -->
+  <div class="cmc-suggestions" id="cmcSuggestions"></div>
+
+  <!-- Input -->
+  <div class="cmc-chat-input-area">
+    <div class="cmc-input-wrap">
+      <textarea class="cmc-chat-input" id="cmcInput" placeholder="Ask about coverage, quotes, claims..." rows="1" onkeydown="cmcHandleKey(event)" oninput="cmcAutoGrow(this)"></textarea>
+      <button class="cmc-send-btn" id="cmcSendBtn" onclick="cmcSendMessage()" disabled aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="cmc-input-footer">
+      Powered by <a href="#">ChooseMyCoverage</a> AI
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==============================================================
+   CHOOSEMYCOVERAGE CHAT WIDGET — Frontend Logic
+   ============================================================== */
+
+// ── State ────────────────────────────────────────────────────
+let cmcIsOpen = false;
+let cmcIsTyping = false;
+const cmcMessages = [];
+
+// ── Canned bot responses (keyword → reply) ───────────────────
+// Replace this with your actual AI backend call when ready.
+const cmcResponses = {
+  'auto': "Great question! Our auto insurance covers liability, collision, comprehensive, and uninsured motorist protection. Rates start around **$47/mo** depending on your vehicle and driving history. Want me to help you get a quick quote?",
+  'home': "Our homeowners insurance protects your dwelling, personal property, and includes liability coverage. Most policies start around **$89/mo**. I can help you get a personalized quote — just need your zip code and a few details!",
+  'renters': "Renters insurance is one of the most affordable coverages we offer — starting under **$15/mo**. It covers your personal belongings, provides liability protection, and even covers temporary living expenses if your place becomes uninhabitable.",
+  'quote': "I'd love to help you get a quote! You can use our **Quick Quote** tool right on the homepage, or I can walk you through it here. What type of coverage are you looking for — auto, home, or renters?",
+  'claim': "Sorry to hear you need to file a claim. You can start the process on our **[File a Claim](/claims)** page, or call your carrier's 24/7 claims line directly. If you're not sure which carrier you're with, I can help you look that up.",
+  'bundle': "Bundling is a great way to save! Customers who bundle auto + home (or auto + renters) typically save **15–22%** on their total premium. Want me to run a bundle quote for you?",
+  'price': "Insurance costs vary based on your profile, location, and coverage needs. On average, our customers pay **$47/mo for auto**, **$89/mo for home**, and **$12/mo for renters**. The best way to get your exact rate is to run a quick quote — takes under 2 minutes!",
+  'help': "I'm here to help! I can assist with getting a quote, understanding your coverage options, filing a claim, or answering general insurance questions. What would you like to know?",
+  'hello': "Hey there! 👋 Welcome to ChooseMyCoverage. I'm CHOICE, an AI coverage assistant — I can help you find the right insurance, get a quote, or answer any questions. What can I help you with today?",
+  'hi': "Hey there! 👋 Welcome to ChooseMyCoverage. I'm CHOICE, an AI coverage assistant — I can help you find the right insurance, get a quote, or answer any questions. What can I help you with today?",
+  'thanks': "You're welcome! 😊 Let me know if there's anything else I can help with. I'm always here!",
+  'default': "That's a great question! While I'm an AI assistant with some built-in knowledge, for the most accurate answer I'd recommend reaching out to our team directly at **(801) 556-3218** or through our [Contact page](/contact). Is there anything else about auto, home, or renters insurance I can help with?"
+};
+
+// ── Suggestions shown at different points ────────────────────
+const cmcInitialSuggestions = [
+  "Get an auto quote",
+  "What does renters cover?",
+  "Bundle & save",
+  "File a claim"
+];
+
+const cmcFollowUpSuggestions = [
+  "Get a quote",
+  "How much does it cost?",
+  "Talk to an agent"
+];
+
+// ── Core functions ───────────────────────────────────────────
+
+function cmcToggleChat() {
+  cmcIsOpen = !cmcIsOpen;
+  const fab = document.getElementById('cmcFab');
+  const win = document.getElementById('cmcWindow');
+  const badge = document.getElementById('cmcBadge');
+  const chatPaths = document.querySelectorAll('.cmc-icon-chat');
+  const closePaths = document.querySelectorAll('.cmc-icon-close');
+
+  fab.classList.toggle('open', cmcIsOpen);
+  win.classList.toggle('open', cmcIsOpen);
+  badge.classList.add('hidden');
+
+  chatPaths.forEach(p => p.style.display = cmcIsOpen ? 'none' : '');
+  closePaths.forEach(p => p.style.display = cmcIsOpen ? '' : 'none');
+
+  if (cmcIsOpen && cmcMessages.length === 0) {
+    cmcBotMessage("Hi! 👋 I'm **CHOICE**. I can help you find the right insurance, compare quotes, or answer questions about your policy. What can I help you with?", true);
+    cmcShowSuggestions(cmcInitialSuggestions);
+  }
+
+  if (cmcIsOpen) {
+    setTimeout(() => document.getElementById('cmcInput').focus(), 400);
+  }
+}
+
+function cmcSendMessage(text) {
+  const input = document.getElementById('cmcInput');
+  const msg = text || input.value.trim();
+  if (!msg) return;
+
+  cmcAddMessage('user', msg);
+  input.value = '';
+  input.style.height = 'auto';
+  cmcUpdateSendBtn();
+  cmcHideSuggestions();
+
+  // Show typing, then respond
+  cmcShowTyping();
+  const delay = 600 + Math.random() * 800;
+  setTimeout(() => {
+    cmcHideTyping();
+    const reply = cmcGetResponse(msg);
+    cmcBotMessage(reply);
+    // Show follow-up suggestions after a beat
+    setTimeout(() => cmcShowSuggestions(cmcFollowUpSuggestions), 300);
+  }, delay);
+}
+
+function cmcBotMessage(text, isInitial) {
+  cmcAddMessage('bot', text);
+}
+
+function cmcAddMessage(role, text) {
+  const body = document.getElementById('cmcBody');
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const row = document.createElement('div');
+  row.className = `cmc-msg-row ${role}`;
+
+  // Format markdown-lite: **bold** and [links](url)
+  let formatted = text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" style="color:' + (role === 'user' ? 'var(--teal)' : 'var(--teal-dark)') + ';text-decoration:underline;text-underline-offset:2px;">$1</a>');
+
+  row.innerHTML = `
+    <div class="cmc-msg-avatar">${role === 'bot' ? 'C' : 'You'}</div>
+    <div>
+      <div class="cmc-msg-bubble">${formatted}</div>
+      <div class="cmc-msg-time">${timeStr}</div>
+    </div>
+  `;
+
+  body.appendChild(row);
+  cmcMessages.push({ role, text, time: timeStr });
+  cmcScrollToBottom();
+}
+
+function cmcGetResponse(userMsg) {
+  const lower = userMsg.toLowerCase();
+  for (const [keyword, reply] of Object.entries(cmcResponses)) {
+    if (keyword !== 'default' && lower.includes(keyword)) {
+      return reply;
+    }
+  }
+  return cmcResponses['default'];
+}
+
+function cmcShowTyping() {
+  if (cmcIsTyping) return;
+  cmcIsTyping = true;
+  const body = document.getElementById('cmcBody');
+  const row = document.createElement('div');
+  row.className = 'cmc-typing-row';
+  row.id = 'cmcTypingIndicator';
+  row.innerHTML = `
+    <div class="cmc-msg-avatar" style="background:var(--teal-glow);color:var(--teal-dark);border:1px solid rgba(0,201,167,0.2);width:30px;height:30px;min-width:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;">C</div>
+    <div class="cmc-typing-bubble">
+      <div class="cmc-typing-dot"></div>
+      <div class="cmc-typing-dot"></div>
+      <div class="cmc-typing-dot"></div>
+    </div>
+  `;
+  body.appendChild(row);
+  cmcScrollToBottom();
+}
+
+function cmcHideTyping() {
+  cmcIsTyping = false;
+  const el = document.getElementById('cmcTypingIndicator');
+  if (el) el.remove();
+}
+
+function cmcShowSuggestions(suggestions) {
+  const container = document.getElementById('cmcSuggestions');
+  container.innerHTML = '';
+  suggestions.forEach(text => {
+    const btn = document.createElement('button');
+    btn.className = 'cmc-suggestion-btn';
+    btn.textContent = text;
+    btn.onclick = () => cmcSendMessage(text);
+    container.appendChild(btn);
+  });
+}
+
+function cmcHideSuggestions() {
+  document.getElementById('cmcSuggestions').innerHTML = '';
+}
+
+function cmcClearChat() {
+  cmcMessages.length = 0;
+  document.getElementById('cmcBody').innerHTML = '';
+  cmcHideSuggestions();
+  cmcBotMessage("Chat cleared! 🔄 How can I help you today?");
+  setTimeout(() => cmcShowSuggestions(cmcInitialSuggestions), 300);
+}
+
+function cmcScrollToBottom() {
+  const body = document.getElementById('cmcBody');
+  requestAnimationFrame(() => {
+    body.scrollTop = body.scrollHeight;
+  });
+}
+
+function cmcHandleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    cmcSendMessage();
+  }
+}
+
+function cmcAutoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  cmcUpdateSendBtn();
+}
+
+function cmcUpdateSendBtn() {
+  const btn = document.getElementById('cmcSendBtn');
+  const input = document.getElementById('cmcInput');
+  btn.disabled = !input.value.trim();
+}
+
+// Listen for input changes
+document.getElementById('cmcInput').addEventListener('input', cmcUpdateSendBtn);
+</script>
+<nav>
+  <div class="container">
+    <a href="/home" class="logo"><div class="logo-icon">C</div>Choose My Coverage 🛡️</a>
+    <ul class="nav-links">
+      <li><a href="/home#coverage">Coverage</a></li>
+      <li><a href="/home#how">How It Works</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/home" class="nav-cta">Get a Quote</a></li>
+    </ul>
+    <button class="mobile-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="/home">Home</a><span class="sep">›</span> Blog</div>
+    <h1>Insurance <em>insights</em> you can actually use</h1>
+    <p>Tips, guides, and news to help you make smarter coverage decisions.</p>
+  </div>
+</section>
+
+<!-- Featured Post -->
+<section class="content-section">
+  <div class="container">
+    <div class="section-label">Featured Article</div>
+    <div class="blog-featured" onclick="openArticle('homeowners-guide')">
+      <div class="featured-image">
+        <div class="fi-icon">🏠</div>
+      </div>
+      <div class="featured-content">
+        <span class="blog-tag">Home Insurance</span>
+        <h2>The Complete Guide to Homeowners Insurance in 2026</h2>
+        <p>Everything you need to know about dwelling coverage, personal property limits, liability protection, and how to save hundreds by shopping smart.</p>
+        <div class="blog-meta">
+          <div class="author"><div class="author-avatar">CL</div> Christopher Long</div>
+          <span>Feb 10, 2026</span>
+          <span>8 min read</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="blog-categories">
+      <button class="cat-btn active" data-filter="all">All Posts</button>
+      <button class="cat-btn" data-filter="Auto">Auto</button>
+      <button class="cat-btn" data-filter="Home Insurance">Home</button>
+      <button class="cat-btn" data-filter="Renters">Renters</button>
+      <button class="cat-btn" data-filter="Savings Tips">Savings Tips</button>
+      <button class="cat-btn" data-filter="Industry News">Industry News</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="blog-grid">
+      <div class="blog-card" data-category="Auto" onclick="openArticle('lower-auto-premium')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #E8F7F3, #D1F0EA);">🚗</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Auto</span>
+          <h3>5 Ways to Lower Your Auto Insurance Premium Today</h3>
+          <p>Practical steps you can take right now to reduce your monthly car insurance costs — without sacrificing coverage.</p>
+          <div class="blog-meta"><span>Feb 8, 2026</span><span>5 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-category="Renters" onclick="openArticle('renters-insurance-why')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #EDE7F6, #D9CEF2);">🏢</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Renters</span>
+          <h3>Do I Really Need Renters Insurance? (Yes, Here's Why)</h3>
+          <p>It's one of the most overlooked policies — and one of the most valuable. We break down what it covers and what it costs.</p>
+          <div class="blog-meta"><span>Feb 4, 2026</span><span>4 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-category="Savings Tips" onclick="openArticle('bundling-worth-it')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #FFF3E0, #FFE5C2);">💰</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Savings Tips</span>
+          <h3>Bundling Auto + Home: Is It Actually Worth It?</h3>
+          <p>We ran the numbers on bundling versus buying separately. Here's when it saves you money — and when it doesn't.</p>
+          <div class="blog-meta"><span>Jan 29, 2026</span><span>6 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-category="Home Insurance" onclick="openArticle('homeowners-what-covered')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #FFEBEE, #FFCDD2);">📋</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Home Insurance</span>
+          <h3>What Does Homeowners Insurance Actually Cover?</h3>
+          <p>From fire to theft to liability — a clear breakdown of what's covered, what's excluded, and what add-ons you might need.</p>
+          <div class="blog-meta"><span>Jan 22, 2026</span><span>7 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-category="Industry News" onclick="openArticle('ai-insurance')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #E3F2FD, #BBDEFB);">⚡</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Industry News</span>
+          <h3>How AI Is Changing the Insurance Industry</h3>
+          <p>From instant quotes to automated claims, here's how technology is reshaping insurance — and what it means for consumers.</p>
+          <div class="blog-meta"><span>Jan 15, 2026</span><span>6 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-category="Auto" onclick="openArticle('new-car-insurance')">
+        <div class="blog-card-image" style="background: linear-gradient(135deg, #F3E5F5, #E1BEE7);">🔑</div>
+        <div class="blog-card-body">
+          <span class="blog-tag">Auto</span>
+          <h3>New Car? Here's How to Get the Best Insurance Rate</h3>
+          <p>Buying a new vehicle is exciting — but the insurance costs can surprise you. Here's how to keep them in check.</p>
+          <div class="blog-meta"><span>Jan 8, 2026</span><span>5 min read</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="load-more">
+      <button class="btn btn-outline-dark">Load More Articles →</button>
+    </div> -->
+  </div>
+</section>
+
+<!-- Newsletter CTA -->
+<section class="cta-banner">
+  <div class="container">
+    <h2>Get insurance tips in your inbox</h2>
+    <p>No spam, no sales pitches — just useful guides delivered twice a month.</p>
+    <div class="btn-row" style="max-width:420px; margin:0 auto;">
+      <div style="flex:1; position:relative;">
+        <input type="email" placeholder="you@email.com" style="width:100%; padding:16px 20px; border-radius:50px; border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.08); color:white; font-family:var(--font-body); font-size:0.95rem; outline:none;">
+      </div>
+      <button class="btn btn-primary" style="white-space:nowrap;">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="/home" class="logo"><div class="logo-icon">C</div>Choose My Coverage 🛡️</a><p>Smart insurance shopping — compare, customize, and bind policies from top-rated carriers in minutes.</p></div>
+      <div class="footer-col"><h4>Coverage</h4><a href="/home">Auto Insurance</a><a href="/home">Home Insurance</a><a href="/home">Renters Insurance</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="/about">About Us</a><a href="/careers">Careers</a><a href="/blog">Blog</a><a href="/contact">Contact</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="/help">Help Center</a><a href="/claims">File a Claim</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 ChooseMyCoverage.com. All rights reserved.</span><span>Insurance products provided by licensed carriers.</span></div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.querySelector('nav').classList.toggle('scrolled',window.scrollY>40)});
+
+// ═══════════════════════════════════════
+// CATEGORY FILTER
+// ═══════════════════════════════════════
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.blog-card').forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.classList.remove('hidden-card');
+      } else {
+        card.classList.add('hidden-card');
+      }
+    });
+  });
+});
+
+// ═══════════════════════════════════════
+// ARTICLE DATA
+// ═══════════════════════════════════════
+const articles = {
+  'homeowners-guide': {
+    tag: 'Home Insurance',
+    title: 'The Complete Guide to Homeowners Insurance in 2026',
+    excerpt: 'Everything you need to know about dwelling coverage, personal property limits, liability protection, and how to save hundreds by shopping smart.',
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Feb 10, 2026',
+    readTime: '8 min read',
+    body: `
+      <h2>What Is Homeowners Insurance, Exactly?</h2>
+      <p>Homeowners insurance is a financial safety net that protects your home and belongings against damage, theft, and liability claims. It's not just a nice-to-have — most mortgage lenders require it as a condition of your loan. But even if you own your home outright, skipping coverage is one of the riskiest financial decisions you can make.</p>
+      <p>A standard homeowners policy (known in the industry as an HO-3) is actually a bundle of several different types of coverage working together. Think of it as an umbrella that covers your physical home, everything inside it, your legal liability, and your living expenses if you're temporarily displaced.</p>
+
+      <h2>The Six Parts of a Homeowners Policy</h2>
+      <p>Every standard homeowners policy includes six core coverage areas. Understanding each one is the key to making sure you're properly protected — and not paying for coverage you don't need.</p>
+
+      <h3>1. Dwelling Coverage (Coverage A)</h3>
+      <p>This is the big one. Dwelling coverage pays to repair or rebuild your home's physical structure — walls, roof, floors, built-in appliances — if it's damaged by a covered peril like fire, windstorm, hail, lightning, or vandalism. Your dwelling limit should equal the full <strong>replacement cost</strong> of your home, which is different from its market value. Replacement cost is what it would actually cost to rebuild your home from scratch at today's construction prices.</p>
+      <div class="tip-box">
+        <strong>💡 Pro Tip</strong>
+        <p>Don't confuse replacement cost with market value. A $400,000 home on Zillow might cost $320,000 to rebuild (no land cost) or $500,000 (if construction costs have spiked). Ask your agent for a replacement cost estimator.</p>
+      </div>
+
+      <h3>2. Other Structures (Coverage B)</h3>
+      <p>This covers detached structures on your property — a fence, detached garage, shed, pool house, or guest cottage. It's typically set at 10% of your dwelling coverage automatically. If you have a $350,000 dwelling limit, you'd have $35,000 for other structures.</p>
+
+      <h3>3. Personal Property (Coverage C)</h3>
+      <p>This pays to replace your belongings — furniture, electronics, clothing, kitchenware, and more — if they're damaged or stolen. Standard policies set this at 50–70% of your dwelling limit. So a $350,000 dwelling limit gives you roughly $175,000–$245,000 in personal property coverage.</p>
+      <p>There's one important distinction here: <strong>actual cash value (ACV)</strong> versus <strong>replacement cost value (RCV)</strong>. ACV pays what your stuff is worth today (after depreciation). RCV pays what it costs to buy new replacements. The difference can be enormous — a five-year-old laptop might have an ACV of $200 but cost $1,200 to replace. Always opt for replacement cost coverage if your budget allows it.</p>
+
+      <h3>4. Loss of Use (Coverage D)</h3>
+      <p>If a covered event makes your home uninhabitable, this coverage pays for temporary living expenses — hotel bills, restaurant meals, even pet boarding. It typically covers 20% of your dwelling limit and kicks in while your home is being repaired or rebuilt. It's coverage most people forget about until they need it most.</p>
+
+      <h3>5. Personal Liability (Coverage E)</h3>
+      <p>If someone is injured on your property and sues you, liability coverage pays for their medical bills and your legal defense. It also covers damage you or your family members accidentally cause to someone else's property. Standard policies start at $100,000, but most financial advisors recommend at least $300,000–$500,000. If you have significant assets, consider an umbrella policy that adds $1 million or more in additional liability coverage for a relatively small premium.</p>
+
+      <h3>6. Medical Payments (Coverage F)</h3>
+      <p>This is a smaller, no-fault coverage that pays minor medical expenses (typically $1,000–$5,000) for guests who are injured on your property, regardless of who's at fault. It's designed to handle small claims quickly without involving lawyers or liability disputes.</p>
+
+      <hr>
+
+      <h2>What's NOT Covered (The Exclusions)</h2>
+      <p>Standard homeowners policies have some significant exclusions that catch people off guard. Here are the most important ones to know about:</p>
+      <ul>
+        <li><strong>Floods:</strong> Standard policies never cover flood damage. You need a separate flood insurance policy, available through the National Flood Insurance Program (NFIP) or private insurers. Even if you're not in a high-risk zone, about 25% of flood claims come from low-to-moderate risk areas.</li>
+        <li><strong>Earthquakes:</strong> Also excluded from standard policies. If you're in a seismically active area, you'll need a separate earthquake endorsement or policy.</li>
+        <li><strong>Maintenance issues:</strong> Gradual damage from wear and tear, mold, pest infestations, or neglected maintenance is not covered. Insurance covers sudden, accidental events — not slow deterioration.</li>
+        <li><strong>Sewer and drain backup:</strong> Water damage from backed-up sewers or drains is typically excluded unless you add a specific endorsement (usually $50–$100/year and well worth it).</li>
+        <li><strong>High-value items:</strong> Standard policies cap payouts on jewelry ($1,500), electronics, firearms, and collectibles. If you own expensive items, you'll want to schedule them individually with a rider.</li>
+      </ul>
+
+      <h2>How to Save on Your Homeowners Insurance</h2>
+      <p>Now for the part everyone wants to know — how to keep your premiums as low as possible without sacrificing coverage. Here are the strategies that actually work:</p>
+
+      <h3>Shop and Compare Every Year</h3>
+      <p>This is the single most effective way to save money on homeowners insurance. Rates can vary by 40% or more between carriers for the exact same coverage. Don't auto-renew without at least checking what else is available. This is exactly what ChooseMyCoverage was built for — comparing multiple carriers side-by-side takes minutes instead of hours.</p>
+
+      <h3>Raise Your Deductible</h3>
+      <p>Moving from a $500 deductible to a $1,000 or $2,500 deductible can reduce your premium by 10–25%. The tradeoff is a higher out-of-pocket cost when you file a claim, so make sure you have the cash set aside. For most homeowners, the premium savings pay for themselves within a year or two.</p>
+
+      <h3>Bundle Your Policies</h3>
+      <p>Most carriers offer a multi-policy discount of 10–25% when you bundle homeowners with auto insurance. It's almost always worth doing, and it simplifies your insurance life by putting everything with one carrier.</p>
+
+      <h3>Improve Home Security</h3>
+      <p>Deadbolt locks, smoke detectors, a monitored alarm system, and a fire extinguisher can all earn you discounts ranging from 2–15%. Some carriers even offer discounts for smart home devices like water leak detectors and smart thermostats.</p>
+
+      <h3>Maintain Good Credit</h3>
+      <p>In most states, insurers use credit-based insurance scores as a rating factor. A good credit score can mean hundreds of dollars in annual savings. Pay your bills on time and keep your credit utilization low — it affects more than just your mortgage rate.</p>
+
+      <blockquote>The average homeowner can save $500–$800 per year just by shopping around and combining two or three of these strategies. That's real money back in your pocket every single month.</blockquote>
+
+      <h2>How Much Homeowners Insurance Do You Need?</h2>
+      <p>The right amount of coverage depends on your specific situation, but here's a simple framework to start with:</p>
+      <ul>
+        <li><strong>Dwelling:</strong> Full replacement cost of your home (get a professional estimate)</li>
+        <li><strong>Personal property:</strong> Do a home inventory — most people underestimate what they own by 30–40%</li>
+        <li><strong>Liability:</strong> At minimum $300,000. If your net worth exceeds your liability limit, consider an umbrella policy</li>
+        <li><strong>Deductible:</strong> The highest amount you could comfortably pay out of pocket (usually $1,000–$2,500)</li>
+      </ul>
+
+      <h2>The Bottom Line</h2>
+      <p>Homeowners insurance doesn't have to be confusing or expensive. The key is understanding what you're buying, knowing what's excluded, and shopping smart. Review your policy annually, compare rates across multiple carriers, and don't be afraid to adjust your coverage as your life changes.</p>
+      <p>Whether you're buying your first home or looking to optimize existing coverage, the best time to shop is today. The carriers are competing for your business — let them.</p>
+    `
+  },
+
+  'lower-auto-premium': {
+    tag: 'Auto',
+    title: '5 Ways to Lower Your Auto Insurance Premium Today',
+    excerpt: 'Practical steps you can take right now to reduce your monthly car insurance costs — without sacrificing coverage.',
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Feb 8, 2026',
+    readTime: '5 min read',
+    body: `
+      <h2>Why Your Premium Might Be Higher Than It Should Be</h2>
+      <p>Auto insurance premiums have risen steadily over the past few years, driven by higher vehicle repair costs, more expensive cars on the road, and increased claims frequency. But here's the thing most people don't realize: your current premium probably isn't the best rate available to you. Insurance companies count on customer inertia — the tendency to simply auto-renew without shopping around.</p>
+      <p>The good news is that there are concrete, proven steps you can take to lower your premium significantly, often within the same week. Here are five that actually work.</p>
+
+      <h2>1. Shop Your Rate Across Multiple Carriers</h2>
+      <p>This is the single most impactful thing you can do. Carriers use different pricing algorithms, and the same driver profile can produce wildly different quotes — sometimes varying by 40–60%. A driver paying $180/month with one carrier might qualify for $110/month with another for identical coverage.</p>
+      <p>The old way of doing this — calling agents individually or filling out forms on five different websites — is painful. That's exactly the problem ChooseMyCoverage solves. Enter your info once, and see quotes from multiple top-rated carriers side by side in minutes.</p>
+      <div class="tip-box">
+        <strong>💡 When to Shop</strong>
+        <p>Shop your rate at every renewal period (every 6–12 months), after any major life change (marriage, new car, moved, improved credit), or if your premium increases by more than 5% at renewal.</p>
+      </div>
+
+      <h2>2. Raise Your Deductible</h2>
+      <p>Your deductible is the amount you pay out of pocket before insurance kicks in. Moving from a $250 deductible to a $500 or $1,000 deductible can reduce your collision and comprehensive premiums by 15–30%. For example, if you're paying $1,600/year, that could mean savings of $240–$480 annually.</p>
+      <p>The key is making sure you have the deductible amount set aside in savings. If you can comfortably cover a $1,000 repair, the math almost always favors a higher deductible over time.</p>
+
+      <h2>3. Bundle With Home or Renters Insurance</h2>
+      <p>Nearly every major carrier offers a multi-policy discount when you bundle auto with homeowners or renters insurance. This discount typically ranges from 10–25%, and it applies to both policies. Even if you're renting and think you don't need renters insurance, the bundling discount on your auto policy alone can more than offset the cost of a basic renters policy.</p>
+
+      <h2>4. Ask About Every Available Discount</h2>
+      <p>Insurance carriers offer dozens of discounts, and most people only get asked about a few. Make sure you're getting credit for all of these that apply:</p>
+      <ul>
+        <li><strong>Safe driver / claims-free:</strong> No accidents or tickets in 3–5 years</li>
+        <li><strong>Good student:</strong> B average or better for drivers under 25</li>
+        <li><strong>Defensive driving course:</strong> Many states mandate a 5–10% discount</li>
+        <li><strong>Low mileage:</strong> Driving under 7,500–10,000 miles/year</li>
+        <li><strong>Paid in full:</strong> Paying your 6-month premium upfront instead of monthly</li>
+        <li><strong>Paperless billing and autopay:</strong> Small but easy savings of 3–8%</li>
+        <li><strong>Anti-theft devices:</strong> Alarm systems, GPS tracking, VIN etching</li>
+        <li><strong>Vehicle safety features:</strong> ABS, airbags, lane departure warning, auto-braking</li>
+      </ul>
+
+      <h2>5. Review Your Coverage Levels</h2>
+      <p>If you're driving an older vehicle, you might be carrying more coverage than you need. Specifically, look at comprehensive and collision coverage. If your car is worth less than $5,000, the premiums for these coverages might exceed the maximum payout you'd ever receive.</p>
+      <p>However, <strong>never</strong> reduce your liability limits to save money. Liability coverage protects your financial future — if you cause an accident, you could be personally liable for hundreds of thousands in medical bills and property damage. Most experts recommend at least 100/300/100 coverage ($100K per person, $300K per accident for bodily injury, $100K for property damage).</p>
+
+      <blockquote>The average driver who implements all five of these strategies saves $600–$1,100 per year. That's $50–$90 back in your pocket every single month.</blockquote>
+
+      <h2>What About Credit Score?</h2>
+      <p>In most states, your credit-based insurance score is one of the biggest factors in your premium. Improving your credit score from "fair" to "good" can reduce your auto insurance by 20–40%. It's not an overnight fix, but it's worth knowing that every point of credit improvement is also saving you money on insurance.</p>
+
+      <h2>Start Saving Today</h2>
+      <p>The best part about these strategies is that most of them can be implemented immediately. You don't have to wait for your renewal — most carriers will let you switch mid-policy with no penalty. The money you save starts from day one.</p>
+    `
+  },
+
+  'renters-insurance-why': {
+    tag: 'Renters',
+    title: "Do I Really Need Renters Insurance? (Yes, Here's Why)",
+    excerpt: "It's one of the most overlooked policies — and one of the most valuable. We break down what it covers and what it costs.",
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Feb 4, 2026',
+    readTime: '4 min read',
+    body: `
+      <h2>The Most Underrated Insurance Policy in America</h2>
+      <p>Only about 55% of renters in the United States have renters insurance. That means nearly half of all renters are one apartment fire, one burst pipe, or one break-in away from losing everything they own with zero financial protection. Meanwhile, renters insurance costs an average of just $15–$20 per month — less than most streaming subscriptions.</p>
+      <p>If you're renting and you don't have a policy, this article will show you exactly why you should get one today.</p>
+
+      <h2>What Renters Insurance Actually Covers</h2>
+      <h3>Your Belongings (Personal Property)</h3>
+      <p>This is the core of a renters policy. If your belongings are damaged or destroyed by fire, smoke, water damage (not floods), theft, vandalism, or windstorm, your policy pays to replace them. Take a moment to mentally walk through your apartment and add up the value of everything you own: furniture, electronics, clothing, kitchen items, appliances, books, decorations. Most people are shocked to find they own $20,000–$50,000 worth of stuff.</p>
+
+      <h3>Liability Protection</h3>
+      <p>If a guest slips and falls in your apartment, or if you accidentally start a fire that damages neighboring units, liability coverage pays for their injuries and property damage — plus your legal defense costs. Standard policies include $100,000 in liability coverage, with options to increase to $300,000 or $500,000 for just a few dollars more per month.</p>
+
+      <h3>Additional Living Expenses</h3>
+      <p>If your apartment becomes uninhabitable due to a covered event, your policy pays for temporary housing — hotel rooms, short-term rentals, and even additional food costs. This coverage alone can be worth thousands of dollars in a single claim.</p>
+
+      <h3>Off-Premises Coverage</h3>
+      <p>Here's something most people don't know: renters insurance covers your belongings everywhere, not just at home. If your laptop is stolen from a coffee shop, your bike is taken from a rack downtown, or your luggage is lost on vacation — your renters policy covers it.</p>
+
+      <div class="tip-box">
+        <strong>💡 Did You Know?</strong>
+        <p>Your landlord's insurance covers the building structure — not your belongings. If a fire destroys the building, the landlord's policy rebuilds the walls and roof. Your furniture, electronics, clothing, and everything else? That's on you unless you have renters insurance.</p>
+      </div>
+
+      <h2>What It Costs (Spoiler: Not Much)</h2>
+      <p>The national average for renters insurance is about $15–$20 per month, or roughly $180–$240 per year. That typically gets you $30,000 in personal property coverage, $100,000 in liability, and $10,000 in additional living expenses. For the cost of a couple of coffees per week, you're protected against potentially devastating financial loss.</p>
+
+      <h2>How to Save Even More</h2>
+      <ul>
+        <li><strong>Bundle with auto:</strong> Get 10–20% off both policies</li>
+        <li><strong>Install safety devices:</strong> Smoke detectors, deadbolts, and security systems earn discounts</li>
+        <li><strong>Choose a higher deductible:</strong> Moving from $250 to $500 can save 10–15%</li>
+        <li><strong>Pay annually:</strong> Avoid monthly billing fees and often get a small discount</li>
+      </ul>
+
+      <h2>The Bottom Line</h2>
+      <p>Renters insurance is one of the best financial decisions you can make as a renter. For less than $20/month, you get comprehensive protection for your belongings, liability coverage that protects your savings, and peace of mind that you won't be financially devastated by an unexpected event. There's genuinely no good reason not to have it.</p>
+    `
+  },
+
+  'bundling-worth-it': {
+    tag: 'Savings Tips',
+    title: 'Bundling Auto + Home: Is It Actually Worth It?',
+    excerpt: "We ran the numbers on bundling versus buying separately. Here's when it saves you money — and when it doesn't.",
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Jan 29, 2026',
+    readTime: '6 min read',
+    body: `
+      <h2>The Bundling Pitch</h2>
+      <p>Every insurance company advertises bundling discounts. "Save up to 25% when you combine auto and home!" It's one of the most common selling points in insurance marketing. But is it always the best deal? We ran the numbers across dozens of real-world scenarios to find out.</p>
+
+      <h2>How Bundling Discounts Work</h2>
+      <p>When you buy multiple policies from the same carrier, they apply a multi-policy discount — typically 10–25% across both your auto and homeowners (or renters) premiums. The discount usually applies to both policies, not just one. Here's what that looks like in practice:</p>
+      <ul>
+        <li><strong>Auto alone:</strong> $1,400/year</li>
+        <li><strong>Home alone:</strong> $1,200/year</li>
+        <li><strong>Unbundled total:</strong> $2,600/year</li>
+        <li><strong>Bundled (15% discount):</strong> $2,210/year</li>
+        <li><strong>Annual savings:</strong> $390</li>
+      </ul>
+      <p>That's a meaningful savings — about $32/month — with zero reduction in coverage. And the convenience of having one carrier, one bill, and one agent to call is a real bonus.</p>
+
+      <h2>When Bundling Wins (Most of the Time)</h2>
+      <p>For the majority of consumers, bundling is the right move. Here's when it's most advantageous:</p>
+      <ul>
+        <li><strong>You're a standard-risk driver and homeowner:</strong> Carriers compete aggressively for bundled customers, so their rates are often sharpest when you're buying both policies.</li>
+        <li><strong>You value simplicity:</strong> One carrier, one app, one payment, one phone number to call with questions. This alone is worth something.</li>
+        <li><strong>You have a clean record:</strong> No claims in the past 3–5 years means you qualify for the best bundling discounts.</li>
+        <li><strong>You're switching carriers:</strong> New-customer pricing combined with a bundle discount often produces the lowest possible rate.</li>
+      </ul>
+
+      <h2>When Bundling Might NOT Win</h2>
+      <p>Here's where it gets interesting. There are specific scenarios where buying policies separately from different carriers can save you more money than bundling:</p>
+
+      <h3>You're a High-Risk Driver but Low-Risk Homeowner</h3>
+      <p>If you have tickets or an accident on your record, some carriers will penalize you heavily on auto but might still offer a great home rate. In this case, you might find a specialist auto carrier that handles high-risk drivers better, while keeping your home with a carrier that gives you a great rate. The savings from each specialized rate can exceed the bundling discount.</p>
+
+      <h3>Your Home Has Unique Risk Factors</h3>
+      <p>Older homes, homes in wildfire zones, or homes with prior claims can be expensive to insure with some carriers but not others. A carrier that specializes in older homes might beat a bundle by a wide margin.</p>
+
+      <h3>You're Already Getting Rock-Bottom Rates</h3>
+      <p>If you've already optimized each policy individually and you're getting exceptional rates, the bundle discount might not make up the difference. This is less common but does happen.</p>
+
+      <div class="tip-box">
+        <strong>💡 The Smart Move</strong>
+        <p>Always compare both ways. Get your best bundled quote AND your best separate quotes for auto and home individually. Then compare the totals. This is exactly what ChooseMyCoverage does — we show you bundled and unbundled options so you can see which actually saves more.</p>
+      </div>
+
+      <h2>What About Renters + Auto Bundling?</h2>
+      <p>If you're renting, bundling renters + auto is almost always worth it. Renters insurance is so inexpensive ($15–$20/month) that even a modest 10% multi-policy discount on your auto premium can offset the entire cost of the renters policy — meaning you're essentially getting renters insurance for free while also improving your auto rate.</p>
+
+      <h2>The Verdict</h2>
+      <p>Bundling saves most people money most of the time. But "most" isn't "all." The only way to know for sure is to compare. Run the numbers both ways, look at the total annual cost, and pick the option that gives you the best coverage at the lowest price. Don't assume bundling wins — verify it.</p>
+    `
+  },
+
+  'homeowners-what-covered': {
+    tag: 'Home Insurance',
+    title: 'What Does Homeowners Insurance Actually Cover?',
+    excerpt: "From fire to theft to liability — a clear breakdown of what's covered, what's excluded, and what add-ons you might need.",
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Jan 22, 2026',
+    readTime: '7 min read',
+    body: `
+      <h2>The Short Answer</h2>
+      <p>Homeowners insurance covers damage to your home and belongings from sudden, accidental events — and protects you financially if someone is injured on your property. But the details matter enormously, because the gaps in coverage are where most people get caught off guard.</p>
+
+      <h2>What IS Covered (The "Covered Perils")</h2>
+      <p>A standard HO-3 policy — the most common type — covers your home's structure against all perils except those specifically excluded. Your personal property is covered against a list of 16 named perils:</p>
+      <ul>
+        <li>Fire and smoke damage</li>
+        <li>Lightning strikes</li>
+        <li>Windstorm and hail</li>
+        <li>Explosion</li>
+        <li>Theft and vandalism</li>
+        <li>Damage from vehicles or aircraft</li>
+        <li>Falling objects</li>
+        <li>Weight of ice, snow, or sleet</li>
+        <li>Water damage from plumbing (sudden and accidental)</li>
+        <li>Electrical surges (from power grid issues)</li>
+        <li>Volcanic eruption</li>
+      </ul>
+      <p>In practical terms, this means if a tree falls on your roof, a kitchen fire damages your home, someone breaks in and steals your electronics, or a burst pipe floods your living room — you're covered.</p>
+
+      <h2>What's NOT Covered (The Exclusions)</h2>
+      <p>This is the critical part. Standard homeowners policies exclude several major categories of damage:</p>
+
+      <h3>Flooding</h3>
+      <p>Water damage from rising water — whether from heavy rain, storm surge, overflowing rivers, or flash floods — is never covered by a standard homeowners policy. You need a separate flood insurance policy. This catches many homeowners by surprise, especially since about 25% of all flood claims come from properties outside high-risk flood zones.</p>
+
+      <h3>Earthquakes</h3>
+      <p>Ground movement from earthquakes, sinkholes, or landslides is excluded. If you live in a seismically active region, you'll need a separate earthquake policy or endorsement.</p>
+
+      <h3>Gradual Damage and Maintenance</h3>
+      <p>Insurance covers sudden events, not slow deterioration. A roof that leaks because shingles wore out over time? Not covered. A burst pipe that floods your basement suddenly? Covered. Mold that grew because of a slow leak you didn't fix? Not covered. The distinction between "sudden and accidental" versus "gradual and preventable" is one of the most common reasons claims get denied.</p>
+
+      <h3>Sewer and Drain Backup</h3>
+      <p>Water that backs up through sewers or drains into your home is typically excluded unless you purchase a specific endorsement. This add-on usually costs $50–$100/year and is one of the most worthwhile upgrades you can make.</p>
+
+      <blockquote>The most expensive insurance claim is the one you assumed was covered but wasn't. Read your policy's exclusions section — it's the most important part of the document.</blockquote>
+
+      <h2>Optional Add-Ons Worth Considering</h2>
+      <ul>
+        <li><strong>Flood insurance:</strong> Essential if you're anywhere near water, and smart even if you're not</li>
+        <li><strong>Sewer backup endorsement:</strong> $50–$100/year for coverage that could save you $10,000+</li>
+        <li><strong>Scheduled personal property:</strong> Extra coverage for jewelry, art, collectibles, or high-end electronics that exceed standard policy limits</li>
+        <li><strong>Umbrella liability:</strong> Adds $1M+ in liability coverage for $200–$400/year</li>
+        <li><strong>Water backup and sump pump failure:</strong> Covers damage from sump pump failures and water backup</li>
+        <li><strong>Identity theft protection:</strong> Covers expenses related to identity theft recovery</li>
+      </ul>
+
+      <h2>How to Make Sure You're Properly Covered</h2>
+      <p>The best approach is to review your policy annually with these questions in mind: Is your dwelling limit still accurate given current construction costs? Have you acquired any high-value items that need scheduling? Are there endorsements you should add based on your area's risks? Has anything changed about your home (renovations, new structures) that needs to be reported?</p>
+      <p>A 30-minute annual review can prevent a six-figure surprise down the road. And if you haven't compared rates recently, that same 30 minutes could save you hundreds of dollars.</p>
+    `
+  },
+
+  'ai-insurance': {
+    tag: 'Industry News',
+    title: 'How AI Is Changing the Insurance Industry',
+    excerpt: "From instant quotes to automated claims, here's how technology is reshaping insurance — and what it means for consumers.",
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Jan 15, 2026',
+    readTime: '6 min read',
+    body: `
+      <h2>Insurance's Technology Revolution</h2>
+      <p>The insurance industry has historically been one of the slowest to adopt new technology. For decades, buying insurance meant calling an agent, filling out paper forms, and waiting days or weeks for a quote. But over the past few years, artificial intelligence and machine learning have begun to fundamentally reshape every part of the insurance experience — from how policies are priced to how claims are processed.</p>
+
+      <h2>Instant, Personalized Quoting</h2>
+      <p>Traditional insurance quoting required a human underwriter to manually review your application, check your driving record, pull your credit report, and calculate a premium. This process could take hours or days. AI-powered quoting engines can now do all of this in seconds.</p>
+      <p>Modern systems analyze hundreds of data points simultaneously — your driving history, vehicle characteristics, location-specific risk data, credit information, and even telematics data from connected cars — to generate an accurate, personalized quote almost instantly. This is what makes platforms like ChooseMyCoverage possible: the ability to get real quotes from multiple carriers in minutes rather than days.</p>
+
+      <h2>Smarter Risk Assessment</h2>
+      <p>AI is enabling insurers to assess risk with unprecedented precision. Instead of placing everyone in broad categories (age, gender, ZIP code), machine learning models can identify much more nuanced risk profiles. This generally benefits safe drivers and responsible homeowners, who end up paying premiums that more accurately reflect their actual risk level rather than being grouped with riskier policyholders.</p>
+      <div class="tip-box">
+        <strong>💡 What This Means for You</strong>
+        <p>More accurate risk assessment means more competitive pricing for low-risk customers. If you're a safe driver with good credit, AI-driven pricing tends to work in your favor. Another reason to shop around — different carriers' AI models may assess your risk differently.</p>
+      </div>
+
+      <h2>Automated Claims Processing</h2>
+      <p>Filing an insurance claim has traditionally been one of the most frustrating experiences in personal finance. You call, wait on hold, explain what happened, fill out paperwork, wait for an adjuster, wait for the adjuster's report, then wait for payment. The whole process could take weeks or months.</p>
+      <p>AI is compressing this timeline dramatically. Computer vision systems can assess vehicle damage from photos submitted via a smartphone app, generating repair estimates in minutes. Natural language processing can review claim descriptions and automatically route them to the right department. Some straightforward claims — like a cracked windshield or a stolen package — can now be processed and paid within hours, entirely without human intervention.</p>
+
+      <h2>Fraud Detection</h2>
+      <p>Insurance fraud costs the industry an estimated $80 billion per year in the United States alone, and those costs get passed on to consumers through higher premiums. AI systems are getting significantly better at detecting fraudulent claims by identifying patterns that would be invisible to human reviewers — suspicious timing, inconsistent details, connections between seemingly unrelated claims, and anomalies in submitted documentation.</p>
+
+      <h2>Usage-Based Insurance (UBI)</h2>
+      <p>Telematics — the use of connected devices to monitor driving behavior — has been around for a few years, but AI is making it much more sophisticated. Instead of simply tracking miles driven, modern systems analyze driving patterns: hard braking, cornering speed, time of day, route selection, and phone usage. The most careful drivers can see premium reductions of 30–40% through these programs.</p>
+
+      <h2>What to Watch For</h2>
+      <p>While AI brings many benefits to consumers, there are important considerations. Algorithmic bias — where AI systems inadvertently discriminate based on ZIP code, occupation, or other proxies for protected characteristics — is an active area of regulatory attention. Privacy concerns around telematics and data collection are also significant. As a consumer, it's worth understanding what data your insurer collects and how it's used.</p>
+
+      <h2>The Consumer Takeaway</h2>
+      <p>The AI revolution in insurance is ultimately good news for consumers. It means faster quotes, more accurate pricing, quicker claims, and more options. The carriers that embrace technology most effectively tend to offer the most competitive rates and best customer experiences. Shopping across multiple carriers — including newer, tech-forward ones — is the best way to benefit from these advances.</p>
+    `
+  },
+
+  'new-car-insurance': {
+    tag: 'Auto',
+    title: "New Car? Here's How to Get the Best Insurance Rate",
+    excerpt: "Buying a new vehicle is exciting — but the insurance costs can surprise you. Here's how to keep them in check.",
+    author: 'Christopher Long',
+    authorInitials: 'CL',
+    date: 'Jan 8, 2026',
+    readTime: '5 min read',
+    body: `
+      <h2>The Insurance Surprise Nobody Warns You About</h2>
+      <p>You've done the research, negotiated the price, and driven your shiny new car off the lot. Then your insurance bill arrives and it's 30–50% higher than what you were paying on your old car. It's one of the most common — and most preventable — financial surprises in car ownership.</p>
+      <p>New vehicles cost more to insure for several straightforward reasons: they're worth more (higher payout on a total loss), they cost more to repair (newer parts, more technology, specialized labor), and they're statistically more likely to be targeted for theft. But that doesn't mean you have to overpay.</p>
+
+      <h2>Check Insurance Costs Before You Buy</h2>
+      <p>This is the number one tip, and almost nobody does it. Before you commit to a specific vehicle, get insurance quotes for your top two or three choices. The difference in annual insurance costs between two similarly priced vehicles can be $500–$1,500 per year. A sporty sedan might cost twice as much to insure as a family SUV with the same sticker price.</p>
+      <p>Factors that affect your vehicle's insurance cost include repair costs for that make and model, theft rates, safety ratings, engine size and horsepower, and the cost and availability of replacement parts.</p>
+      <div class="tip-box">
+        <strong>💡 Quick Comparison</strong>
+        <p>Before signing at the dealership, spend 5 minutes getting quotes for the specific VIN. You might discover that the $35,000 crossover you're considering costs $300/year less to insure than the $33,000 sports sedan — changing the total cost of ownership significantly.</p>
+      </div>
+
+      <h2>Make Sure You Have the Right Coverage</h2>
+      <p>For a new car, you'll almost certainly want (and may be required to carry) comprehensive and collision coverage. If you're financing or leasing, your lender will require both. But there are additional coverages to consider:</p>
+      <ul>
+        <li><strong>Gap insurance:</strong> If your car is totaled, gap coverage pays the difference between what your car is worth and what you still owe on the loan. New cars depreciate 20–30% in the first year, so there's often a significant "gap" between the car's value and the loan balance.</li>
+        <li><strong>New car replacement:</strong> Some carriers offer an endorsement that replaces your totaled car with a brand-new one of the same make and model, rather than paying the depreciated value. This is usually available only for vehicles less than 1–2 years old.</li>
+        <li><strong>OEM parts endorsement:</strong> Ensures that repairs use original manufacturer parts rather than aftermarket parts. Important for maintaining your car's value and warranty.</li>
+      </ul>
+
+      <h2>5 Strategies to Keep Your New Car Premium Down</h2>
+
+      <h3>1. Shop Across Multiple Carriers</h3>
+      <p>Don't just add the new car to your existing policy without comparing. Your current carrier might not offer the best rate for your specific new vehicle. Different carriers have different appetites for different vehicle types.</p>
+
+      <h3>2. Take Advantage of New Car Discounts</h3>
+      <p>Many carriers offer discounts for new vehicles because they have the latest safety features — automatic emergency braking, lane departure warning, blind-spot monitoring, adaptive headlights. Make sure your carrier is giving you credit for every safety feature your vehicle includes.</p>
+
+      <h3>3. Consider Your Deductible Carefully</h3>
+      <p>A new car might justify a slightly lower deductible than an older vehicle since you're more likely to repair (rather than total) a new car. But the math still matters — run the numbers on a $500 vs. $1,000 deductible and see how much you'd save annually versus what you'd pay extra out of pocket for a claim.</p>
+
+      <h3>4. Ask About Anti-Theft Discounts</h3>
+      <p>Modern vehicles come loaded with anti-theft technology — immobilizers, GPS tracking, alarm systems. Each of these can qualify you for a small discount, and they add up.</p>
+
+      <h3>5. Bundle Your Policies</h3>
+      <p>If you haven't already, this is a great time to bundle. Adding a new car to a bundled auto + home policy typically triggers the best available rates.</p>
+
+      <h2>The Timeline: When to Set Up Insurance</h2>
+      <p>Ideally, you should have your new car's insurance set up before you drive it off the lot. Most carriers offer a grace period (usually 7–30 days) where a new vehicle is covered under your existing policy, but this varies by carrier and state. The safest approach is to call your carrier or get an online quote before your purchase date, then bind coverage effective the day you take delivery.</p>
+
+      <h2>The Bottom Line</h2>
+      <p>A new car is a major purchase, and insurance is a significant part of the ongoing cost. By checking rates before you buy, choosing the right coverage level, and shopping across carriers, you can keep your insurance costs reasonable while making sure your investment is properly protected.</p>
+    `
+  }
+};
+
+// ═══════════════════════════════════════
+// ARTICLE READER
+// ═══════════════════════════════════════
+function openArticle(id) {
+  const a = articles[id];
+  if (!a) return;
+  const overlay = document.getElementById('articleOverlay');
+  overlay.querySelector('.ah-tag').textContent = a.tag;
+  overlay.querySelector('.ah-title').textContent = a.title;
+  overlay.querySelector('.ah-excerpt').textContent = a.excerpt;
+  overlay.querySelector('.ah-author-initials').textContent = a.authorInitials;
+  overlay.querySelector('.ah-author-name').textContent = a.author;
+  overlay.querySelector('.ah-date').textContent = a.date;
+  overlay.querySelector('.ah-read-time').textContent = a.readTime;
+  overlay.querySelector('.atb-read-time').textContent = a.readTime;
+  overlay.querySelector('.article-body').innerHTML = a.body;
+  overlay.querySelector('.article-progress').style.width = '0%';
+  overlay.classList.add('active');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeArticle() {
+  const overlay = document.getElementById('articleOverlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Reading progress bar
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('articleOverlay');
+  if (overlay) {
+    overlay.addEventListener('scroll', () => {
+      const scrollTop = overlay.scrollTop;
+      const scrollHeight = overlay.scrollHeight - overlay.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      overlay.querySelector('.article-progress').style.width = progress + '%';
+    });
+  }
+});
+</script>
+
+<!-- Article Reader Overlay -->
+<div class="article-overlay" id="articleOverlay">
+  <div class="article-top-bar">
+    <div class="container">
+      <button class="article-back-btn" onclick="closeArticle()">← Back to Blog</button>
+      <span class="article-read-time atb-read-time">8 min read</span>
+    </div>
+    <div class="article-progress"></div>
+  </div>
+  <div class="article-hero-banner">
+    <div class="article-hero-inner">
+      <span class="blog-tag ah-tag">Home Insurance</span>
+      <h1 class="ah-title">Article Title</h1>
+      <p class="article-excerpt ah-excerpt">Article excerpt goes here.</p>
+      <div class="blog-meta">
+        <div class="author"><div class="author-avatar ah-author-initials">CL</div> <span class="ah-author-name">Christopher Long</span></div>
+        <span class="ah-date">Feb 10, 2026</span>
+        <span class="ah-read-time">8 min read</span>
+      </div>
+    </div>
+  </div>
+  <div class="article-body">
+    <!-- Article content injected by JS -->
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 28px 80px;">
+    <div class="article-cta-box">
+      <h3>Ready to see how much you could save?</h3>
+      <p>Compare rates from top-rated carriers in minutes — no phone calls, no hassle.</p>
+      <a href="/home" class="btn btn-primary">Get My Free Quotes →</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
