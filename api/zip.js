@@ -24,20 +24,25 @@ export default async function handler(req, res) {
       });
     }
 
-    const data = await response.json();
-    const place = data.places[0];
-    const state = place["state abbreviation"];
-    const city = place["place name"];
+    const state = data?.places?.[0]?.["state abbreviation"];
+    const city = data?.places?.[0]?.["place name"];
 
-    // 3️⃣ Restrict to states you operate in
-    const allowedStates = ["UT"]; // change to what you support
+    console.log("Extracted state:", state);
 
-    if (!allowedStates.includes(state)) {
-      return res.status(403).json({
+    if (!state) {
+      return res.status(500).json({
         valid: false,
-        error: "We do not currently operate in this state"
+        error: "Unable to determine state"
       });
     }
+
+    if (state !== "UT") {
+      return res.status(403).json({
+        valid: false,
+        error: "We only operate in Utah"
+      });
+    }
+
 
     // 4️⃣ Success
     return res.status(200).json({
