@@ -1,11 +1,10 @@
 {
   "name": "choose-my-coverage",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "echo 'No build needed, API endpoints will run serverless'"
-  },
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "resend": "^3.0.0",
     "formidable": "^3.5.0"
   }
 }
