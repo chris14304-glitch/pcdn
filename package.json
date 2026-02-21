@@ -1,21 +1,10 @@
 {
   "name": "choose-my-coverage",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6"
+    "@supabase/supabase-js": "^2.0.0",
+    "formidable": "^3.5.4",
+    "resend": "^3.0.0"
   }
 }
