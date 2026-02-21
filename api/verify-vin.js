@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export default async function handler(req, res) {
   const vin = (req.query.vin || '').trim().toUpperCase();
 
@@ -8,17 +6,18 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Use native fetch in Node 18+ / Vercel
     const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/${vin}?format=json`);
     const data = await response.json();
 
     if (!data.Results || data.Results.length === 0) {
-      return res.json({ valid: false });
+      return res.status(200).json({ valid: false });
     }
 
     const result = data.Results[0];
     const valid = result.Make && result.Model && result.ModelYear;
 
-    res.json({
+    res.status(200).json({
       valid: Boolean(valid),
       make: result.Make,
       model: result.Model,
