@@ -3,14 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "start": "echo 'No build needed, API endpoints will run serverless'"
   },
   "dependencies": {
-    "formidable": "^3.5.0",
-    "next": "...",
-    "react": "...",
-    "react-dom": "..."
+    "formidable": "^3.5.0"
   }
 }
