@@ -40,14 +40,17 @@ export default async function handler(req, res) {
       let attachments = [];
 
       if (files.resume) {
-        const file = files.resume[0];
-        const fileBuffer = fs.readFileSync(file.filepath);
-        const base64File = fileBuffer.toString("base64");
+        const file = Array.isArray(files.resume)
+        ? files.resume[0]
+        : files.resume;
 
-        attachments.push({
-          filename: file.originalFilename,
-          content: base64File,
-        });
+      const fileBuffer = fs.readFileSync(file.filepath);
+      const base64File = fileBuffer.toString("base64");
+
+      attachments.push({
+        filename: file.originalFilename,
+        content: base64File,
+      });
       }
 
       await resend.emails.send({
