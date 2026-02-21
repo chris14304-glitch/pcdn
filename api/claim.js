@@ -56,7 +56,7 @@ export default async function handler(req, res) {
       // Send email
       await resend.emails.send({
         from: "Choose My Coverage <support@choosemycoverage.com>",
-        to: "claims@choosemycoverage.com",
+        to: "yancy@choosemycoverage.com",
         subject: `New Claim Submission - ${claimType}`,
         html: `
           <h2>New Claim Submission</h2>
