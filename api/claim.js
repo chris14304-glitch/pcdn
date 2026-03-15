@@ -29,39 +29,25 @@ export default async function handler(req, res) {
     try {
       if (err) throw err;
 
-      // 1. Extract userId from fields
-      const {
-        userId,
-        firstName,
-        lastName,
-        email,
-        phone,
-        policyNumber,
-        claimType,
-        incidentDate,
-        incidentTime,
-        incidentLocation,
-        incidentDescription,
-      } = fields;
+      // Helper to handle formidable fields being arrays or strings
+      const getSingleValue = (val) => (Array.isArray(val) ? val[0] : val);
 
-      if (
-        !firstName ||
-        !lastName ||
-        !email ||
-        !policyNumber ||
-        !claimType ||
-        !incidentDescription ||
-        !incidentDate ||
-        !incidentTime ||
-        !incidentLocation
-      ) {
-        return res.status(400).json({ error: "Missing required fields" });
-      }
+      const userId = getSingleValue(fields.userId);
+      const firstName = getSingleValue(fields.firstName);
+      const lastName = getSingleValue(fields.lastName);
+      const email = getSingleValue(fields.email);
+      const phone = getSingleValue(fields.phone);
+      const policyNumber = getSingleValue(fields.policyNumber);
+      const claimType = getSingleValue(fields.claimType);
+      const incidentDate = getSingleValue(fields.incidentDate);
+      const incidentTime = getSingleValue(fields.incidentTime);
+      const incidentLocation = getSingleValue(fields.incidentLocation);
+      const incidentDescription = getSingleValue(fields.incidentDescription);
 
-      // 2. Include user_id in the Supabase INSERT
+      // Now the Supabase insert will receive a clean string
       const { error: dbError } = await supabase.from("claim").insert([
         {
-          user_id: userId || null, // Associates the claim with the logged-in user
+          user_id: userId || null, // This will now be "9bed1f02..." instead of ["9bed1f02..."]
           first_name: firstName,
           last_name: lastName,
           policy_number: policyNumber,
@@ -73,49 +59,6 @@ export default async function handler(req, res) {
           description: incidentDescription,
         },
       ]);
-
-      if (dbError) {
-        console.error("Supabase insert error:", dbError);
-        return res.status(500).json({ error: "Database insert failed" });
-      }
-
-      // 🔹 Handle attachments for email
-      let attachments = [];
-      if (files.documents) {
-        const uploadedFiles = Array.isArray(files.documents)
-          ? files.documents
-          : [files.documents];
-
-        for (const file of uploadedFiles) {
-          const buffer = fs.readFileSync(file.filepath);
-          attachments.push({
-            filename: file.originalFilename,
-            content: buffer.toString("base64"),
-          });
-        }
-      }
-
-      // 🔹 Send email notification
-      await resend.emails.send({
-        from: "Choose My Coverage <support@choosemycoverage.com>",
-        to: "yancy@choosemycoverage.com",
-        subject: `New Claim Submission - ${claimType}`,
-        html: `
-          <h2>New Claim Submission</h2>
-          <p><strong>User ID:</strong> ${userId || "Not logged in"}</p>
-          <p><strong>Claim Type:</strong> ${claimType}</p>
-          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
-          <p><strong>Policy Number:</strong> ${policyNumber}</p>
-          <p><strong>Date & Time:</strong> ${incidentDate} ${incidentTime}</p>
-          <p><strong>Location:</strong> ${incidentLocation}</p>
-          <hr/>
-          <p><strong>Description:</strong></p>
-          <p>${incidentDescription}</p>
-        `,
-        attachments,
-      });
 
       return res.status(200).json({ success: true });
     } catch (error) {
