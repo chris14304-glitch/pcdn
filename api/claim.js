@@ -29,7 +29,9 @@ export default async function handler(req, res) {
     try {
       if (err) throw err;
 
+      // 1. Extract userId from fields
       const {
+        userId,
         firstName,
         lastName,
         email,
@@ -56,9 +58,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
-      // 🔹 INSERT INTO SUPABASE
+      // 2. Include user_id in the Supabase INSERT
       const { error: dbError } = await supabase.from("claim").insert([
         {
+          user_id: userId || null, // Associates the claim with the logged-in user
           first_name: firstName,
           last_name: lastName,
           policy_number: policyNumber,
@@ -99,6 +102,7 @@ export default async function handler(req, res) {
         subject: `New Claim Submission - ${claimType}`,
         html: `
           <h2>New Claim Submission</h2>
+          <p><strong>User ID:</strong> ${userId || "Not logged in"}</p>
           <p><strong>Claim Type:</strong> ${claimType}</p>
           <p><strong>Name:</strong> ${firstName} ${lastName}</p>
           <p><strong>Email:</strong> ${email}</p>
