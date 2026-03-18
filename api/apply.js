@@ -122,8 +122,8 @@ export default async function handler(req, res) {
         subject: `New Job Application - ${role}`,
         html: `
           <h2>New Application</h2>
-          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Name:</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           <p><strong>Role:</strong> ${role}</p>
         `,
         attachments,
