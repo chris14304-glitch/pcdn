@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "https://www.choosemycoverage.com");
   res.setHeader("Access-Control-Allow-Methods", "GET");
 
   const vin = (req.query.vin || '').trim().toUpperCase();
@@ -28,13 +28,13 @@ export default async function handler(req, res) {
       make: result.Make,
       model: result.Model,
       year: result.ModelYear,
-      trim: result.Trim || null,          // ⭐ NEW
-      series: result.Series || null,      // ⭐ Useful fallback
-      bodyClass: result.BodyClass || null // ⭐ Also useful for insurance
+      trim: result.Trim || null,          // NEW
+      series: result.Series || null,      // Useful fallback
+      bodyClass: result.BodyClass || null // Also useful for insurance
     });
 
   } catch (err) {
-    console.error('VIN verify error:', err);
+    console.error('VIN verify error');
     res.status(500).json({ valid: false, error: 'Server error fetching VIN' });
   }
 }
