@@ -29,7 +29,6 @@ export default async function handler(req, res) {
       model: result.Model,
       year: result.ModelYear,
       trim: result.Trim || null,          // NEW
-      series: result.Series || null,      // Useful fallback
       bodyClass: result.BodyClass || null // Also useful for insurance
     });
 
