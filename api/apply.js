@@ -73,6 +73,7 @@ export default async function handler(req, res) {
       const lastName = sanitizeString(fields.lastName);
       const email = sanitizeString(fields.email);
       const role = sanitizeString(fields.role);
+      const userId = sanitizeString(fields.user_id);
 
       if (!firstName || !lastName || !email || !role) {
         return res.status(400).json({ error: "Missing or invalid fields" });
@@ -83,14 +84,15 @@ export default async function handler(req, res) {
       }
 
       // Insert into Supabase
-      const { error: dbError } = await supabase.from("application").insert([
-        {
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          position: role,
-        },
-      ]);
+      const insertData = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        position: role,
+      };
+      if (userId) insertData.user_id = userId;
+
+      const { error: dbError } = await supabase.from("application").insert([insertData]);
 
       if (dbError) {
         throw new Error("Database insert failed");
