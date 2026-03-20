@@ -49,7 +49,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { firstName: rawFirst, lastName: rawLast, email: rawEmail, phone: rawPhone, topic: rawTopic, message: rawMessage } = req.body;
+    const { firstName: rawFirst, lastName: rawLast, email: rawEmail, phone: rawPhone, topic: rawTopic, message: rawMessage, user_id: rawUserId } = req.body;
 
     // Sanitize all fields
     const firstName = sanitizeString(rawFirst);
@@ -58,6 +58,7 @@ export default async function handler(req, res) {
     const topic = sanitizeString(rawTopic);
     const message = sanitizeString(rawMessage, MAX_MESSAGE_LENGTH);
     const phone = rawPhone ? sanitizeString(rawPhone) : null;
+    const userId = rawUserId ? sanitizeString(rawUserId) : null;
 
     // Validate required fields
     if (!firstName || !lastName || !email || !topic || !message) {
@@ -75,16 +76,17 @@ export default async function handler(req, res) {
     }
 
     // Insert into Supabase
-    const { error: dbError } = await supabase.from("contact_us").insert([
-      {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        phone,
-        topic,
-        message,
-      },
-    ]);
+    const insertData = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
+      topic,
+      message,
+    };
+    if (userId) insertData.user_id = userId;
+
+    const { error: dbError } = await supabase.from("contact_us").insert([insertData]);
 
     if (dbError) {
       throw new Error("Database insert failed");
