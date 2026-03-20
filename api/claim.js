@@ -139,35 +139,34 @@ export default async function handler(req, res) {
       if (dbError) {
         throw new Error("Database insert failed");
       }
+      // Send Email
+      await resend.emails.send({
+        from: `Choose My Coverage <${process.env.FROM_EMAIL}>`,
+        to: process.env.TO_EMAIL,
+        subject: `New Claim Submission - ${claimType || "General Claim"}`,
+        html: `
+          <h2>New Claim Submission</h2>
 
+          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+          <p><strong>Policy Number:</strong> ${policyNumber}</p>
+
+          <hr/>
+
+          <p><strong>Incident Date:</strong> ${incidentDate}</p>
+          <p><strong>Incident Time:</strong> ${incidentTime || "Not provided"}</p>
+          <p><strong>Location:</strong> ${incidentLocation || "Not provided"}</p>
+
+          <hr/>
+
+          <p><strong>Description:</strong></p>
+          <p>${incidentDescription}</p>
+        `,
+      });
       return res.status(200).json({ success: true });
     } catch (error) {
       return res.status(500).json({ error: "Claim submission failed" });
     }
-  });
-  // Send Email
-  await resend.emails.send({
-    from: `Choose My Coverage <${process.env.FROM_EMAIL}>`,
-    to: process.env.TO_EMAIL,
-    subject: `New Claim Submission - ${claimType || "General Claim"}`,
-    html: `
-      <h2>New Claim Submission</h2>
-
-      <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
-      <p><strong>Policy Number:</strong> ${policyNumber}</p>
-
-      <hr/>
-
-      <p><strong>Incident Date:</strong> ${incidentDate}</p>
-      <p><strong>Incident Time:</strong> ${incidentTime || "Not provided"}</p>
-      <p><strong>Location:</strong> ${incidentLocation || "Not provided"}</p>
-
-      <hr/>
-
-      <p><strong>Description:</strong></p>
-      <p>${incidentDescription}</p>
-    `,
   });
 }
