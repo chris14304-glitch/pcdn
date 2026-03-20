@@ -26,12 +26,25 @@ const ALLOWED_EXTENSIONS = [".pdf"];
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function sanitizeString(value) {
+  // formidable v3 returns arrays for fields — unwrap if needed
+  if (Array.isArray(value)) value = value[0];
   if (typeof value !== "string") return null;
   return value.trim().slice(0, MAX_FIELD_LENGTH);
 }
 
 function isValidEmail(value) {
+  if (Array.isArray(value)) value = value[0];
   return typeof value === "string" && EMAIL_REGEX.test(value.trim());
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function validateResumeFile(file) {
@@ -55,7 +68,16 @@ function validateResumeFile(file) {
 // --- Handler ---
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "https://www.choosemycoverage.com");
+  const allowedOrigins = [
+    "https://www.choosemycoverage.com",
+    "https://choosemycoverage.com"
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "https://www.choosemycoverage.com");
+  }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
