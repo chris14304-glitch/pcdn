@@ -37,8 +37,7 @@ function escapeHtml(str) {
 
 export default async function handler(req, res) {
   const allowedOrigins = [
-    "https://www.choosemycoverage.com",
-    "https://choosemycoverage.com"
+    "*"
   ];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
