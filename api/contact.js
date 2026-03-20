@@ -36,7 +36,16 @@ function escapeHtml(str) {
 // --- Handler ---
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "https://www.choosemycoverage.com");
+  const allowedOrigins = [
+    "https://www.choosemycoverage.com",
+    "https://choosemycoverage.com"
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "https://www.choosemycoverage.com");
+  }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
