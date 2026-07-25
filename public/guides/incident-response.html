@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What to Do If Something Happens: A Personal Incident Response Guide | PCDN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition); }
+.nav-links a:hover { color: var(--text-primary); }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; transition: all var(--transition); margin-bottom: 2rem;
+}
+.back-link:hover { gap: 10px; }
+.back-link svg { transition: transform var(--transition); }
+.back-link:hover svg { transform: translateX(-3px); }
+.article-wrapper { max-width: 820px; margin: 0 auto; padding: 120px 2rem 6rem; }
+.article-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.article-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-soft); border: 1px solid var(--border-subtle);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.article-date, .article-reading-time { font-size: 0.82rem; color: var(--text-muted); }
+.article-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1rem;
+}
+.article-subtitle { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2.5rem; max-width: 640px; }
+.article-divider { border: none; border-top: 1px solid var(--border-subtle); margin: 2rem 0; }
+.toc { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: 1.5rem 2rem; margin-bottom: 2.5rem; }
+.toc-title { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; margin-bottom: 1rem; color: var(--text-primary); }
+.toc ol { list-style: none; counter-reset: toc-counter; padding: 0; }
+.toc ol li { counter-increment: toc-counter; margin-bottom: 0.5rem; }
+.toc ol li a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; display: flex; align-items: baseline; gap: 8px; transition: color var(--transition); }
+.toc ol li a::before { content: counter(toc-counter, decimal-leading-zero); font-size: 0.75rem; font-weight: 600; color: var(--accent); min-width: 22px; }
+.toc ol li a:hover { color: var(--accent); }
+.article-body h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.6rem; letter-spacing: -0.02em; margin: 3rem 0 1rem; padding-top: 1rem; color: var(--text-primary); }
+.article-body h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.2rem; letter-spacing: -0.01em; margin: 2rem 0 0.75rem; color: var(--text-primary); }
+.article-body p { color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin-bottom: 1.25rem; }
+.article-body ul, .article-body ol { color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.article-body li { margin-bottom: 0.4rem; }
+.article-body strong { color: var(--text-primary); font-weight: 600; }
+.callout { border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.callout-title { font-weight: 600; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+.callout-info { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+.callout-info .callout-title { color: var(--accent); }
+.callout-info p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-danger { background: var(--alert-red-bg); border-left: 3px solid var(--alert-red); }
+.callout-danger .callout-title { color: var(--alert-red); }
+.callout-danger p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-danger ul { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; padding-left: 1.25rem; }
+.callout-warning { background: var(--alert-amber-bg); border-left: 3px solid var(--alert-amber); }
+.callout-warning .callout-title { color: var(--alert-amber); }
+.callout-warning p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-success { background: var(--success-bg); border-left: 3px solid var(--success); }
+.callout-success .callout-title { color: var(--success); }
+.callout-success p, .callout-success ul { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-success ul { padding-left: 1.25rem; margin-top: 0.5rem; }
+@media (max-width: 640px) {
+  .article-wrapper { padding: 100px 1.25rem 4rem; }
+  .nav-links { display: none; }
+  .toc { padding: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="article-wrapper">
+
+  <a href="../index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Home
+  </a>
+
+  <div class="article-meta">
+    <span class="article-tag">Incident Response</span>
+    <span class="article-date">Updated July 2026</span>
+    <span class="article-reading-time">15 min read</span>
+  </div>
+
+  <h1 class="article-title">What to Do If Something Happens: A Personal Incident Response Guide</h1>
+  <p class="article-subtitle">A hack, a scam, a lost phone, a breach notification&mdash;the first hour matters most. This guide gives you the exact sequence of steps to take for the most common personal cybersecurity incidents, along with the reports, contacts, and follow-through that turn a crisis into a controlled recovery.</p>
+
+  <hr class="article-divider">
+
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#first-15">The First 15 Minutes: Universal Steps</a></li>
+      <li><a href="#triage">Triage: What Kind of Incident Is This?</a></li>
+      <li><a href="#phishing-clicked">You Clicked a Phishing Link</a></li>
+      <li><a href="#account-hacked">An Online Account Was Hacked</a></li>
+      <li><a href="#lost-device">A Phone or Laptop Was Lost or Stolen</a></li>
+      <li><a href="#ransomware">Ransomware or Malware on Your Computer</a></li>
+      <li><a href="#money-scam">You Sent Money in a Scam</a></li>
+      <li><a href="#identity-theft">Identity Theft</a></li>
+      <li><a href="#data-breach">You Received a Data Breach Notification</a></li>
+      <li><a href="#sextortion">Sextortion and Image-Based Abuse</a></li>
+      <li><a href="#stalking">Stalking, Harassment, or Doxxing</a></li>
+      <li><a href="#evidence">Preserving Evidence</a></li>
+      <li><a href="#reporting">Where to Report</a></li>
+      <li><a href="#recovery">Long-Term Recovery</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+
+    <h2 id="first-15">The First 15 Minutes: Universal Steps</h2>
+    <p>Whatever happened, a few actions apply to almost every scenario. Do these first, in this order, before doing anything else.</p>
+
+    <ol>
+      <li><strong>Take a breath.</strong> Panic is the attacker's ally. The situation is almost never as bad as it feels in the first sixty seconds, but panicked decisions can make it worse.</li>
+      <li><strong>Stop the bleeding.</strong> If a compromised computer is connected to the internet, disconnect it (unplug the cable or turn off Wi-Fi). If money is being transferred, call your bank now. If someone has active control of an account, change the password immediately.</li>
+      <li><strong>Preserve evidence.</strong> Do not delete emails, messages, or accounts, and do not wipe the device. Take screenshots. Save headers. Photograph the screen if you cannot screenshot. Evidence lost in the first hour cannot be recovered.</li>
+      <li><strong>Write down what happened.</strong> Names, times, phone numbers, email addresses, dollar amounts, transaction IDs, links, and the sequence of events. You will need this for every report and every phone call for the next several weeks.</li>
+      <li><strong>Do not respond to the attacker.</strong> Do not "warn them" that you know, do not attempt to bargain, do not send more money to recover what was already sent. Recovery scams are run by the same criminals.</li>
+      <li><strong>Ask for help.</strong> A calm second person will notice things you miss. Call a trusted friend, family member, or professional.</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Key Takeaway
+      </div>
+      <p>Speed matters, but sequence matters more. Isolate the damage, preserve the evidence, then act. Wiping a hacked device to "fix" it before capturing evidence is the most common regret in personal incident response.</p>
+    </div>
+
+    <h2 id="triage">Triage: What Kind of Incident Is This?</h2>
+    <p>Different incidents have different playbooks. Match your situation to one of the categories below and jump to that section. If more than one applies, work them in order of severity: money out the door first, then live account access, then device compromise, then long-term identity.</p>
+
+    <ul>
+      <li>Clicked a link and worried &mdash; <a href="#phishing-clicked">Phishing link section</a></li>
+      <li>An account is doing things you did not do &mdash; <a href="#account-hacked">Account hacked</a></li>
+      <li>Device physically missing &mdash; <a href="#lost-device">Lost device</a></li>
+      <li>Files encrypted or ransom demand &mdash; <a href="#ransomware">Ransomware</a></li>
+      <li>Money sent or unauthorized charges &mdash; <a href="#money-scam">Money scam</a> and <a href="#identity-theft">Identity theft</a></li>
+      <li>Received notice of a breach at a company &mdash; <a href="#data-breach">Data breach</a></li>
+      <li>Explicit images being used as blackmail &mdash; <a href="#sextortion">Sextortion</a></li>
+      <li>Being harassed, tracked, or personal info published &mdash; <a href="#stalking">Stalking / doxxing</a></li>
+    </ul>
+
+    <h2 id="phishing-clicked">You Clicked a Phishing Link</h2>
+    <p>Simply clicking a link is often less catastrophic than people fear. The severity depends on what happened next: did the page load, did you enter credentials, did a file download, did you approve a permission prompt?</p>
+
+    <h3>If You Only Clicked and Nothing Loaded</h3>
+    <p>Low risk. Close the tab, clear browser cache and cookies for that site, and run a scan with your existing antivirus. Note the URL and report it (see reporting section below).</p>
+
+    <h3>If You Entered a Username and Password</h3>
+    <ol>
+      <li>Immediately change the password on the real site (open a new browser tab, type the URL yourself&mdash;do not use the link from the email).</li>
+      <li>Change the password on every other site where you used the same or similar password.</li>
+      <li>Enable two-factor authentication on the affected account and any others that support it.</li>
+      <li>Log out of all active sessions on the affected account (most services have this under Security or Sessions).</li>
+      <li>Check for any changes the attacker may have made: forwarding rules, connected apps, recovery email or phone number, new devices.</li>
+    </ol>
+
+    <h3>If You Entered a Verification Code</h3>
+    <p>Treat this as an active account compromise. Codes sent to your phone that you read aloud or type into a fake site give an attacker the second factor they need. Follow the account-hacked section below.</p>
+
+    <h3>If a File Downloaded or Ran</h3>
+    <p>Disconnect the device from the internet, run a full antivirus scan, and&mdash;especially for work devices&mdash;involve IT. If personal, consider a fresh Windows or macOS reinstall for peace of mind, especially if the file was an executable, a script, or a macro-enabled Office document.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Preserve Before You Delete
+      </div>
+      <p>Do not immediately delete the phishing email. Report it first (Gmail and Outlook have built-in report buttons), forward the raw message with headers to <strong>reportphishing@apwg.org</strong>, and only then remove it.</p>
+    </div>
+
+    <h2 id="account-hacked">An Online Account Was Hacked</h2>
+    <p>You notice logins from unfamiliar locations, messages you did not send, missing money or points, or a friend telling you that "you" just sent them something strange. Act in this order:</p>
+
+    <ol>
+      <li><strong>If you can still log in:</strong> change the password immediately. Use a new, unique password. Enable two-factor authentication if it is not already on.</li>
+      <li><strong>If you cannot log in:</strong> use the platform's account-recovery flow. Every major provider (Google, Microsoft, Apple, Meta, X) has one, usually reached through a "Forgot password" or "Cannot access my account" link on the sign-in page.</li>
+      <li><strong>Kick out all other sessions.</strong> Most services have a "Sign out of all devices" option in Security settings.</li>
+      <li><strong>Check what was changed.</strong> Look at: recovery email, recovery phone, forwarding rules (in email accounts), connected apps and third-party integrations, security keys, and any linked payment methods.</li>
+      <li><strong>Look for damage.</strong> Sent items, financial transactions, changed shipping addresses, new orders, gift-card purchases, cryptocurrency movements, deleted emails (especially deleted "security alert" messages from the platform).</li>
+      <li><strong>Alert your contacts</strong> if the attacker may have messaged them from your account.</li>
+      <li><strong>Check related accounts.</strong> If your email was compromised, every account tied to that email is potentially compromised because the attacker can trigger password resets. Change passwords on high-value accounts (bank, brokerage, work, health) even if they look fine.</li>
+    </ol>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v4M8 12h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        The Email Account Is the Master Key
+      </div>
+      <p>A compromised email account is worse than a compromised bank account. Anyone with your email can reset the password on nearly every other service you use. If your email was hacked, treat every important account as potentially at risk and change those passwords too.</p>
+    </div>
+
+    <h2 id="lost-device">A Phone or Laptop Was Lost or Stolen</h2>
+    <p>The concern is not just the hardware. A signed-in phone or laptop is a passport into your entire digital life. Move quickly.</p>
+
+    <h3>For a Phone</h3>
+    <ol>
+      <li><strong>Use Find My iPhone (Apple) or Find My Device (Android/Google)</strong> from another device or browser. Mark the device as lost&mdash;this locks it and displays a message.</li>
+      <li><strong>Do not immediately erase it</strong> unless you have reason to believe it will be exploited. Erasing a phone that is later returned is a nuisance; erasing one that a thief already broke into is closing the barn door. Judge based on how quickly you noticed.</li>
+      <li><strong>Call your carrier</strong> to suspend service and lock the SIM. This blocks SMS-based two-factor codes from being intercepted.</li>
+      <li><strong>Change passwords</strong> for accounts saved on the phone: email, banking, social media, password manager.</li>
+      <li><strong>Sign the device out</strong> of every service that supports remote sign-out.</li>
+      <li><strong>Report to police</strong> if stolen. A police report is often required for insurance claims and identity-theft affidavits.</li>
+      <li><strong>Report to carrier for IMEI blocking</strong> so the phone cannot be reactivated on U.S. networks.</li>
+    </ol>
+
+    <h3>For a Laptop</h3>
+    <ol>
+      <li>Use manufacturer/OS remote tools (Find My Mac, Windows Find My Device) to locate or lock.</li>
+      <li>Change passwords for cloud services signed in on the device (start with email).</li>
+      <li>Revoke browser sessions in Chrome, Firefox, Edge, and Safari sync settings.</li>
+      <li>If the drive was not encrypted, assume everything on it is readable. Prioritize changing anything saved in unencrypted browsers or documents.</li>
+      <li>Report to police and to your insurance provider.</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Encryption Is the Difference
+      </div>
+      <p>A modern iPhone or a Mac with FileVault, or a Windows laptop with BitLocker, is meaningfully hard for a thief to access. An unencrypted laptop is a filing cabinet with the key taped to the front. If you have not enabled full-disk encryption yet, do it today.</p>
+    </div>
+
+    <h2 id="ransomware">Ransomware or Malware on Your Computer</h2>
+    <p>Symptoms: a full-screen note demanding payment, files renamed with strange extensions and unable to open, browser locked with a "call this number" message, or antivirus alerts you cannot dismiss.</p>
+
+    <h3>Immediate Actions</h3>
+    <ol>
+      <li><strong>Disconnect from the internet</strong> and from any external drives or network shares. Unplug the network cable and turn off Wi-Fi and Bluetooth.</li>
+      <li><strong>Do not pay the ransom.</strong> Payment funds further attacks, and even when victims pay, only a fraction receive working decryption keys.</li>
+      <li><strong>Photograph the ransom note and any identifying strings.</strong> Ransomware families are sometimes decryptable&mdash;<strong>nomoreransom.org</strong> maintains a free decryptor library.</li>
+      <li><strong>Do not delete anything yet.</strong> Even the ransom note contains evidence.</li>
+      <li><strong>Check if it was a fake browser lock</strong> vs. actual file encryption. A page you cannot close is usually solved by force-quitting the browser or restarting the computer. Actual encryption is not undone by a reboot.</li>
+    </ol>
+
+    <h3>Recovery</h3>
+    <ol>
+      <li>If you have offline backups, disconnect the infected machine from everything, wipe the drive completely, reinstall the operating system, and restore from backup.</li>
+      <li>If you have no backups, consult NoMoreRansom.org for a possible decryptor for your specific ransomware family.</li>
+      <li>Report to the FBI at <strong>ic3.gov</strong> and, if a business, to CISA at <strong>cisa.gov/report</strong>. These reports feed intelligence that helps disrupt operators and sometimes recover keys.</li>
+      <li>Change every password stored on the affected device, from a clean device, after the compromised one is offline.</li>
+    </ol>
+
+    <h2 id="money-scam">You Sent Money in a Scam</h2>
+    <p>Whether it was a wire, Zelle, gift cards, cryptocurrency, or cash&mdash;time is the single biggest factor in whether any of it can be recovered.</p>
+
+    <h3>Within the First Hour</h3>
+    <ol>
+      <li><strong>Call your bank's fraud line.</strong> Not the general customer service line&mdash;the fraud number, which is on the back of your debit card. For a wire, request a "wire recall." For Zelle or ACH, request a stop or reversal. Speed is everything: hours matter.</li>
+      <li><strong>For gift cards:</strong> call the card issuer (Google Play, Apple, Target, etc.). Some can freeze the card if it has not been redeemed yet. Have the card numbers ready.</li>
+      <li><strong>For cryptocurrency:</strong> if it was sent from an exchange (Coinbase, Kraken, Binance.US), contact the exchange immediately&mdash;in rare cases they can flag receiving addresses. Once a blockchain transaction confirms, it cannot be reversed.</li>
+      <li><strong>For credit card charges:</strong> dispute the charge with your card issuer as fraud. Federal law limits your liability.</li>
+      <li><strong>Change online banking passwords</strong> and enable two-factor authentication. Assume the scammer has any credentials you shared.</li>
+    </ol>
+
+    <h3>The Same Day</h3>
+    <ol>
+      <li>File a report at <strong>ic3.gov</strong> (FBI Internet Crime Complaint Center).</li>
+      <li>File a report at <strong>reportfraud.ftc.gov</strong>.</li>
+      <li>File a report with your local police department. Ask for a copy of the report&mdash;insurance and banks may require it.</li>
+      <li>If a large amount was lost, contact a lawyer familiar with fraud recovery. Do not pay any "recovery service" that reaches out to you unsolicited&mdash;those are second-stage scams.</li>
+    </ol>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v4M8 12h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Recovery Scams
+      </div>
+      <p>Within days or weeks of a scam, victims often receive contact from "recovery agents," "asset investigators," or "lawyers" claiming they can get the money back for a fee. These are almost always the same criminals coming back for a second bite. No legitimate agency charges upfront fees to recover scam losses.</p>
+    </div>
+
+    <h2 id="identity-theft">Identity Theft</h2>
+    <p>Signs include accounts you did not open on your credit report, tax filings you did not submit, medical bills for care you did not receive, or debt collectors calling about debts that are not yours.</p>
+
+    <h3>The Core Steps</h3>
+    <ol>
+      <li><strong>Place a fraud alert</strong> with one of the three credit bureaus (they are required to notify the other two). Free, valid for one year, renewable.
+        <ul>
+          <li>Equifax: 1-800-685-1111 / equifax.com</li>
+          <li>Experian: 1-888-397-3742 / experian.com</li>
+          <li>TransUnion: 1-888-909-8872 / transunion.com</li>
+        </ul>
+      </li>
+      <li><strong>Consider a credit freeze</strong> at all three bureaus. Free, prevents most new credit from being opened in your name. You can lift it temporarily when you need credit.</li>
+      <li><strong>Report to the FTC at IdentityTheft.gov.</strong> This generates a personalized recovery plan and an official Identity Theft Report you can use with creditors.</li>
+      <li><strong>File a police report,</strong> especially if a specific individual is suspected or if creditors require it.</li>
+      <li><strong>Get free credit reports</strong> from AnnualCreditReport.com to identify fraudulent accounts.</li>
+      <li><strong>Close fraudulent accounts</strong> in writing with each creditor, including a copy of your Identity Theft Report and Police Report.</li>
+      <li><strong>If tax-related</strong> (someone filed a return under your Social Security number): file IRS Form 14039 (Identity Theft Affidavit) and request an Identity Protection PIN going forward.</li>
+      <li><strong>If your Social Security number was misused</strong> for employment or benefits: contact the Social Security Administration at 1-800-269-0271 and check your Social Security statement.</li>
+    </ol>
+
+    <h2 id="data-breach">You Received a Data Breach Notification</h2>
+    <p>A company you have an account with has been breached and your information was included. First, verify the notification is real&mdash;phishing emails often masquerade as breach notifications. Go directly to the company's website; do not click links in the email.</p>
+
+    <h3>What to Do</h3>
+    <ol>
+      <li><strong>Read the notification carefully.</strong> Identify exactly what was exposed: email, password, security questions, address, phone number, Social Security number, financial account numbers, health information? Each exposure type calls for different follow-up.</li>
+      <li><strong>Change the password</strong> on that account and anywhere else you used the same password.</li>
+      <li><strong>Enable two-factor authentication</strong> on the affected account.</li>
+      <li><strong>Accept any credit monitoring offered.</strong> It does not usually prevent fraud, but it will alert you when new accounts are opened.</li>
+      <li><strong>If financial account numbers were exposed:</strong> contact the bank or card issuer and ask for a new account number.</li>
+      <li><strong>If Social Security number was exposed:</strong> place a fraud alert or credit freeze at the three bureaus (see identity theft section).</li>
+      <li><strong>Check haveibeenpwned.com</strong> to see if the email address appears in this or other breaches. Sign up for notifications so future breaches are surfaced automatically.</li>
+      <li><strong>Watch for follow-on phishing.</strong> Attackers use breach data to craft convincing personalized phishing. Be extra skeptical of unexpected messages for the following months.</li>
+    </ol>
+
+    <h2 id="sextortion">Sextortion and Image-Based Abuse</h2>
+    <p>Someone claims to have explicit images of you (real or claimed) and demands payment&mdash;or has non-consensually shared images already. This is a crime being committed against you, not something you caused.</p>
+
+    <h3>Steps</h3>
+    <ol>
+      <li><strong>Do not pay.</strong> Payment rarely ends the extortion&mdash;most victims who pay are contacted again for more.</li>
+      <li><strong>Do not delete anything.</strong> Preserve all messages, profiles, screenshots, and payment demands. Evidence enables prosecution.</li>
+      <li><strong>Block the account after preserving evidence.</strong> Report the account to the platform.</li>
+      <li><strong>If a minor (anyone under 18) is involved</strong> in the images&mdash;whether the victim or the depicted person&mdash;report to the NCMEC CyberTipline at <strong>1-800-843-5678</strong> or <strong>CyberTipline.org</strong>. Also use <strong>Take It Down</strong> (takeitdown.ncmec.org) to help remove the images from participating platforms.</li>
+      <li><strong>For adults:</strong> use <strong>StopNCII.org</strong> to create a hash of the images that participating platforms will use to detect and remove them.</li>
+      <li><strong>Report to the FBI at ic3.gov.</strong> Sextortion is a federal crime and one of the FBI's active enforcement priorities.</li>
+      <li><strong>Tell someone you trust.</strong> The isolation is what the extortionist depends on. Family, a therapist, a school counselor, or a crisis line are all reasonable options.</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        You Are Not Alone
+      </div>
+      <p>Financial sextortion targets millions of people. Law enforcement has playbooks and support resources built specifically for this. The Crisis Text Line (text HOME to 741741) and 988 Suicide &amp; Crisis Lifeline (call or text 988) are available if the emotional weight becomes unbearable.</p>
+    </div>
+
+    <h2 id="stalking">Stalking, Harassment, or Doxxing</h2>
+    <p>Someone is following your activity, contacting you across multiple platforms, publishing your personal information, or physically appearing where they should not know to be.</p>
+
+    <h3>Immediate</h3>
+    <ol>
+      <li><strong>Preserve evidence.</strong> Screenshots with timestamps and URLs, saved voicemails, kept text messages. Do not respond to the harasser.</li>
+      <li><strong>Check your devices for stalkerware.</strong> The Coalition Against Stalkerware (stopstalkerware.org) has guidance and tool lists. Common signs include unfamiliar apps, unusually high battery drain, and location sharing enabled with people you did not authorize.</li>
+      <li><strong>Audit shared logins</strong> from a former partner or roommate: cloud storage, streaming, banking, Find My family sharing, home cameras, thermostats. Revoke everything.</li>
+      <li><strong>Check location sharing</strong> in Google Maps, iCloud, Snapchat, Life360, and Find My.</li>
+      <li><strong>Review social media privacy settings</strong> and remove personal identifying info (address, workplace, school, kids' names, license plates, car photos) from public posts.</li>
+    </ol>
+
+    <h3>Doxxing Response</h3>
+    <ol>
+      <li>Request removal from data broker sites (Whitepages, Spokeo, BeenVerified, and dozens of others). Services like DeleteMe and Optery automate this for a fee; the FTC and consumer sites publish free instructions.</li>
+      <li>Contact the platforms where your information is being spread. Most have doxxing policies and will remove it.</li>
+      <li>If a home address is public, alert neighbors and consider a locked mailbox, security camera, and USPS Informed Delivery.</li>
+      <li>File a police report. Ask about a temporary restraining order if a specific person is involved.</li>
+      <li>If your job or safety are at risk, contact an attorney familiar with cyber harassment.</li>
+    </ol>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Domestic Violence Context
+      </div>
+      <p>If a stalker is a current or former intimate partner, technical steps alone are not enough&mdash;and some steps (like abruptly cutting off tracking software they installed) can escalate danger. The National Domestic Violence Hotline at <strong>1-800-799-7233</strong> can help plan a safe response.</p>
+    </div>
+
+    <h2 id="evidence">Preserving Evidence</h2>
+    <p>Nearly every report you file&mdash;to a platform, a bank, an insurer, a police department, the FBI&mdash;is stronger with evidence. Here is what to keep.</p>
+
+    <ul>
+      <li><strong>Screenshots</strong> of every message, page, profile, and error, with the URL and timestamp visible. Use multiple screenshots if needed.</li>
+      <li><strong>Email headers</strong> for phishing. In Gmail, "Show original." In Outlook, "View source" or "Message options." Save the full text file.</li>
+      <li><strong>Transaction records</strong> for any financial movement: dates, times, amounts, receiving accounts, reference numbers.</li>
+      <li><strong>Device logs and notifications</strong> that show the timeline.</li>
+      <li><strong>A written timeline of your own</strong> capturing what you did, when, and who you spoke to. Includes phone numbers you called and case numbers you were given.</li>
+      <li><strong>Physical letters and packages</strong> if a scam involved mail. Do not throw envelopes away.</li>
+      <li><strong>The device itself,</strong> if hardware is being investigated. Do not wipe or "clean" it.</li>
+    </ul>
+
+    <p>Store copies in two places, at least one offline (a USB drive, a printed folder). Attackers who retain any account access sometimes delete evidence remotely.</p>
+
+    <h2 id="reporting">Where to Report</h2>
+    <p>File in more than one place. Federal reports feed intelligence; local reports drive action; platform reports enable takedowns.</p>
+
+    <h3>Federal (U.S.)</h3>
+    <ul>
+      <li><strong>FBI IC3</strong> &mdash; ic3.gov &mdash; internet crimes of all kinds</li>
+      <li><strong>FTC Fraud Report</strong> &mdash; reportfraud.ftc.gov &mdash; consumer fraud</li>
+      <li><strong>FTC Identity Theft</strong> &mdash; IdentityTheft.gov &mdash; identity theft with recovery plan generation</li>
+      <li><strong>NCMEC CyberTipline</strong> &mdash; 1-800-843-5678 / CyberTipline.org &mdash; exploitation of minors</li>
+      <li><strong>CISA</strong> &mdash; cisa.gov/report &mdash; cyber incidents, especially affecting infrastructure or businesses</li>
+      <li><strong>SSA Fraud Hotline</strong> &mdash; 1-800-269-0271 &mdash; misuse of Social Security number</li>
+      <li><strong>IRS Identity Protection</strong> &mdash; 1-800-908-4490 &mdash; tax-related identity theft</li>
+      <li><strong>USPIS</strong> &mdash; uspis.gov &mdash; mail fraud</li>
+    </ul>
+
+    <h3>State and Local</h3>
+    <ul>
+      <li>Local police department &mdash; needed for most insurance claims and identity theft affidavits</li>
+      <li>State Attorney General's consumer protection division</li>
+      <li>Adult Protective Services &mdash; when an older adult is being financially exploited</li>
+    </ul>
+
+    <h3>Non-Government Help</h3>
+    <ul>
+      <li><strong>AARP Fraud Watch Helpline</strong> &mdash; 1-877-908-3360 &mdash; open to anyone</li>
+      <li><strong>National Elder Fraud Hotline</strong> &mdash; 1-833-372-8311</li>
+      <li><strong>Cybercrime Support Network</strong> &mdash; fraudsupport.org &mdash; guided support for individuals</li>
+      <li><strong>National Domestic Violence Hotline</strong> &mdash; 1-800-799-7233</li>
+      <li><strong>Crisis Text Line</strong> &mdash; text HOME to 741741</li>
+      <li><strong>988 Suicide &amp; Crisis Lifeline</strong> &mdash; call or text 988</li>
+    </ul>
+
+    <h2 id="recovery">Long-Term Recovery</h2>
+    <p>The technical steps are the first week. Real recovery takes months.</p>
+
+    <h3>Financial</h3>
+    <ul>
+      <li>Watch bank and credit-card statements closely for at least six months. Automate alerts.</li>
+      <li>Pull free credit reports quarterly for the first year, then annually. Dispute any inaccurate items immediately.</li>
+      <li>Keep the fraud alert or credit freeze in place. It is free and it works.</li>
+    </ul>
+
+    <h3>Digital Hygiene Reset</h3>
+    <ul>
+      <li>Move to a password manager if you were not already using one. Every account gets a unique password.</li>
+      <li>Enable two-factor authentication everywhere it is offered. Prefer authenticator apps or hardware keys over SMS.</li>
+      <li>Review connected apps and old sessions on every important account. Remove anything you do not recognize or use.</li>
+      <li>Consolidate email. Old, forgotten email accounts are frequent entry points; close ones you do not need.</li>
+      <li>Update recovery information on your important accounts, and store recovery codes safely offline.</li>
+    </ul>
+
+    <h3>Emotional Recovery</h3>
+    <p>Being scammed, hacked, stalked, or exposed is genuinely traumatic. It is normal to feel shame, anger, hypervigilance, disturbed sleep, or a persistent low-grade fear of using the internet for weeks or months afterward. Talking about what happened&mdash;with a trusted person, a therapist, or a support line&mdash;is not a sign of weakness. It is part of getting back to normal.</p>
+
+    <div class="callout callout-success">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        The Universal Incident Checklist
+      </div>
+      <ul>
+        <li>Isolate: disconnect, log out, freeze</li>
+        <li>Preserve: screenshot everything before deleting anything</li>
+        <li>Document: write a timeline with names, times, and numbers</li>
+        <li>Notify the money movers first: banks, card issuers, payment apps</li>
+        <li>Change passwords starting with email, then anywhere reusing them</li>
+        <li>Turn on two-factor authentication if it was not already on</li>
+        <li>Report to at least one federal agency and to local police</li>
+        <li>Place a fraud alert or freeze if any identity information was exposed</li>
+        <li>Talk to a trusted person&mdash;do not carry it alone</li>
+        <li>Watch statements and credit for six to twelve months</li>
+      </ul>
+    </div>
+
+    <hr class="article-divider">
+
+    <p>Something happening is not the end of the story. Most incidents can be contained, most damage can be undone or mitigated, and most people who go through this come out the other side more informed and better protected than before. The one thing that consistently makes things worse is silence&mdash;silence with the bank, silence with the platform, silence with family. Speak up early, act in sequence, and give yourself grace for the parts that take time.</p>
+
+  </div>
+</article>
+
+</body>
+</html>

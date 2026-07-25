@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing: The Complete Guide to Detection &amp; Prevention | PCDN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* ── BACK LINK ── */
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; transition: all var(--transition);
+  margin-bottom: 2rem;
+}
+.back-link:hover { gap: 10px; }
+.back-link svg { transition: transform var(--transition); }
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 120px 2rem 6rem;
+}
+
+.article-meta {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.article-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-soft); border: 1px solid var(--border-subtle);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.article-date {
+  font-size: 0.82rem; color: var(--text-muted);
+}
+.article-reading-time {
+  font-size: 0.82rem; color: var(--text-muted);
+}
+
+.article-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  line-height: 1.15; letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+.article-subtitle {
+  color: var(--text-secondary); font-size: 1.1rem;
+  line-height: 1.7; margin-bottom: 2.5rem; max-width: 640px;
+}
+
+.article-divider {
+  border: none; border-top: 1px solid var(--border-subtle);
+  margin: 2rem 0;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2.5rem;
+}
+.toc-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.05rem; margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+.toc ol {
+  list-style: none; counter-reset: toc-counter;
+  padding: 0;
+}
+.toc ol li {
+  counter-increment: toc-counter;
+  margin-bottom: 0.5rem;
+}
+.toc ol li a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.9rem; display: flex; align-items: baseline; gap: 8px;
+  transition: color var(--transition);
+}
+.toc ol li a::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  min-width: 22px;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.6rem; letter-spacing: -0.02em;
+  margin: 3rem 0 1rem; padding-top: 1rem;
+  color: var(--text-primary);
+}
+.article-body h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.2rem; letter-spacing: -0.01em;
+  margin: 2rem 0 0.75rem;
+  color: var(--text-primary);
+}
+.article-body p {
+  color: var(--text-secondary); font-size: 1rem;
+  line-height: 1.8; margin-bottom: 1.25rem;
+}
+.article-body ul, .article-body ol {
+  color: var(--text-secondary); font-size: 1rem;
+  line-height: 1.8; margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.article-body li { margin-bottom: 0.4rem; }
+.article-body strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.callout-title {
+  font-weight: 600; font-size: 0.88rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;
+}
+
+.callout-info {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+}
+.callout-info .callout-title { color: var(--accent); }
+.callout-info p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+
+.callout-danger {
+  background: var(--alert-red-bg);
+  border-left: 3px solid var(--alert-red);
+}
+.callout-danger .callout-title { color: var(--alert-red); }
+.callout-danger p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-danger ul { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; padding-left: 1.25rem; }
+
+.callout-warning {
+  background: var(--alert-amber-bg);
+  border-left: 3px solid var(--alert-amber);
+}
+.callout-warning .callout-title { color: var(--alert-amber); }
+.callout-warning p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+
+.callout-success {
+  background: var(--success-bg);
+  border-left: 3px solid var(--success);
+}
+.callout-success .callout-title { color: var(--success); }
+.callout-success p, .callout-success ul { color: var(--text-secondary); margin-bottom: 0; font-size: 0.95rem; }
+.callout-success ul { padding-left: 1.25rem; margin-top: 0.5rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .article-wrapper { padding: 100px 1.25rem 4rem; }
+  .nav-links { display: none; }
+  .toc { padding: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="article-wrapper">
+
+  <a href="../index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Home
+  </a>
+
+  <div class="article-meta">
+    <span class="article-tag">Threat Guide</span>
+    <span class="article-date">Updated March 2026</span>
+    <span class="article-reading-time">12 min read</span>
+  </div>
+
+  <h1 class="article-title">Phishing: How to Recognize, Avoid, and Respond to the Internet's Most Persistent Threat</h1>
+  <p class="article-subtitle">Phishing remains the number one attack vector used by cybercriminals worldwide. This guide covers every variant, teaches you to spot the warning signs, and explains exactly what to do if you fall victim.</p>
+
+  <hr class="article-divider">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#what-is-phishing">What Is Phishing and Why Is It Dangerous?</a></li>
+      <li><a href="#types">Types of Phishing Attacks</a></li>
+      <li><a href="#identify">How to Identify a Phishing Email</a></li>
+      <li><a href="#real-world">Real-World Phishing Attacks That Made Headlines</a></li>
+      <li><a href="#evolution">How Phishing Has Evolved</a></li>
+      <li><a href="#clicked">What to Do If You Clicked a Phishing Link</a></li>
+      <li><a href="#report">How to Report Phishing</a></li>
+      <li><a href="#best-practices">Best Practices for Staying Safe</a></li>
+    </ol>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <div class="article-body">
+
+    <!-- SECTION 1 -->
+    <h2 id="what-is-phishing">What Is Phishing and Why Is It Dangerous?</h2>
+    <p>Phishing is a form of social engineering in which an attacker impersonates a trusted entity&mdash;a bank, a coworker, a government agency, or a popular online service&mdash;to trick a victim into revealing sensitive information or performing a harmful action. The term is a deliberate misspelling of "fishing," reflecting the idea of baiting a hook and waiting for someone to bite.</p>
+    <p>Unlike many cyberattacks that exploit software vulnerabilities, phishing exploits human psychology. Attackers rely on trust, urgency, fear, and curiosity to bypass even the most advanced technical defenses. A single successful phishing email can lead to stolen credentials, drained bank accounts, ransomware infections, and massive data breaches that affect millions of people.</p>
+    <p>According to industry research, phishing is involved in a significant majority of data breaches across all sectors. The average cost of a successful phishing attack on a mid-sized company runs into millions of dollars when accounting for incident response, legal fees, regulatory fines, and reputational damage. For individuals, phishing can result in identity theft, financial loss, and months of recovery work.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Key Takeaway
+      </div>
+      <p>Phishing does not require technical sophistication. An attacker only needs a convincing message and a single moment of inattention from the target. This simplicity is precisely what makes phishing so dangerous and so persistent.</p>
+    </div>
+
+    <!-- SECTION 2 -->
+    <h2 id="types">Types of Phishing Attacks</h2>
+    <p>Phishing is not a single technique but rather a family of attack methods. Understanding each variant helps you recognize threats regardless of the channel they arrive through.</p>
+
+    <h3>Email Phishing (Bulk Phishing)</h3>
+    <p>This is the most common and widely recognized form. Attackers send massive volumes of emails that impersonate well-known brands or services. These messages typically claim there is an urgent problem with your account&mdash;a suspicious login, an unpaid invoice, a package that cannot be delivered&mdash;and direct you to a fake website designed to harvest your credentials. The scale of these campaigns is enormous: attackers may send hundreds of thousands of identical emails, knowing that even a tiny response rate yields valuable data.</p>
+
+    <h3>Spear Phishing</h3>
+    <p>Spear phishing is a targeted variant in which the attacker researches a specific individual or organization before crafting the message. Instead of a generic "Dear Customer" email, a spear phishing message might reference your actual job title, mention a real project you are working on, or appear to come from your direct manager. Because the message is tailored to the target, spear phishing has a significantly higher success rate than bulk phishing. Attackers often gather the information they need from LinkedIn profiles, corporate websites, and social media posts.</p>
+
+    <h3>Clone Phishing</h3>
+    <p>In a clone phishing attack, the attacker takes a legitimate email that the victim has already received&mdash;such as a shipping notification or a password reset confirmation&mdash;and creates an almost identical copy. The only difference is that the links or attachments in the cloned email point to malicious destinations. Because the victim has already seen and trusted the original message, the cloned version feels familiar and is less likely to trigger suspicion. Attackers sometimes gain access to one compromised email account and then clone messages that were sent within an organization.</p>
+
+    <h3>Whaling</h3>
+    <p>Whaling targets the "big fish"&mdash;senior executives, board members, and other high-value individuals within an organization. These attacks are highly customized and often impersonate legal counsel, regulatory bodies, or fellow executives. A whaling email might claim to be a confidential legal subpoena or a time-sensitive merger document requiring immediate review. Because executives often have broad access to corporate systems and financial accounts, a successful whaling attack can cause catastrophic damage.</p>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v4M8 12h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Danger Zone
+      </div>
+      <p>Spear phishing and whaling are responsible for the vast majority of high-profile corporate breaches. If you hold a leadership position or have access to sensitive systems, you are a prime target. Treat every unexpected email with heightened scrutiny.</p>
+    </div>
+
+    <!-- SECTION 3 -->
+    <h2 id="identify">How to Identify a Phishing Email</h2>
+    <p>Even the most sophisticated phishing emails leave clues. Train yourself to check for these warning signs every time you open an unexpected message:</p>
+
+    <h3>1. Suspicious Sender Address</h3>
+    <p>Look carefully at the "From" address, not just the display name. Attackers often use addresses that are close to legitimate ones but contain subtle differences: a zero instead of the letter "o," a misspelled domain name, or an unexpected subdomain. For example, an email from <strong>support@amaz0n-security.com</strong> is not from Amazon, even if the display name says "Amazon Support."</p>
+
+    <h3>2. Artificial Urgency or Threats</h3>
+    <p>Phishing emails frequently create a sense of panic. Messages that claim your account will be suspended in 24 hours, that you owe an immediate payment, or that unauthorized activity has been detected on your account are designed to override your critical thinking. Legitimate organizations rarely demand immediate action under threat of account closure.</p>
+
+    <h3>3. Spelling and Grammar Errors</h3>
+    <p>While modern phishing emails have become more polished, many still contain awkward phrasing, unusual sentence structures, or outright misspellings. An email from a major corporation that contains grammatical errors should be treated with suspicion. However, be aware that AI-generated phishing emails are increasingly free of these errors.</p>
+
+    <h3>4. Hover Before You Click</h3>
+    <p>Before clicking any link in an email, hover your mouse cursor over it (without clicking) to reveal the actual destination URL. If the displayed text says "Sign in to your account" but the URL points to a domain you do not recognize, do not click it. On mobile devices, you can long-press a link to preview the URL without following it.</p>
+
+    <h3>5. Unexpected Attachments</h3>
+    <p>Be extremely cautious with email attachments you were not expecting, even if they appear to come from someone you know. Malicious attachments can contain macros that execute malware, or they may be disguised as invoices, resumes, or shipping labels. Common dangerous file types include <strong>.exe</strong>, <strong>.zip</strong>, <strong>.docm</strong> (macro-enabled Word documents), and <strong>.js</strong> files.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Remember
+      </div>
+      <p>No single indicator is a definitive proof of phishing. Attackers can get the sender address, grammar, and branding perfectly right. The safest habit is to never click links in emails at all&mdash;instead, navigate directly to the service by typing the URL into your browser.</p>
+    </div>
+
+    <!-- SECTION 4 -->
+    <h2 id="real-world">Real-World Phishing Attacks That Made Headlines</h2>
+    <p>Phishing is not an abstract threat. Some of the largest security incidents in recent history were initiated by a single phishing email.</p>
+
+    <h3>Google Docs Phishing Attack (2017)</h3>
+    <p>In May 2017, a massive phishing campaign spread through Google's own ecosystem. Victims received an email that appeared to be an invitation to view a Google Doc from someone in their contact list. Clicking the link opened a legitimate Google OAuth consent screen that asked the user to grant permissions to a malicious third-party app named "Google Docs." Once permission was granted, the app could read the victim's email and contacts, and it immediately sent the same phishing email to every person in the victim's address book. The attack was self-propagating and spread to millions of users within an hour before Google shut it down. The incident was notable because it used legitimate Google infrastructure, making it nearly impossible to distinguish from a real sharing invitation.</p>
+
+    <h3>Sony Pictures (2014)</h3>
+    <p>The devastating breach of Sony Pictures Entertainment began with spear phishing emails sent to Sony employees. The attackers, later attributed to a state-sponsored group, sent emails that appeared to be from Apple, asking employees to verify their Apple IDs. Once credentials were harvested, the attackers used them to gain access to Sony's internal network. The resulting breach led to the leak of unreleased films, sensitive employee data including salaries and social security numbers, confidential business communications, and internal documents. The total cost of the breach is estimated to have reached tens of millions of dollars, and it caused lasting reputational damage to the company.</p>
+
+    <h3>Twitter Compromise (2020)</h3>
+    <p>In July 2020, attackers compromised the Twitter accounts of major public figures including Barack Obama, Elon Musk, Jeff Bezos, and Apple's corporate account. The attack began with a phone-based spear phishing campaign (sometimes called "vishing") targeting Twitter employees. The attackers called employees, impersonated IT staff, and convinced them to enter their credentials on a fake internal VPN login page. With those credentials, the attackers gained access to Twitter's internal administrative tools, which allowed them to take over any account on the platform. The attackers used the compromised accounts to promote a cryptocurrency scam that collected over $100,000 in Bitcoin within hours.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Key Takeaway
+      </div>
+      <p>Every one of these attacks started with a human being tricked into clicking a link or providing credentials. Technical defenses alone cannot prevent phishing&mdash;security awareness is the critical last line of defense.</p>
+    </div>
+
+    <!-- SECTION 5 -->
+    <h2 id="evolution">How Phishing Has Evolved</h2>
+    <p>Phishing tactics are not static. Attackers continuously adapt to bypass new defenses and exploit new technologies. Here are the most significant recent developments:</p>
+
+    <h3>AI-Generated Phishing Emails</h3>
+    <p>Large language models have dramatically lowered the barrier to creating convincing phishing emails. Attackers can now generate grammatically perfect, contextually appropriate messages in any language in seconds. AI tools can mimic the writing style of specific individuals, making spear phishing more convincing and easier to scale. The era of relying on poor grammar as a phishing indicator is rapidly ending. AI-generated phishing emails can also be personalized at scale, combining publicly available data about targets with fluent, natural-sounding language that is extremely difficult to distinguish from legitimate correspondence.</p>
+
+    <h3>Deepfake Voice Phishing (Vishing)</h3>
+    <p>Voice cloning technology has enabled a new class of phone-based phishing attacks. Attackers can generate a convincing replica of a person's voice using only a few seconds of sample audio, often sourced from public speeches, podcasts, or social media videos. There have been documented cases of attackers using cloned executive voices to authorize fraudulent wire transfers worth hundreds of thousands of dollars. In these attacks, an employee receives a phone call from what sounds exactly like their CEO instructing them to make an urgent payment. The combination of a familiar voice and a plausible business context makes these attacks exceptionally difficult to resist.</p>
+
+    <h3>QR Code Phishing (Quishing)</h3>
+    <p>As organizations have improved their ability to detect malicious links in emails, attackers have turned to QR codes as an evasion technique. In a quishing attack, the phishing email contains a QR code instead of a clickable link. Because most email security filters scan text-based URLs but do not analyze images for embedded QR codes, these messages often bypass automated defenses. The QR code directs the victim's phone to a malicious website. Quishing is particularly effective in corporate environments where employees are accustomed to scanning QR codes for multi-factor authentication setup, Wi-Fi access, or event check-ins.</p>
+
+    <h3>Multi-Channel Phishing</h3>
+    <p>Modern phishing attacks increasingly span multiple communication channels. An attacker might send an initial message via LinkedIn, follow up with an email, and then make a phone call referencing the previous messages to build credibility. This multi-touch approach makes the interaction feel more legitimate because victims are less likely to suspect a coordinated deception across different platforms.</p>
+
+    <div class="callout callout-danger">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v4M8 12h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Emerging Threat
+      </div>
+      <p>AI-powered phishing is not a future concern&mdash;it is happening now. Do not assume a well-written, contextually appropriate email is safe. Verify through a separate communication channel whenever a message asks you to take action on sensitive accounts or transfer money.</p>
+    </div>
+
+    <!-- SECTION 6 -->
+    <h2 id="clicked">What to Do If You Clicked a Phishing Link</h2>
+    <p>If you suspect you have clicked a phishing link or entered your credentials on a fraudulent site, act immediately. Speed is critical in limiting the damage.</p>
+
+    <ol>
+      <li><strong>Disconnect from the internet</strong> if you believe malware may have been downloaded. Disconnecting prevents the malware from communicating with the attacker's servers or spreading across your network.</li>
+      <li><strong>Change your passwords immediately.</strong> Start with the account that was targeted, then change passwords for any other accounts where you use the same or similar credentials. Use a different, trusted device if possible.</li>
+      <li><strong>Enable two-factor authentication</strong> on every account that supports it, if you have not already done so. This adds an additional barrier even if the attacker has your password.</li>
+      <li><strong>Run a full malware scan</strong> using up-to-date antivirus software. If you downloaded or opened an attachment, this step is essential.</li>
+      <li><strong>Check your accounts for unauthorized activity.</strong> Review recent login history, email forwarding rules (attackers often set up rules to forward your email to themselves), and any changes to your account settings.</li>
+      <li><strong>Notify your IT department</strong> if this happened on a work account or device. Enterprise security teams can take steps to contain the breach, such as revoking compromised tokens and monitoring for lateral movement.</li>
+      <li><strong>Monitor your financial accounts</strong> for unauthorized transactions if you entered banking or payment information. Contact your bank to place a fraud alert or freeze your accounts if necessary.</li>
+      <li><strong>Consider a credit freeze</strong> if personal identity information was exposed. Contact the major credit bureaus to prevent attackers from opening new accounts in your name.</li>
+    </ol>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Do Not Panic
+      </div>
+      <p>Clicking a phishing link does not automatically mean you are compromised. Many phishing pages only cause harm if you actually enter credentials or download a file. The critical thing is to act quickly, assess what information may have been exposed, and take the appropriate remediation steps.</p>
+    </div>
+
+    <!-- SECTION 7 -->
+    <h2 id="report">How to Report Phishing</h2>
+    <p>Reporting phishing helps protect others and contributes to the takedown of malicious infrastructure. Here is where and how to report:</p>
+
+    <ul>
+      <li><strong>Forward the phishing email</strong> to <strong>reportphishing@apwg.org</strong>. The Anti-Phishing Working Group (APWG) collects and analyzes phishing reports to coordinate takedowns and inform the security community.</li>
+      <li><strong>Report to the FTC</strong> at <strong>reportfraud.ftc.gov</strong>. The Federal Trade Commission tracks phishing and fraud reports to identify trends and take enforcement action.</li>
+      <li><strong>Report to the impersonated company.</strong> Most major organizations have a dedicated abuse or phishing reporting address (for example, phishing@paypal.com or abuse@google.com). Reporting to the impersonated brand helps them take legal action and warn their users.</li>
+      <li><strong>Use your email client's built-in reporting.</strong> Gmail, Outlook, and other major email providers have a "Report phishing" button that improves their spam filters and helps protect other users on the same platform.</li>
+      <li><strong>Report to your IT security team</strong> if the phishing email was received at work. Security operations teams use these reports to update email filters, block malicious domains, and alert other employees.</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Key Takeaway
+      </div>
+      <p>Do not delete a phishing email before reporting it. The email headers contain technical evidence that investigators and security teams use to trace the source and dismantle phishing infrastructure.</p>
+    </div>
+
+    <!-- SECTION 8 -->
+    <h2 id="best-practices">Best Practices for Staying Safe</h2>
+    <p>Defending against phishing requires a combination of healthy skepticism, good habits, and technical safeguards. Adopt these practices to significantly reduce your risk:</p>
+
+    <h3>Verify the Sender Through a Separate Channel</h3>
+    <p>If you receive an unexpected email asking you to take action&mdash;especially anything involving credentials, payments, or sensitive data&mdash;verify the request by contacting the sender through a different communication channel. Call them directly using a phone number you already have (not one from the email), send a separate message through your company's chat system, or walk over to their desk. This simple step defeats even the most convincing phishing emails.</p>
+
+    <h3>Never Click Links Directly in Emails</h3>
+    <p>Make it a habit to navigate to websites by typing the URL directly into your browser's address bar or using a saved bookmark. If an email claims there is a problem with your bank account, open your banking app or type your bank's URL manually. This completely bypasses any malicious links in the message.</p>
+
+    <h3>Use Advanced Email Filtering</h3>
+    <p>Enable and configure your email provider's anti-phishing protections. Enterprise email solutions from providers like Microsoft and Google offer advanced threat protection that analyzes links, attachments, and sender reputation in real time. For personal accounts, ensure spam filtering is turned on and consider using an email provider known for strong security.</p>
+
+    <h3>Enable Two-Factor Authentication Everywhere</h3>
+    <p>Two-factor authentication (2FA) is one of the single most effective defenses against credential theft. Even if an attacker captures your password through a phishing site, they cannot access your account without the second factor. Use hardware security keys (like YubiKey) or authenticator apps rather than SMS-based 2FA when possible, as SMS codes can be intercepted through SIM-swapping attacks.</p>
+
+    <h3>Keep Software Up to Date</h3>
+    <p>Many phishing attacks deliver malware that exploits known vulnerabilities in browsers, operating systems, and document viewers. Keeping your software updated ensures these vulnerabilities are patched. Enable automatic updates wherever possible.</p>
+
+    <h3>Use a Password Manager</h3>
+    <p>A password manager provides a subtle but powerful defense against phishing. Because password managers autofill credentials based on the exact domain of the website, they will not fill in your password on a phishing page that uses a lookalike domain. If your password manager does not offer to fill your credentials, that is a strong signal that you are not on the legitimate site.</p>
+
+    <div class="callout callout-success">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Your Anti-Phishing Checklist
+      </div>
+      <ul>
+        <li>Always verify unexpected requests through a separate channel</li>
+        <li>Navigate to websites directly instead of clicking email links</li>
+        <li>Enable two-factor authentication on all important accounts</li>
+        <li>Use a password manager to detect lookalike domains</li>
+        <li>Keep all software and systems updated</li>
+        <li>Report phishing emails before deleting them</li>
+        <li>Treat any message creating urgency or fear with extra scrutiny</li>
+        <li>Hover over links to inspect URLs before clicking</li>
+      </ul>
+    </div>
+
+    <hr class="article-divider">
+
+    <p>Phishing will continue to evolve as attackers adopt new technologies and find new ways to exploit human trust. The defenses outlined in this guide&mdash;skepticism toward unexpected messages, verification through separate channels, strong authentication, and prompt reporting&mdash;form a resilient foundation that remains effective regardless of how the attack methods change. Stay informed, stay cautious, and share this knowledge with others. Cybersecurity is a collective effort, and every person who can recognize a phishing attempt makes the entire community safer.</p>
+
+  </div>
+</article>
+
+</body>
+</html>

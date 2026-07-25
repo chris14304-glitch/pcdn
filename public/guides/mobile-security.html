@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Security Guide - Public Cyber Defense Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* -- NAV -- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* -- ARTICLE LAYOUT -- */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.article-header {
+  padding: 7rem 0 3rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.article-header .back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.85rem;
+  font-weight: 500; margin-bottom: 1.5rem; transition: color var(--transition);
+}
+.article-header .back-link:hover { color: var(--text-primary); }
+.article-header .back-link svg { transition: transform var(--transition); }
+.article-header .back-link:hover svg { transform: translateX(-3px); }
+
+.article-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-soft); border: 1px solid var(--border-subtle);
+  border-radius: 100px; padding: 6px 14px 6px 10px;
+  font-size: 0.75rem; font-weight: 500; color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+.article-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+}
+
+.article-header h1 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.15; letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+.article-header h1 em { font-style: italic; color: var(--accent); font-weight: 300; }
+.article-meta {
+  color: var(--text-secondary); font-size: 0.88rem;
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+
+/* -- ARTICLE BODY -- */
+.article-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 3rem;
+  padding: 3rem 0 5rem;
+  align-items: start;
+}
+
+/* -- TABLE OF CONTENTS -- */
+.toc {
+  position: sticky; top: 84px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 1.5rem;
+}
+.toc-title {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 1rem;
+}
+.toc ol {
+  list-style: none; counter-reset: toc-counter;
+}
+.toc ol li { counter-increment: toc-counter; }
+.toc ol li a {
+  display: block; padding: 5px 0;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.82rem; line-height: 1.5;
+  transition: color var(--transition);
+}
+.toc ol li a::before {
+  content: counter(toc-counter, decimal-leading-zero) " ";
+  color: var(--text-muted); font-size: 0.75rem;
+  margin-right: 4px;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* -- CONTENT -- */
+.content h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.55rem; letter-spacing: -0.02em;
+  color: var(--text-primary); margin: 2.5rem 0 1rem;
+  padding-top: 1rem;
+}
+.content h2:first-child { margin-top: 0; }
+.content h3 {
+  font-family: var(--font-body); font-weight: 600;
+  font-size: 1.1rem; color: var(--text-primary);
+  margin: 1.75rem 0 0.75rem;
+}
+.content p {
+  color: var(--text-secondary); margin-bottom: 1rem;
+  font-size: 0.95rem; line-height: 1.8;
+}
+.content ul, .content ol {
+  color: var(--text-secondary); margin: 0.5rem 0 1.25rem 1.25rem;
+  font-size: 0.95rem; line-height: 1.8;
+}
+.content li { margin-bottom: 0.35rem; }
+.content strong { color: var(--text-primary); font-weight: 600; }
+
+/* -- INFO BOXES -- */
+.tip-box, .warning-box {
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.tip-box {
+  background: var(--success-bg);
+  border: 1px solid rgba(74, 186, 138, 0.2);
+  color: var(--text-secondary);
+}
+.tip-box .box-label {
+  font-weight: 600; color: var(--success);
+  font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem;
+}
+.warning-box {
+  background: var(--alert-red-bg);
+  border: 1px solid rgba(232, 85, 85, 0.2);
+  color: var(--text-secondary);
+}
+.warning-box .box-label {
+  font-weight: 600; color: var(--alert-red);
+  font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem;
+}
+.caution-box {
+  background: var(--alert-amber-bg);
+  border: 1px solid rgba(232, 168, 56, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.caution-box .box-label {
+  font-weight: 600; color: var(--alert-amber);
+  font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem;
+}
+
+/* -- FOOTER -- */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 3rem 0;
+  text-align: center;
+}
+footer p {
+  color: var(--text-muted); font-size: 0.82rem;
+}
+footer a {
+  color: var(--accent); text-decoration: none;
+}
+footer a:hover { text-decoration: underline; }
+
+/* -- RESPONSIVE -- */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .article-body {
+    grid-template-columns: 1fr;
+  }
+  .toc {
+    position: static;
+  }
+  .article-header { padding: 6rem 0 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="../index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Home
+    </a>
+    <div class="article-badge">
+      <span class="article-badge-dot"></span>
+      Security Guide
+    </div>
+    <h1>Mobile Security: Protecting Your <em>Digital Life</em> in Your Pocket</h1>
+    <div class="article-meta">
+      <span>Last updated: March 2026</span>
+      <span>Reading time: ~12 min</span>
+      <span>Difficulty: Beginner to Intermediate</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="article-body">
+
+    <!-- TABLE OF CONTENTS -->
+    <aside class="toc">
+      <div class="toc-title">Table of Contents</div>
+      <ol>
+        <li><a href="#why-mobile-security">Why Mobile Security Matters</a></li>
+        <li><a href="#lock-screen">Lock Screen Security</a></li>
+        <li><a href="#app-store-safety">App Store Safety</a></li>
+        <li><a href="#app-permissions">App Permissions</a></li>
+        <li><a href="#os-updates">Operating System Updates</a></li>
+        <li><a href="#mobile-malware">Mobile Malware</a></li>
+        <li><a href="#sim-swapping">SIM Swapping Attacks</a></li>
+        <li><a href="#public-charging">Public Charging Stations</a></li>
+        <li><a href="#bluetooth">Bluetooth Security</a></li>
+        <li><a href="#lost-stolen">Lost or Stolen Phones</a></li>
+        <li><a href="#secure-messaging">Secure Messaging</a></li>
+        <li><a href="#iphone-security">iPhone Security Features</a></li>
+        <li><a href="#android-security">Android Security Features</a></li>
+        <li><a href="#backups">Backing Up Your Phone</a></li>
+      </ol>
+    </aside>
+
+    <!-- ARTICLE CONTENT -->
+    <div class="content">
+
+      <h2 id="why-mobile-security">Why Mobile Security Matters</h2>
+      <p>Your smartphone is the most personal device you own. It contains your email, banking apps, private photos, health data, location history, and direct access to nearly every online account you have. For most people, losing control of their phone would be far more damaging than losing control of their laptop or desktop computer.</p>
+      <p>Attackers know this. Mobile-targeted threats have grown dramatically in recent years as criminals recognize that a compromised phone often grants access to a person's entire digital identity. From financial fraud to identity theft, a single vulnerable mobile device can be the entry point for devastating attacks.</p>
+      <p>The good news is that modern smartphones have robust security features built in. The challenge is making sure you actually use them. This guide walks through every major area of mobile security, with practical steps you can take today to significantly reduce your risk.</p>
+
+      <div class="tip-box">
+        <span class="box-label">Tip</span>
+        Most mobile security improvements take only a few minutes to configure. Set aside 30 minutes to work through this guide and you will dramatically strengthen your phone's defenses.
+      </div>
+
+      <h2 id="lock-screen">Lock Screen Security</h2>
+      <p>Your lock screen is the first and most important barrier between an attacker and your data. A phone without a proper lock screen is essentially an open door.</p>
+
+      <h3>Biometric Authentication</h3>
+      <p>Face ID (on iPhones) and fingerprint sensors (on most Android devices and some iPhones) provide the best combination of security and convenience. Biometrics are difficult to replicate and allow you to unlock your phone quickly, which means you are more likely to keep your phone locked at all times.</p>
+      <p>Always set up biometric authentication as your primary unlock method. Both Face ID and modern fingerprint sensors have extremely low false-positive rates, making them far more secure than most PINs or patterns.</p>
+
+      <h3>PINs vs. Patterns</h3>
+      <p>If biometrics are not available, a strong numeric PIN is your next best option. Use at least six digits, and avoid obvious combinations like 123456, your birth year, or repeated digits. Pattern locks are generally considered weaker than PINs because they leave visible smudge trails on your screen that an observer can trace, and because most people use simple, predictable patterns that start from the top-left corner.</p>
+
+      <h3>Auto-Lock Settings</h3>
+      <p>Configure your phone to lock automatically after a short period of inactivity. A 30-second to one-minute auto-lock timeout is recommended. Anything longer than two minutes creates an unnecessary window during which someone could access your unlocked phone if you set it down or walk away.</p>
+
+      <div class="warning-box">
+        <span class="box-label">Warning</span>
+        Never disable your lock screen entirely, even if it feels inconvenient. An unlocked phone left in a taxi, restaurant, or workplace gives anyone who picks it up full access to your accounts, messages, and personal data.
+      </div>
+
+      <h2 id="app-store-safety">App Store Safety</h2>
+      <p>Where you download your apps matters enormously. The Apple App Store and Google Play Store both have review processes that scan for malicious code, privacy violations, and deceptive behavior. While no review process is perfect, these official stores catch the vast majority of threats before they reach your device.</p>
+
+      <h3>Sideloading Risks</h3>
+      <p>Sideloading means installing apps from sources outside the official app store. On Android, this requires enabling "Install from unknown sources" in your settings. On iOS, it typically involves jailbreaking the device. Both practices bypass critical security protections and expose you to apps that have not been vetted for malware, data theft, or other malicious behavior.</p>
+      <p>Common sideloading traps include pirated versions of paid apps that are bundled with spyware, fake apps that impersonate legitimate services, and apps distributed through phishing links that claim to offer exclusive features or deals.</p>
+
+      <div class="caution-box">
+        <span class="box-label">Caution</span>
+        Even within official app stores, exercise judgment. Check the developer name, read reviews carefully (especially the negative ones), and be suspicious of apps that request far more permissions than their function requires. A flashlight app should not need access to your contacts.
+      </div>
+
+      <h2 id="app-permissions">App Permissions</h2>
+      <p>Every app on your phone can request access to sensitive hardware and data: your camera, microphone, location, contacts, photos, and more. Many apps request permissions they do not genuinely need, either to harvest data for advertising or simply because the developer was not careful about limiting their requests.</p>
+
+      <h3>Reviewing and Limiting Permissions</h3>
+      <p>Both iOS and Android allow you to review and manage permissions on a per-app basis. Get into the habit of checking permissions for any new app you install, and periodically review permissions for apps already on your phone. Key permissions to scrutinize include:</p>
+      <ul>
+        <li><strong>Location:</strong> Does this app genuinely need to know where you are? If so, set it to "While Using the App" rather than "Always."</li>
+        <li><strong>Camera and Microphone:</strong> Only grant these to apps where you actively use photo, video, or audio features. Revoke access for apps that do not need them.</li>
+        <li><strong>Contacts:</strong> Be cautious about granting contact access, as this exposes the personal information of everyone in your address book, not just your own data.</li>
+        <li><strong>Photos and Files:</strong> Consider granting limited access (selecting specific photos) rather than full library access when the option is available.</li>
+      </ul>
+
+      <div class="tip-box">
+        <span class="box-label">Tip</span>
+        On iOS, go to Settings > Privacy & Security to see a breakdown by permission type. On Android, go to Settings > Privacy > Permission Manager. Both make it easy to spot apps with excessive access.
+      </div>
+
+      <h2 id="os-updates">Operating System Updates</h2>
+      <p>Keeping your phone's operating system up to date is one of the single most effective things you can do for your security. Both Apple and Google regularly release security patches that fix vulnerabilities discovered in iOS and Android. These vulnerabilities are actively exploited by attackers, and delaying updates leaves you exposed to known threats.</p>
+      <p>Security patches often address critical flaws that allow attackers to take control of your device remotely, steal data without your knowledge, or bypass your lock screen. When you see an update notification, treat it with urgency. Enable automatic updates if your device supports it, so patches are applied as soon as they are available.</p>
+      <p>Be aware that older phones eventually stop receiving security updates. Apple typically supports iPhones for five to six years. Android support varies by manufacturer, but Google's Pixel phones receive seven years of updates. If your phone no longer receives security patches, it is time to consider upgrading to a supported device.</p>
+
+      <div class="warning-box">
+        <span class="box-label">Warning</span>
+        A phone that no longer receives security updates is a ticking time bomb. Every newly discovered vulnerability remains permanently unpatched, and attackers specifically target older, unsupported devices because they know the holes will never be fixed.
+      </div>
+
+      <h2 id="mobile-malware">Mobile Malware</h2>
+      <p>Mobile malware is malicious software designed to run on smartphones and tablets. While less common than desktop malware (thanks to app store review processes and sandboxing), it is a real and growing threat.</p>
+
+      <h3>Types of Mobile Malware</h3>
+      <ul>
+        <li><strong>Spyware:</strong> Secretly monitors your activity, including calls, messages, location, keystrokes, and screen content. Some advanced spyware can activate your camera and microphone without any visible indication.</li>
+        <li><strong>Adware:</strong> Floods your device with unwanted advertisements, often appearing as pop-ups even when you are not using the offending app. Beyond being annoying, adware can redirect you to malicious websites.</li>
+        <li><strong>Ransomware:</strong> Locks your device or encrypts your data and demands payment for restoration. Mobile ransomware may lock your screen with a fake law enforcement warning or encrypt your photos and files.</li>
+        <li><strong>Banking Trojans:</strong> Specifically designed to intercept banking credentials by overlaying fake login screens on top of legitimate banking apps.</li>
+      </ul>
+
+      <h3>Signs of Infection</h3>
+      <p>Watch for these indicators that your phone may be compromised:</p>
+      <ul>
+        <li><strong>Unusual battery drain:</strong> Malware running in the background consumes significant power. A sudden drop in battery life with no change in your usage habits is a red flag.</li>
+        <li><strong>Unexpected data usage spikes:</strong> Spyware and other malware often transmit large amounts of data to remote servers. Check your data usage breakdown for unfamiliar activity.</li>
+        <li><strong>Random pop-ups and redirects:</strong> Advertisements or browser redirects appearing outside of normal app usage suggest adware infection.</li>
+        <li><strong>Apps you did not install:</strong> Malware sometimes installs additional apps silently. Review your app list for anything unfamiliar.</li>
+        <li><strong>Phone running hot or slow:</strong> Crypto-mining malware and spyware can cause your phone to overheat and perform sluggishly.</li>
+      </ul>
+
+      <h2 id="sim-swapping">SIM Swapping Attacks</h2>
+      <p>SIM swapping is a social engineering attack where a criminal convinces your mobile carrier to transfer your phone number to a SIM card they control. Once they have your number, they can intercept SMS verification codes, reset passwords on your accounts, and bypass two-factor authentication that relies on text messages.</p>
+
+      <h3>How It Works</h3>
+      <p>The attacker typically gathers personal information about you from data breaches, social media, or other sources. They then contact your carrier, impersonate you, and request a SIM transfer or number port. Some attackers bribe or manipulate carrier employees directly. Once the transfer completes, your phone loses service and the attacker receives all calls and texts meant for you.</p>
+
+      <h3>How to Protect Yourself</h3>
+      <ul>
+        <li><strong>Set a SIM PIN or carrier security PIN:</strong> Contact your carrier and set up an additional PIN or passphrase required for any account changes. This makes it harder for an attacker to impersonate you.</li>
+        <li><strong>Enable carrier account security:</strong> Many carriers offer extra protections such as port freeze or number lock features that prevent unauthorized transfers.</li>
+        <li><strong>Use authenticator apps instead of SMS:</strong> Where possible, switch your two-factor authentication from SMS codes to an authenticator app like Google Authenticator, Authy, or a hardware security key. These cannot be intercepted through SIM swapping.</li>
+        <li><strong>Monitor your phone service:</strong> If your phone suddenly shows "No Service" or "Emergency Calls Only" in an area where you normally have signal, contact your carrier immediately. This could indicate a SIM swap in progress.</li>
+      </ul>
+
+      <div class="warning-box">
+        <span class="box-label">Warning</span>
+        SIM swapping attacks have resulted in victims losing access to their email, social media, cryptocurrency wallets, and bank accounts within minutes. If you use SMS for two-factor authentication on any important account, switching to an authenticator app should be a high priority.
+      </div>
+
+      <h2 id="public-charging">Public Charging Stations</h2>
+      <p>Public USB charging stations found in airports, hotels, malls, and conference centers can be a vector for attack. A technique known as "juice jacking" involves modifying a charging station or cable to transfer data as well as power, potentially installing malware on your device or stealing data from it when you plug in.</p>
+
+      <h3>Protecting Yourself</h3>
+      <ul>
+        <li><strong>Carry your own charger and cable:</strong> Plug into a standard electrical outlet whenever possible, rather than using a public USB port.</li>
+        <li><strong>Use a USB data blocker:</strong> These small, inexpensive adapters (sometimes called "USB condoms") sit between the charging cable and the public port, allowing power to flow while physically blocking the data pins.</li>
+        <li><strong>Use a portable battery pack:</strong> A charged power bank eliminates the need for public charging entirely.</li>
+        <li><strong>Watch for trust prompts:</strong> If your phone asks whether to "Trust this computer" when you plug into what should be a simple charger, disconnect immediately. Legitimate chargers do not trigger this prompt.</li>
+      </ul>
+
+      <div class="tip-box">
+        <span class="box-label">Tip</span>
+        A USB data blocker costs only a few dollars and fits on your keychain. It is one of the cheapest and most effective physical security tools you can carry.
+      </div>
+
+      <h2 id="bluetooth">Bluetooth Security</h2>
+      <p>Bluetooth is a convenient short-range wireless technology, but it can also be an attack surface. Vulnerabilities in Bluetooth implementations have been discovered repeatedly over the years, some allowing attackers within range to intercept data, inject commands, or take partial control of a device.</p>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Turn off Bluetooth when not in use:</strong> This eliminates the attack surface entirely. Both iOS and Android make it easy to toggle Bluetooth from the control center or quick settings panel.</li>
+        <li><strong>Pair devices in safe locations:</strong> Bluetooth pairing should be done at home or in a private setting, not in a crowded public space where an attacker could intercept the pairing process.</li>
+        <li><strong>Remove old pairings:</strong> Periodically review your list of paired Bluetooth devices and remove any you no longer use. Old pairings can be exploited if the paired device has been compromised or discarded.</li>
+        <li><strong>Set your device to non-discoverable:</strong> Unless you are actively pairing a new device, keep your phone's Bluetooth in non-discoverable mode so it does not broadcast its presence to nearby devices.</li>
+      </ul>
+
+      <h2 id="lost-stolen">Lost or Stolen Phones</h2>
+      <p>Losing your phone or having it stolen is stressful, but preparing in advance can mean the difference between a minor inconvenience and a major security crisis. Both iOS and Android offer powerful built-in tools for locating, locking, and wiping a missing device.</p>
+
+      <h3>Set Up Before You Need It</h3>
+      <ul>
+        <li><strong>iPhone:</strong> Enable Find My iPhone in Settings > [Your Name] > Find My. Also enable "Send Last Location" so your phone transmits its position when the battery gets critically low.</li>
+        <li><strong>Android:</strong> Enable Find My Device in Settings > Security > Find My Device. Ensure location services are turned on.</li>
+      </ul>
+
+      <h3>What to Do Immediately</h3>
+      <ol>
+        <li><strong>Locate your device:</strong> Use Find My (iCloud.com) or Find My Device (google.com/android/find) from another device to see your phone's location on a map.</li>
+        <li><strong>Lock your device remotely:</strong> Both platforms allow you to remotely lock the phone and display a custom message with a contact number on the lock screen.</li>
+        <li><strong>Remote wipe if necessary:</strong> If you believe the phone will not be recovered, or if it contains highly sensitive information, initiate a remote wipe to erase all data from the device.</li>
+        <li><strong>Change critical passwords:</strong> Immediately change the passwords for your email, banking, and social media accounts. Revoke any sessions that may still be active on the lost device.</li>
+        <li><strong>Contact your carrier:</strong> Report the phone as lost or stolen so they can suspend service and prevent unauthorized use of your number.</li>
+        <li><strong>File a report:</strong> If the phone was stolen, file a police report. This may be required for insurance claims and can help if the device is recovered.</li>
+      </ol>
+
+      <div class="caution-box">
+        <span class="box-label">Caution</span>
+        Remote wipe only works if the phone is powered on and connected to the internet. If a thief turns off the phone or puts it in airplane mode, the wipe command will execute the next time the device comes online. This is why a strong lock screen is your most important immediate protection.
+      </div>
+
+      <h2 id="secure-messaging">Secure Messaging</h2>
+      <p>Not all messaging apps are created equal when it comes to privacy and security. The key distinction is whether an app uses end-to-end encryption (E2EE), which means only you and the recipient can read the messages. Without E2EE, the service provider (and potentially anyone who compromises them) can read your conversations.</p>
+
+      <h3>End-to-End Encrypted Messaging Apps</h3>
+      <ul>
+        <li><strong>Signal:</strong> Widely regarded as the gold standard for secure messaging. Open-source, independently audited, and collects virtually no metadata. Supports text, voice, video, and group chats.</li>
+        <li><strong>iMessage:</strong> Apple's messaging service uses end-to-end encryption for messages between Apple devices. Note that messages sent to non-Apple devices fall back to SMS, which is not encrypted.</li>
+        <li><strong>WhatsApp:</strong> Uses the Signal Protocol for end-to-end encryption. While the message content is encrypted, WhatsApp collects metadata such as who you communicate with and when.</li>
+      </ul>
+
+      <h3>Why SMS Is Not Secure</h3>
+      <p>Standard SMS text messages are transmitted in plain text and can be intercepted by carriers, law enforcement, and attackers. SMS is also vulnerable to SIM swapping attacks as described above. For any sensitive communication, use an end-to-end encrypted messaging app instead of relying on SMS or MMS.</p>
+
+      <div class="tip-box">
+        <span class="box-label">Tip</span>
+        Even if you primarily use iMessage, consider installing Signal as an alternative for communicating with people who do not use Apple devices. It is free, easy to use, and provides the strongest available encryption on both iOS and Android.
+      </div>
+
+      <h2 id="iphone-security">iPhone Security Features</h2>
+      <p>iOS includes several advanced security features that are worth understanding and enabling. Beyond the basics of Face ID and software updates, Apple has introduced tools that give users greater control over their privacy and security.</p>
+
+      <h3>Lockdown Mode</h3>
+      <p>Designed for users who face sophisticated targeted attacks, Lockdown Mode restricts many phone features to reduce the attack surface. It blocks most message attachment types, disables certain web technologies, prevents installation of configuration profiles, and restricts incoming connections. While most users do not need Lockdown Mode, it is an option for journalists, activists, and others who may be targeted by state-sponsored spyware.</p>
+
+      <h3>App Privacy Report</h3>
+      <p>Found in Settings > Privacy & Security > App Privacy Report, this feature shows you which apps have accessed sensitive data (location, photos, camera, microphone, contacts) and when. It also reveals what network domains apps are contacting, helping you spot apps that may be sending data to unexpected tracking or advertising servers.</p>
+
+      <h3>Mail Privacy Protection</h3>
+      <p>When enabled in the Mail app, this feature prevents email senders from using invisible tracking pixels to determine when you opened an email, your IP address, and your approximate location. It works by routing remote content through proxy servers, separating your activity from your identity.</p>
+
+      <h2 id="android-security">Android Security Features</h2>
+      <p>Android has made significant security improvements in recent versions. Google provides several built-in tools to help protect your device and data.</p>
+
+      <h3>Google Play Protect</h3>
+      <p>Play Protect is Android's built-in malware scanner. It automatically scans apps from the Play Store before installation and periodically checks installed apps for malicious behavior. It can also scan apps installed from outside the Play Store. Make sure Play Protect is enabled in the Play Store settings.</p>
+
+      <h3>Security Checkup</h3>
+      <p>Google's Security Checkup (accessible at myaccount.google.com/security-checkup or through your phone's Google account settings) reviews your account security and offers recommendations. It checks for compromised passwords, reviews third-party app access, verifies recovery options, and identifies devices signed into your account.</p>
+
+      <h3>Permissions Manager</h3>
+      <p>Android's Permissions Manager (Settings > Privacy > Permission Manager) lets you see exactly which apps have access to each type of sensitive data. It also supports automatic permission revocation for apps you have not used recently, removing permissions from dormant apps that might otherwise retain unnecessary access to your data.</p>
+
+      <div class="tip-box">
+        <span class="box-label">Tip</span>
+        On Android 12 and later, privacy indicators appear in the status bar whenever an app is using your camera or microphone. A green dot in the top-right corner of the screen means an app is actively accessing these sensors. If this appears when you are not using a camera or voice feature, investigate which app is responsible.
+      </div>
+
+      <h2 id="backups">Backing Up Your Phone</h2>
+      <p>Regular backups ensure that if your phone is lost, stolen, damaged, or compromised, you can recover your data. However, how you back up your phone matters for security.</p>
+
+      <h3>Encrypted Backups</h3>
+      <p>Always ensure your backups are encrypted. On iPhone, iCloud backups can be protected with Advanced Data Protection, which provides end-to-end encryption so that even Apple cannot access your backup data. On Android, Google One backups are encrypted with your device PIN, pattern, or password.</p>
+      <p>If you back up to a computer using iTunes (Windows) or Finder (Mac), make sure to check the "Encrypt local backup" option. Unencrypted local backups can expose passwords, health data, and other sensitive information to anyone with access to the computer.</p>
+
+      <h3>Cloud vs. Local Backups</h3>
+      <ul>
+        <li><strong>Cloud backups</strong> are automatic and convenient. They protect against physical loss of the device. The trade-off is that your data is stored on someone else's servers, so encryption quality matters.</li>
+        <li><strong>Local backups</strong> give you complete control over your data. The trade-off is that you must remember to do them regularly, and if your computer is also compromised or damaged, you could lose both your phone data and your backup.</li>
+      </ul>
+      <p>The best approach for most people is to use encrypted cloud backups for convenience and automatic protection, supplemented by occasional encrypted local backups for an additional layer of safety.</p>
+
+      <div class="warning-box">
+        <span class="box-label">Warning</span>
+        An unencrypted backup is a copy of nearly everything on your phone, stored without protection. If someone gains access to your computer or cloud account, an unencrypted backup gives them your messages, photos, passwords, and more. Always encrypt your backups.
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /article-body -->
+</main>
+
+<footer>
+  <div class="container">
+    <p>
+      <a href="../index.html" class="nav-logo" style="display:inline-flex; margin-bottom:0.75rem;">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+          <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+          <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="nav-logo-text">PCDN</span>
+      </a>
+    </p>
+    <p>Public Cyber Defense Network is an independent, non-commercial cybersecurity awareness initiative.</p>
+    <p style="margin-top: 0.5rem;">No tracking. No cookies. No data collection. Just information.</p>
+  </div>
+</footer>
+
+</body>
+</html>

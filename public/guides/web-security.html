@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Security - Public Cyber Defense Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrapper {
+  max-width: 900px; margin: 0 auto; padding: 100px 2rem 4rem;
+}
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; margin-bottom: 2rem; transition: opacity var(--transition);
+}
+.back-link:hover { opacity: 0.8; }
+.back-link svg { width: 16px; height: 16px; }
+
+.article-meta {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.article-tag {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent);
+  background: var(--accent-soft); padding: 4px 12px; border-radius: 20px;
+}
+.article-date { font-size: 0.85rem; color: var(--text-muted); }
+.article-reading { font-size: 0.85rem; color: var(--text-muted); }
+
+.article-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -0.02em;
+  color: var(--text-primary); margin-bottom: 1rem; line-height: 1.2;
+}
+.article-subtitle {
+  color: var(--text-secondary); font-size: 1.1rem; line-height: 1.7;
+  margin-bottom: 2.5rem; max-width: 700px;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 1.5rem 2rem; margin-bottom: 3rem;
+}
+.toc-title {
+  font-family: var(--font-display); font-weight: 500; font-size: 1.1rem;
+  margin-bottom: 1rem; color: var(--text-primary);
+}
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 0.4rem; }
+.toc-list a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.92rem;
+  transition: color var(--transition); display: flex; align-items: baseline; gap: 8px;
+}
+.toc-list a::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; margin-top: 2px;
+}
+.toc-list a:hover { color: var(--accent); }
+.toc-list .toc-sub { padding-left: 1.2rem; }
+.toc-list .toc-sub a::before { background: var(--text-muted); width: 3px; height: 3px; }
+
+/* ── CONTENT SECTIONS ── */
+.section-heading {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text-primary);
+  margin: 3rem 0 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.section-heading:first-of-type { border-top: none; margin-top: 0; }
+
+.sub-heading {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.2rem; color: var(--text-primary);
+  margin: 2rem 0 0.75rem;
+}
+
+p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.8; }
+strong { color: var(--text-primary); font-weight: 600; }
+
+ul, ol {
+  color: var(--text-secondary); margin: 0 0 1.5rem 1.5rem;
+  font-size: 0.95rem; line-height: 1.8;
+}
+li { margin-bottom: 0.3rem; }
+li strong { color: var(--text-primary); }
+
+/* ── CODE BLOCKS ── */
+.code-block {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); margin: 1.5rem 0; overflow: hidden;
+}
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.6rem 1rem; background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.78rem; color: var(--text-muted); font-weight: 500;
+}
+.code-block pre {
+  padding: 1.2rem 1.5rem; overflow-x: auto; font-size: 0.85rem;
+  line-height: 1.7; color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+.code-block code { color: inherit; }
+.code-comment { color: var(--text-muted); }
+.code-keyword { color: #c792ea; }
+.code-string { color: #c3e88d; }
+.code-function { color: #82aaff; }
+.code-number { color: #f78c6c; }
+
+/* ── INFO BOXES ── */
+.info-box {
+  border-radius: var(--radius-sm); padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0; display: flex; gap: 12px;
+}
+.info-box svg { flex-shrink: 0; margin-top: 2px; }
+.info-box-content { flex: 1; }
+.info-box-content p { margin-bottom: 0.5rem; }
+.info-box-content p:last-child { margin-bottom: 0; }
+.info-box-title { font-weight: 600; color: var(--text-primary); margin-bottom: 0.3rem; font-size: 0.92rem; }
+
+.info-box.info {
+  background: var(--accent-soft); border: 1px solid rgba(91, 141, 239, 0.2);
+}
+.info-box.warning {
+  background: var(--alert-amber-bg); border: 1px solid rgba(232, 168, 56, 0.2);
+}
+.info-box.danger {
+  background: var(--alert-red-bg); border: 1px solid rgba(232, 85, 85, 0.2);
+}
+.info-box.success {
+  background: var(--success-bg); border: 1px solid rgba(74, 186, 138, 0.2);
+}
+
+/* ── RESOURCE CARDS ── */
+.resource-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem; margin: 1.5rem 0;
+}
+.resource-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 1.2rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  text-decoration: none; display: block;
+}
+.resource-card:hover {
+  border-color: var(--border-hover); box-shadow: var(--shadow-card);
+}
+.resource-card-title { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-bottom: 0.4rem; }
+.resource-card-desc { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 2rem; text-align: center; margin-top: 3rem;
+}
+footer p { color: var(--text-muted); font-size: 0.82rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .article-wrapper { padding: 80px 1.2rem 2rem; }
+  .section-heading { font-size: 1.3rem; }
+  .toc { padding: 1.2rem; }
+  .code-block pre { padding: 1rem; font-size: 0.8rem; }
+  .resource-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#tools">Tools</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="article-wrapper">
+
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 12L6 8l4-4"/>
+    </svg>
+    Back to Home
+  </a>
+
+  <div class="article-meta">
+    <span class="article-tag">Guide</span>
+    <span class="article-date">Updated March 2026</span>
+    <span class="article-reading">18 min read</span>
+  </div>
+
+  <h1 class="article-title">Web Security</h1>
+  <p class="article-subtitle">
+    A comprehensive guide to securing web applications, from fundamental principles and the OWASP Top 10 to encryption, authentication, and modern defense strategies that protect both developers and end users.
+  </p>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol class="toc-list">
+      <li><a href="#introduction">Introduction: Why Web Security Matters</a></li>
+      <li><a href="#owasp-top-10">OWASP Top 10 Overview</a>
+        <ol class="toc-list toc-sub">
+          <li><a href="#injection">Injection Attacks</a></li>
+          <li><a href="#broken-auth">Broken Authentication</a></li>
+          <li><a href="#data-exposure">Sensitive Data Exposure</a></li>
+          <li><a href="#xxe">XML External Entities (XXE)</a></li>
+          <li><a href="#access-control">Broken Access Control</a></li>
+          <li><a href="#misconfig">Security Misconfiguration</a></li>
+          <li><a href="#xss">Cross-Site Scripting (XSS)</a></li>
+          <li><a href="#deserialization">Insecure Deserialization</a></li>
+          <li><a href="#vulnerable-components">Using Components with Known Vulnerabilities</a></li>
+          <li><a href="#logging">Insufficient Logging and Monitoring</a></li>
+        </ol>
+      </li>
+      <li><a href="#https-tls">HTTPS and TLS/SSL</a></li>
+      <li><a href="#security-headers">Security Headers</a></li>
+      <li><a href="#authentication">Authentication Best Practices</a></li>
+      <li><a href="#cors">CORS: Cross-Origin Resource Sharing</a></li>
+      <li><a href="#csp">Content Security Policy in Depth</a></li>
+      <li><a href="#api-security">API Security</a></li>
+      <li><a href="#supply-chain">Supply Chain Attacks</a></li>
+      <li><a href="#waf">Web Application Firewalls</a></li>
+      <li><a href="#scanning-tools">Security Scanning Tools</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ol>
+  </div>
+
+  <!-- INTRODUCTION -->
+  <h2 class="section-heading" id="introduction">Introduction: Why Web Security Matters</h2>
+
+  <p>Web security encompasses the practices, technologies, and strategies used to protect websites, web applications, and web services from threats and attacks. In an era where businesses, governments, and individuals depend on web-based systems for everything from banking to healthcare, the stakes of getting security wrong have never been higher.</p>
+
+  <p>For <strong>developers</strong>, web security is a professional responsibility. A single vulnerability in your application can expose millions of user records, lead to devastating financial losses, and destroy the trust your organization has built over years. For <strong>users</strong>, understanding web security helps you recognize phishing attempts, evaluate whether a site is trustworthy, and take proactive steps to protect your own data.</p>
+
+  <div class="info-box info">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#5b8def" stroke-width="1.5"/><path d="M10 9v5M10 6.5v.01" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">Key Principle</div>
+      <p>Security is not a feature you bolt on at the end. It must be integrated into every phase of the software development lifecycle -- from architecture design and code review to deployment and ongoing monitoring.</p>
+    </div>
+  </div>
+
+  <p>The threat landscape evolves constantly. Attackers use automated tools to scan millions of websites for known weaknesses, and new vulnerability classes emerge as web technologies advance. Staying informed and following established security frameworks is the most effective defense.</p>
+
+  <!-- OWASP TOP 10 -->
+  <h2 class="section-heading" id="owasp-top-10">OWASP Top 10 Overview</h2>
+
+  <p>The <strong>Open Web Application Security Project (OWASP)</strong> maintains a regularly updated list of the ten most critical web application security risks. This list serves as a standard awareness document and a starting point for securing your applications. Below is an overview of each category.</p>
+
+  <h3 class="sub-heading" id="injection">1. Injection Attacks</h3>
+
+  <p>Injection flaws occur when an attacker sends untrusted data to an interpreter as part of a command or query. The most well-known form is <strong>SQL injection</strong>, where malicious SQL statements are inserted into input fields to manipulate the database. <strong>Command injection</strong> similarly allows attackers to execute arbitrary operating system commands on the server.</p>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>SQL Injection Example (Vulnerable)</span><span>SQL</span></div>
+    <pre><code><span class="code-comment">-- User input: ' OR '1'='1' --</span>
+<span class="code-keyword">SELECT</span> * <span class="code-keyword">FROM</span> users
+<span class="code-keyword">WHERE</span> username = <span class="code-string">''</span> <span class="code-keyword">OR</span> <span class="code-string">'1'</span>=<span class="code-string">'1'</span> <span class="code-comment">--'</span>
+<span class="code-keyword">AND</span> password = <span class="code-string">'anything'</span>;
+
+<span class="code-comment">-- This bypasses authentication entirely</span></code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>Parameterized Query (Safe)</span><span>JavaScript</span></div>
+    <pre><code><span class="code-comment">// Always use parameterized queries to prevent injection</span>
+<span class="code-keyword">const</span> result = <span class="code-keyword">await</span> db.<span class="code-function">query</span>(
+  <span class="code-string">'SELECT * FROM users WHERE username = $1 AND password = $2'</span>,
+  [username, hashedPassword]
+);</code></pre>
+  </div>
+
+  <p>The primary defense against injection is to <strong>never trust user input</strong>. Use parameterized queries (prepared statements), input validation, and stored procedures. Employ the principle of least privilege for your database accounts so that even a successful injection limits the damage an attacker can do.</p>
+
+  <h3 class="sub-heading" id="broken-auth">2. Broken Authentication</h3>
+
+  <p>Broken authentication vulnerabilities allow attackers to compromise passwords, session tokens, or authentication keys to assume the identity of other users. Common weaknesses include permitting brute-force attacks, using default credentials, poor session management, and exposing session IDs in URLs.</p>
+
+  <p>Mitigation strategies include implementing multi-factor authentication (MFA), enforcing strong password policies, using secure session management with proper timeout and invalidation, and rate-limiting login attempts to prevent credential stuffing.</p>
+
+  <h3 class="sub-heading" id="data-exposure">3. Sensitive Data Exposure</h3>
+
+  <p>When applications fail to adequately protect sensitive data such as financial records, healthcare information, or personal identifiers, attackers can steal or modify that data. This category covers failures like transmitting data in cleartext, using weak cryptographic algorithms, or storing passwords without hashing.</p>
+
+  <div class="info-box warning">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L1 18h18L10 2z" stroke="#e8a838" stroke-width="1.5" fill="none"/><path d="M10 8v4M10 14v.01" stroke="#e8a838" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">Common Mistake</div>
+      <p>Never store passwords in plaintext or use weak hashing algorithms like MD5 or SHA-1. Always use purpose-built password hashing functions such as bcrypt or Argon2, which include salting and configurable work factors.</p>
+    </div>
+  </div>
+
+  <h3 class="sub-heading" id="xxe">4. XML External Entities (XXE)</h3>
+
+  <p>XXE attacks target applications that parse XML input. Attackers can exploit vulnerable XML processors to read internal files on the server, perform server-side request forgery (SSRF), execute remote code, or launch denial-of-service attacks. The root cause is that many older XML parsers allow the declaration of external entities by default.</p>
+
+  <p>The fix is straightforward: disable external entity processing in your XML parser configuration, use less complex data formats like JSON where possible, and validate and sanitize all XML input against a strict schema.</p>
+
+  <h3 class="sub-heading" id="access-control">5. Broken Access Control</h3>
+
+  <p>Access control enforces policies so users cannot act outside their intended permissions. When these controls fail, attackers can access other users' accounts, view sensitive files, modify access rights, or elevate privileges. Common examples include insecure direct object references (IDOR), missing function-level access checks, and metadata manipulation (such as tampering with JWT tokens).</p>
+
+  <p>Enforce access control on the server side, deny by default, implement role-based access control (RBAC), log access control failures, and rate-limit API access to minimize automated abuse.</p>
+
+  <h3 class="sub-heading" id="misconfig">6. Security Misconfiguration</h3>
+
+  <p>This is the most commonly encountered issue. It happens when security settings are not defined, implemented, or maintained properly. Examples include leaving default accounts active, exposing stack traces or verbose error messages, leaving unnecessary services or ports open, and failing to set appropriate security headers.</p>
+
+  <p>Regular hardening processes, automated configuration audits, removing unused features and frameworks, and maintaining a repeatable deployment process are all essential to preventing misconfigurations.</p>
+
+  <h3 class="sub-heading" id="xss">7. Cross-Site Scripting (XSS)</h3>
+
+  <p>XSS flaws occur when an application includes untrusted data in a web page without proper validation or escaping, allowing attackers to execute scripts in the victim's browser. There are three main types: <strong>Stored XSS</strong> (malicious script is permanently saved on the target server), <strong>Reflected XSS</strong> (script is reflected off the server in error messages or search results), and <strong>DOM-based XSS</strong> (the vulnerability exists in client-side code).</p>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>XSS Prevention</span><span>JavaScript</span></div>
+    <pre><code><span class="code-comment">// DANGEROUS: Directly inserting user input into DOM</span>
+element.<span class="code-function">innerHTML</span> = userInput;
+
+<span class="code-comment">// SAFE: Use textContent to prevent script execution</span>
+element.<span class="code-function">textContent</span> = userInput;
+
+<span class="code-comment">// SAFE: Use a sanitization library for rich content</span>
+<span class="code-keyword">import</span> DOMPurify <span class="code-keyword">from</span> <span class="code-string">'dompurify'</span>;
+element.<span class="code-function">innerHTML</span> = DOMPurify.<span class="code-function">sanitize</span>(userInput);</code></pre>
+  </div>
+
+  <h3 class="sub-heading" id="deserialization">8. Insecure Deserialization</h3>
+
+  <p>Insecure deserialization often leads to remote code execution. Even when it does not result in code execution, it can be used for replay attacks, injection attacks, and privilege escalation. Applications that deserialize data from untrusted sources without validation are at risk. Avoid accepting serialized objects from untrusted sources, implement integrity checks, enforce strict type constraints, and isolate deserialization code in low-privilege environments.</p>
+
+  <h3 class="sub-heading" id="vulnerable-components">9. Using Components with Known Vulnerabilities</h3>
+
+  <p>Modern applications rely heavily on open-source libraries and frameworks. If any component in your stack has a known vulnerability, attackers can exploit it. This is especially dangerous because automated scanners make it trivial to discover which libraries a site uses and whether they are outdated.</p>
+
+  <p>Maintain an inventory of all client-side and server-side dependencies, continuously monitor sources like the <strong>National Vulnerability Database (NVD)</strong> for alerts, and apply patches promptly. Use tools like <code>npm audit</code>, Dependabot, or Snyk to automate vulnerability detection.</p>
+
+  <h3 class="sub-heading" id="logging">10. Insufficient Logging and Monitoring</h3>
+
+  <p>Without adequate logging and monitoring, breaches go undetected. Studies show the average time to detect a breach often exceeds 200 days. Ensure that all login attempts, access control failures, and server-side input validation failures are logged with sufficient context. Establish effective monitoring and alerting so that suspicious activities are detected and responded to in a timely fashion. Build or adopt an incident response and recovery plan.</p>
+
+  <!-- HTTPS AND TLS -->
+  <h2 class="section-heading" id="https-tls">HTTPS and TLS/SSL</h2>
+
+  <p><strong>HTTPS</strong> (HTTP Secure) uses <strong>TLS</strong> (Transport Layer Security) to encrypt the communication between a user's browser and the web server. TLS is the successor to SSL, which is now deprecated. When you visit a site over HTTPS, three things happen: the server proves its identity via a certificate issued by a trusted <strong>Certificate Authority (CA)</strong>, a symmetric encryption key is negotiated via a handshake, and all subsequent data is encrypted in transit.</p>
+
+  <p>Without HTTPS, any data sent between the browser and server can be intercepted and read by anyone on the network path, including login credentials, personal data, and session cookies. Modern browsers flag HTTP sites as "Not Secure" to warn users.</p>
+
+  <div class="info-box danger">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#e85555" stroke-width="1.5"/><path d="M10 6v5M10 13.5v.01" stroke="#e85555" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">Mixed Content Warnings</div>
+      <p>If your HTTPS page loads resources (scripts, images, stylesheets) over plain HTTP, browsers will block or warn about "mixed content." This undermines the security of HTTPS because those unencrypted resources can be tampered with by an attacker. Always ensure all resources are loaded over HTTPS.</p>
+    </div>
+  </div>
+
+  <p>Free certificate authorities like <strong>Let's Encrypt</strong> have made HTTPS accessible to everyone. There is no longer a valid reason to serve any website over plain HTTP. Configure your server to redirect all HTTP traffic to HTTPS and enable <strong>HSTS</strong> (HTTP Strict-Transport-Security) to ensure browsers always use the secure connection.</p>
+
+  <!-- SECURITY HEADERS -->
+  <h2 class="section-heading" id="security-headers">Security Headers</h2>
+
+  <p>HTTP security headers instruct the browser to enable (or restrict) certain behaviors, providing a critical layer of defense. Here are the most important ones to configure:</p>
+
+  <ul>
+    <li><strong>Content-Security-Policy (CSP)</strong> -- Defines approved sources for content, preventing XSS and data injection attacks. This is the single most powerful header for mitigating client-side attacks.</li>
+    <li><strong>Strict-Transport-Security (HSTS)</strong> -- Forces browsers to only use HTTPS for your domain, preventing protocol downgrade attacks and cookie hijacking.</li>
+    <li><strong>X-Frame-Options</strong> -- Prevents your site from being embedded in iframes, defending against clickjacking attacks. Values: <code>DENY</code> or <code>SAMEORIGIN</code>.</li>
+    <li><strong>X-Content-Type-Options</strong> -- Set to <code>nosniff</code> to prevent browsers from MIME-sniffing a response away from the declared content type, blocking certain attack vectors.</li>
+    <li><strong>Referrer-Policy</strong> -- Controls how much referrer information is sent with requests. Use <code>strict-origin-when-cross-origin</code> or <code>no-referrer</code> to minimize data leakage.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>Recommended Security Headers</span><span>HTTP</span></div>
+    <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()</code></pre>
+  </div>
+
+  <!-- AUTHENTICATION -->
+  <h2 class="section-heading" id="authentication">Authentication Best Practices</h2>
+
+  <p>Authentication is the process of verifying that someone is who they claim to be. Getting it right is critical because a broken authentication system can give attackers unrestricted access to your entire application.</p>
+
+  <h3 class="sub-heading">Password Hashing</h3>
+
+  <p>Passwords must never be stored in plaintext. Instead, use a <strong>slow, salted hashing algorithm</strong> designed specifically for passwords. The two recommended choices are:</p>
+
+  <ul>
+    <li><strong>bcrypt</strong> -- A well-established algorithm that includes a configurable cost factor. Widely supported across all languages and platforms.</li>
+    <li><strong>Argon2</strong> -- The winner of the Password Hashing Competition. Provides memory-hard hashing that resists GPU-based brute force attacks. Recommended for new projects.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>Password Hashing with bcrypt</span><span>JavaScript (Node.js)</span></div>
+    <pre><code><span class="code-keyword">const</span> bcrypt = <span class="code-function">require</span>(<span class="code-string">'bcrypt'</span>);
+<span class="code-keyword">const</span> SALT_ROUNDS = <span class="code-number">12</span>;
+
+<span class="code-comment">// Hashing a password</span>
+<span class="code-keyword">const</span> hash = <span class="code-keyword">await</span> bcrypt.<span class="code-function">hash</span>(plaintextPassword, SALT_ROUNDS);
+
+<span class="code-comment">// Verifying a password</span>
+<span class="code-keyword">const</span> isMatch = <span class="code-keyword">await</span> bcrypt.<span class="code-function">compare</span>(plaintextPassword, storedHash);</code></pre>
+  </div>
+
+  <h3 class="sub-heading">Session Management</h3>
+
+  <p>Sessions track authenticated users across requests. Best practices include generating cryptographically random session IDs, setting the <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code> flags on session cookies, implementing idle and absolute timeouts, regenerating the session ID after login to prevent session fixation, and invalidating sessions on logout.</p>
+
+  <h3 class="sub-heading">OAuth and OpenID Connect</h3>
+
+  <p><strong>OAuth 2.0</strong> is an authorization framework that allows third-party applications to access a user's resources without exposing their credentials. <strong>OpenID Connect (OIDC)</strong> is an identity layer built on top of OAuth 2.0 that provides authentication. Together, they power the "Sign in with Google/GitHub/etc." flows that are both more secure and more convenient than managing passwords yourself. When implementing OAuth, always validate redirect URIs, use the <code>state</code> parameter to prevent CSRF, and store tokens securely.</p>
+
+  <!-- CORS -->
+  <h2 class="section-heading" id="cors">CORS: Cross-Origin Resource Sharing</h2>
+
+  <p><strong>CORS</strong> is a browser security mechanism that restricts how a web page from one origin can request resources from a different origin. Without CORS, the <strong>same-origin policy</strong> would block all cross-origin requests, which is secure but overly restrictive for modern web applications that rely on APIs hosted on different domains.</p>
+
+  <p>The server indicates which origins are permitted via the <code>Access-Control-Allow-Origin</code> header. Common misconfigurations include setting this header to <code>*</code> (allowing any origin) while also allowing credentials, reflecting the requesting origin without validation, or exposing sensitive headers unnecessarily.</p>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>Secure CORS Configuration</span><span>JavaScript (Express)</span></div>
+    <pre><code><span class="code-keyword">const</span> cors = <span class="code-function">require</span>(<span class="code-string">'cors'</span>);
+
+<span class="code-keyword">const</span> allowedOrigins = [
+  <span class="code-string">'https://app.example.com'</span>,
+  <span class="code-string">'https://admin.example.com'</span>
+];
+
+app.<span class="code-function">use</span>(<span class="code-function">cors</span>({
+  origin: <span class="code-keyword">function</span>(origin, callback) {
+    <span class="code-keyword">if</span> (!origin || allowedOrigins.<span class="code-function">includes</span>(origin)) {
+      <span class="code-function">callback</span>(<span class="code-keyword">null</span>, <span class="code-keyword">true</span>);
+    } <span class="code-keyword">else</span> {
+      <span class="code-function">callback</span>(<span class="code-keyword">new</span> <span class="code-function">Error</span>(<span class="code-string">'Not allowed by CORS'</span>));
+    }
+  },
+  credentials: <span class="code-keyword">true</span>,
+  methods: [<span class="code-string">'GET'</span>, <span class="code-string">'POST'</span>, <span class="code-string">'PUT'</span>, <span class="code-string">'DELETE'</span>],
+  allowedHeaders: [<span class="code-string">'Content-Type'</span>, <span class="code-string">'Authorization'</span>]
+}));</code></pre>
+  </div>
+
+  <!-- CSP IN DEPTH -->
+  <h2 class="section-heading" id="csp">Content Security Policy in Depth</h2>
+
+  <p><strong>Content Security Policy (CSP)</strong> is the most effective client-side defense against XSS and data injection attacks. It works by specifying exactly which sources of content the browser should trust for each resource type. Any content that does not match the policy is blocked.</p>
+
+  <p>A CSP is delivered via the <code>Content-Security-Policy</code> HTTP header. Key directives include:</p>
+
+  <ul>
+    <li><strong>default-src</strong> -- Fallback for all resource types not explicitly specified.</li>
+    <li><strong>script-src</strong> -- Controls where JavaScript can be loaded from. Avoid <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code> whenever possible.</li>
+    <li><strong>style-src</strong> -- Controls stylesheet sources. Use nonces or hashes instead of <code>'unsafe-inline'</code> for maximum security.</li>
+    <li><strong>img-src</strong>, <strong>font-src</strong>, <strong>connect-src</strong> -- Control images, fonts, and fetch/XHR endpoints respectively.</li>
+    <li><strong>frame-ancestors</strong> -- Modern replacement for X-Frame-Options; controls who can embed your page.</li>
+    <li><strong>report-uri / report-to</strong> -- Sends violation reports to a specified endpoint for monitoring.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>CSP with Nonces</span><span>HTTP + HTML</span></div>
+    <pre><code><span class="code-comment">// HTTP Header (server generates unique nonce per request)</span>
+Content-Security-Policy: script-src <span class="code-string">'nonce-abc123def456'</span>;
+
+<span class="code-comment">&lt;!-- HTML: Only scripts with the matching nonce will execute --&gt;</span>
+&lt;script <span class="code-function">nonce</span>=<span class="code-string">"abc123def456"</span>&gt;
+  <span class="code-comment">// This script runs</span>
+&lt;/script&gt;
+
+&lt;script&gt;
+  <span class="code-comment">// This script is BLOCKED (no nonce)</span>
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <div class="info-box success">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#4aba8a" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#4aba8a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">CSP Tip</div>
+      <p>Start with a report-only policy (<code>Content-Security-Policy-Report-Only</code>) to discover what your application loads before enforcing. This lets you build a tight policy without accidentally breaking functionality.</p>
+    </div>
+  </div>
+
+  <!-- API SECURITY -->
+  <h2 class="section-heading" id="api-security">API Security</h2>
+
+  <p>APIs are the backbone of modern web applications and present a large attack surface. Securing them requires a layered approach covering authentication, authorization, input validation, and abuse prevention.</p>
+
+  <ul>
+    <li><strong>Authentication tokens</strong> -- Use short-lived JWTs or opaque tokens. Store tokens in <code>HttpOnly</code> cookies rather than <code>localStorage</code> to prevent XSS-based theft. Implement token refresh mechanisms to minimize the impact of compromised tokens.</li>
+    <li><strong>Rate limiting</strong> -- Protect against brute-force attacks and abuse by limiting the number of requests per client per time window. Use token bucket or sliding window algorithms. Return <code>429 Too Many Requests</code> with a <code>Retry-After</code> header.</li>
+    <li><strong>Input validation</strong> -- Validate all input on the server side regardless of client-side validation. Use schema validation libraries (like Joi, Zod, or JSON Schema) to enforce types, ranges, lengths, and formats. Reject unexpected fields.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-block-header"><span>Rate Limiting Middleware</span><span>JavaScript (Express)</span></div>
+    <pre><code><span class="code-keyword">const</span> rateLimit = <span class="code-function">require</span>(<span class="code-string">'express-rate-limit'</span>);
+
+<span class="code-keyword">const</span> apiLimiter = <span class="code-function">rateLimit</span>({
+  windowMs: <span class="code-number">15</span> * <span class="code-number">60</span> * <span class="code-number">1000</span>, <span class="code-comment">// 15 minutes</span>
+  max: <span class="code-number">100</span>,                       <span class="code-comment">// 100 requests per window</span>
+  standardHeaders: <span class="code-keyword">true</span>,
+  legacyHeaders: <span class="code-keyword">false</span>,
+  message: { error: <span class="code-string">'Too many requests, please try again later.'</span> }
+});
+
+app.<span class="code-function">use</span>(<span class="code-string">'/api/'</span>, apiLimiter);</code></pre>
+  </div>
+
+  <!-- SUPPLY CHAIN -->
+  <h2 class="section-heading" id="supply-chain">Supply Chain Attacks</h2>
+
+  <p>Supply chain attacks target the software dependencies and build tools that applications rely on, rather than the application itself. These attacks are particularly insidious because developers implicitly trust the packages they install.</p>
+
+  <p>Key attack vectors include:</p>
+
+  <ul>
+    <li><strong>Compromised npm packages</strong> -- An attacker gains access to a maintainer's account (via credential theft or social engineering) and publishes a malicious version of a popular package. All downstream projects that update to the new version are compromised.</li>
+    <li><strong>Typosquatting</strong> -- Attackers publish packages with names very similar to popular ones (e.g., <code>lodahs</code> instead of <code>lodash</code>). Developers who make a typo during installation unknowingly install malware.</li>
+    <li><strong>Dependency confusion</strong> -- Attackers publish a public package with the same name as an internal private package but with a higher version number. Build systems configured to check public registries first will pull the malicious public version.</li>
+  </ul>
+
+  <div class="info-box warning">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L1 18h18L10 2z" stroke="#e8a838" stroke-width="1.5" fill="none"/><path d="M10 8v4M10 14v.01" stroke="#e8a838" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">Defense Measures</div>
+      <p>Use lockfiles (<code>package-lock.json</code>, <code>yarn.lock</code>) to pin dependency versions. Run <code>npm audit</code> regularly. Consider using tools like Socket.dev that analyze package behavior, not just known CVEs. Scope your private packages to an organization and configure your registry properly to prevent dependency confusion.</p>
+    </div>
+  </div>
+
+  <!-- WAF -->
+  <h2 class="section-heading" id="waf">Web Application Firewalls (WAF)</h2>
+
+  <p>A <strong>Web Application Firewall</strong> sits between users and your web server, inspecting HTTP traffic and blocking malicious requests before they reach your application. WAFs use a combination of signature-based detection (matching known attack patterns), anomaly detection (flagging unusual traffic), and configurable rules to filter threats.</p>
+
+  <p>A WAF can help defend against common attacks like SQL injection, XSS, file inclusion, and DDoS (distributed denial of service). However, a WAF is not a substitute for secure coding practices. It is a <strong>defense-in-depth</strong> layer -- an additional safety net that catches attacks that slip through other controls. Popular WAF solutions include AWS WAF, Cloudflare WAF, and ModSecurity (open source).</p>
+
+  <p>When configuring a WAF, start in monitoring mode to learn your application's normal traffic patterns before enabling blocking rules. Regularly review and update rulesets, and avoid overly permissive rules that provide a false sense of security.</p>
+
+  <!-- SCANNING TOOLS -->
+  <h2 class="section-heading" id="scanning-tools">Security Scanning Tools</h2>
+
+  <p>Security testing should be an ongoing part of your development process, not a one-time event. Automated scanning tools help identify vulnerabilities before attackers do.</p>
+
+  <ul>
+    <li><strong>OWASP ZAP (Zed Attack Proxy)</strong> -- A free, open-source penetration testing tool for finding vulnerabilities in web applications. It can perform automated scans, intercept and modify requests, and fuzz inputs. Ideal for integration into CI/CD pipelines.</li>
+    <li><strong>Burp Suite</strong> -- A comprehensive platform for web application security testing. The Professional edition includes an advanced scanner, an intruder tool for automated attacks, and a repeater for manual testing. Widely used by security professionals.</li>
+    <li><strong>Static analyzers (SAST)</strong> -- Tools like Semgrep, SonarQube, and CodeQL analyze source code for security vulnerabilities without executing it. They catch issues early in the development process, including hardcoded secrets, insecure patterns, and injection vulnerabilities.</li>
+    <li><strong>Dynamic analyzers (DAST)</strong> -- Tools that test running applications by sending crafted requests and analyzing responses. OWASP ZAP and Burp Suite fall into this category.</li>
+    <li><strong>Software Composition Analysis (SCA)</strong> -- Tools like Snyk, Dependabot, and npm audit scan your dependencies for known vulnerabilities and license compliance issues.</li>
+  </ul>
+
+  <div class="info-box info">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#5b8def" stroke-width="1.5"/><path d="M10 9v5M10 6.5v.01" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <div class="info-box-content">
+      <div class="info-box-title">Shift Left</div>
+      <p>Integrate security scanning into your CI/CD pipeline so that every pull request is automatically checked for vulnerabilities. This "shift left" approach catches issues early when they are cheapest to fix and prevents insecure code from reaching production.</p>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <h2 class="section-heading" id="resources">Resources</h2>
+
+  <p>Continue your web security education with these trusted resources:</p>
+
+  <div class="resource-grid">
+    <a href="https://owasp.org" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">OWASP.org</div>
+      <div class="resource-card-desc">The Open Web Application Security Project. Home of the OWASP Top 10, testing guides, cheat sheets, and an extensive library of security resources.</div>
+    </a>
+    <a href="https://securityheaders.com" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">SecurityHeaders.com</div>
+      <div class="resource-card-desc">Analyze the HTTP security headers of any website and receive a grade with actionable recommendations for improvement.</div>
+    </a>
+    <a href="https://www.zaproxy.org" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">OWASP ZAP</div>
+      <div class="resource-card-desc">Free, open-source web application security scanner. An essential tool for developers and penetration testers alike.</div>
+    </a>
+    <a href="https://portswigger.net/burp" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">Burp Suite</div>
+      <div class="resource-card-desc">Industry-standard platform for web security testing with both free Community and paid Professional editions.</div>
+    </a>
+    <a href="https://cheatsheetseries.owasp.org" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">OWASP Cheat Sheets</div>
+      <div class="resource-card-desc">Concise, practical guidance on specific security topics. Covers everything from authentication to cryptographic storage.</div>
+    </a>
+    <a href="https://snyk.io" class="resource-card" target="_blank" rel="noopener noreferrer">
+      <div class="resource-card-title">Snyk</div>
+      <div class="resource-card-desc">Developer-first security platform for finding and fixing vulnerabilities in code, dependencies, containers, and infrastructure.</div>
+    </a>
+  </div>
+
+</article>
+
+<footer>
+  <p>Public Cyber Defense Network &copy; 2026. Educational content for a safer internet.</p>
+</footer>
+
+</body>
+</html>

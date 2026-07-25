@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Scams &mdash; Public Cyber Defense Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrapper {
+  max-width: 820px; margin: 0 auto; padding: 0 2rem;
+  padding-top: 100px; padding-bottom: 5rem;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; margin-bottom: 2rem; transition: opacity var(--transition);
+}
+.back-link:hover { opacity: 0.8; }
+.back-link svg { width: 16px; height: 16px; }
+
+.article-header { margin-bottom: 3rem; }
+.article-category {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.75rem; display: block;
+}
+.article-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -0.03em;
+  line-height: 1.15; margin-bottom: 1rem;
+}
+.article-meta {
+  color: var(--text-muted); font-size: 0.85rem; display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-title {
+  font-family: var(--font-display); font-weight: 500; font-size: 1.1rem;
+  margin-bottom: 1rem; color: var(--text-primary);
+}
+.toc ol {
+  list-style: none; counter-reset: toc-counter; padding: 0;
+}
+.toc li {
+  counter-increment: toc-counter; margin-bottom: 0.5rem;
+}
+.toc li::before {
+  content: counter(toc-counter) ".";
+  color: var(--accent); font-weight: 600; margin-right: 0.5rem; font-size: 0.85rem;
+}
+.toc a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.92rem;
+  transition: color var(--transition);
+}
+.toc a:hover { color: var(--accent); }
+
+/* ── CONTENT ── */
+.article-body h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.55rem; letter-spacing: -0.02em;
+  margin-top: 3rem; margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.article-body h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.15rem; margin-top: 2rem; margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+.article-body p {
+  color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.98rem; line-height: 1.8;
+}
+.article-body ul, .article-body ol {
+  color: var(--text-secondary); margin-bottom: 1.25rem; padding-left: 1.5rem; font-size: 0.95rem;
+}
+.article-body li { margin-bottom: 0.4rem; line-height: 1.7; }
+.article-body strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── WARNING / INFO BOXES ── */
+.warning-box {
+  background: var(--alert-red-bg); border: 1px solid rgba(232, 85, 85, 0.2);
+  border-left: 4px solid var(--alert-red);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.warning-box .box-label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--alert-red); margin-bottom: 0.4rem;
+}
+.warning-box p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.92rem; }
+
+.info-box {
+  background: var(--accent-soft); border: 1px solid rgba(91, 141, 239, 0.15);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.info-box .box-label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.4rem;
+}
+.info-box p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.92rem; }
+
+.amber-box {
+  background: var(--alert-amber-bg); border: 1px solid rgba(232, 168, 56, 0.15);
+  border-left: 4px solid var(--alert-amber);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.amber-box .box-label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--alert-amber); margin-bottom: 0.4rem;
+}
+.amber-box p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.92rem; }
+
+/* ── STAT CARDS ── */
+.stat-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem; margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 1.25rem; text-align: center;
+}
+.stat-card .stat-number {
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+  color: var(--accent); margin-bottom: 0.25rem;
+}
+.stat-card .stat-desc {
+  font-size: 0.8rem; color: var(--text-muted);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 3rem 2rem; text-align: center;
+  color: var(--text-muted); font-size: 0.82rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .article-wrapper { padding-top: 80px; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .stat-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="#5b8def" stroke-width="1.5" opacity="0.5"/>
+        <path d="M14 6 L14 22 M8 10 Q14 4 20 10 M8 18 Q14 24 20 18" stroke="#5b8def" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="article-wrapper">
+
+  <!-- BACK LINK -->
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12 L6 8 L10 4"/></svg>
+    Back to Home
+  </a>
+
+  <!-- HEADER -->
+  <header class="article-header">
+    <span class="article-category">In-Depth Guide</span>
+    <h1 class="article-title">Understanding Scams: How They Work and How to Stay Safe</h1>
+    <div class="article-meta">
+      <span>Published by PCDN</span>
+      <span>25 min read</span>
+      <span>Last updated March 2026</span>
+    </div>
+  </header>
+
+  <!-- STATS ROW -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-number">$10B+</div>
+      <div class="stat-desc">Lost to scams in the US in 2023 (FTC)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2.6M</div>
+      <div class="stat-desc">Fraud reports filed with the FTC in 2023</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">$1.3B</div>
+      <div class="stat-desc">Lost to romance scams alone in 2022</div>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#psychology">The Psychology of Scams</a></li>
+      <li><a href="#classic">Classic Scams That Never Die</a></li>
+      <li><a href="#phone">Phone Scams</a></li>
+      <li><a href="#shopping">Online Shopping Scams</a></li>
+      <li><a href="#romance">Romance Scams</a></li>
+      <li><a href="#crypto">Cryptocurrency Scams</a></li>
+      <li><a href="#job">Job and Employment Scams</a></li>
+      <li><a href="#emerging">New and Emerging Scams</a></li>
+      <li><a href="#giftcard">Gift Card Scams</a></li>
+      <li><a href="#realestate">Real Estate and Rental Scams</a></li>
+      <li><a href="#verify">How to Verify and Research</a></li>
+      <li><a href="#scammed">What to Do If You Have Been Scammed</a></li>
+      <li><a href="#vulnerable">Protecting Vulnerable People</a></li>
+    </ol>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <div class="article-body">
+
+    <!-- 1. PSYCHOLOGY -->
+    <h2 id="psychology">1. The Psychology of Scams</h2>
+    <p>Scams work because they exploit fundamental aspects of human psychology, not because victims are foolish or careless. Understanding these mechanics is the single most effective defense against fraud.</p>
+
+    <h3>Urgency and time pressure</h3>
+    <p>Scammers almost always impose artificial deadlines. Phrases like "act now or lose your account," "this offer expires in 10 minutes," or "you'll be arrested today" are designed to short-circuit your rational thinking. When people feel rushed, they skip the verification steps that would expose the fraud.</p>
+
+    <h3>Fear and authority</h3>
+    <p>Impersonating authority figures&mdash;the IRS, law enforcement, a bank's fraud department&mdash;triggers a fear response that overrides skepticism. Victims comply because the perceived cost of not complying (arrest, account closure, legal trouble) feels greater than the cost of following instructions.</p>
+
+    <h3>Greed and opportunity</h3>
+    <p>The promise of easy money, an unbelievable deal, or a secret investment opportunity activates the same reward circuitry that makes gambling addictive. Victims often recognize something feels off but convince themselves the opportunity is too good to pass up.</p>
+
+    <h3>Trust and social proof</h3>
+    <p>Scammers build trust through familiarity: spoofed phone numbers, cloned websites, fake reviews, and hijacked social media accounts of friends. When a message appears to come from someone or something you already trust, your guard drops.</p>
+
+    <h3>Isolation and shame</h3>
+    <p>Many scams deliberately isolate the victim. Romance scammers tell victims not to discuss the relationship with family. Investment scammers frame secrecy as exclusivity. Once a victim has invested money or emotion, shame prevents them from seeking outside perspective.</p>
+
+    <div class="info-box">
+      <div class="box-label">Key Insight</div>
+      <p>Anyone can be scammed. Research consistently shows that intelligence, education level, and income have little correlation with scam vulnerability. The common thread among victims is simply that a scam arrived at the right moment, targeting the right emotion.</p>
+    </div>
+
+    <!-- 2. CLASSIC SCAMS -->
+    <h2 id="classic">2. Classic Scams That Never Die</h2>
+    <p>Some fraud schemes have been running for decades or even centuries. They persist because they work.</p>
+
+    <h3>Nigerian prince / 419 scams</h3>
+    <p>Named after the section of the Nigerian criminal code that addresses fraud, 419 scams involve a stranger offering you a share of a large sum of money in exchange for a small upfront payment. The story may involve a foreign dignitary, a locked inheritance, or trapped funds. Each payment you make is followed by a request for another "small fee" to clear the next obstacle. These scams have migrated from fax machines to email to social media DMs, but the core formula remains identical.</p>
+
+    <h3>Lottery and sweepstakes scams</h3>
+    <p>You receive a notification that you have won a lottery or prize drawing you never entered. To claim your winnings, you must pay taxes, processing fees, or customs charges upfront. Legitimate lotteries never require winners to pay fees to collect prizes, and you cannot win a contest you did not enter.</p>
+
+    <h3>Chain letters and pyramid schemes</h3>
+    <p>Whether distributed by mail in the 1980s or via WhatsApp groups today, chain letters promise that sending money to the person at the top of a list will result in large returns when your name reaches the top. Pyramid schemes follow the same math: they require infinite growth to sustain payouts, meaning the vast majority of participants inevitably lose money.</p>
+
+    <h3>Ponzi schemes</h3>
+    <p>A Ponzi scheme pays existing investors with money from new investors rather than from actual profits. Returns appear real and consistent, which encourages victims to invest more and recruit others. These schemes collapse when new investment slows or when enough people try to withdraw simultaneously. The most infamous example defrauded investors of approximately $65 billion.</p>
+
+    <h3>Advance-fee fraud</h3>
+    <p>This is the umbrella category for any scheme requiring upfront payment to access a promised benefit. Variations include fake loan approvals (pay a "processing fee"), rental deposits for apartments that don't exist, and upfront payments for services never delivered. The common element: once you pay, the scammer vanishes.</p>
+
+    <!-- 3. PHONE SCAMS -->
+    <h2 id="phone">3. Phone Scams</h2>
+    <p>Phone-based fraud remains extremely effective because a live voice creates a sense of immediacy and authority that email cannot match. Caller ID spoofing makes these calls appear to come from legitimate numbers.</p>
+
+    <h3>IRS and tax agency impersonation</h3>
+    <p>Callers claim you owe back taxes and face immediate arrest if you do not pay right now via gift cards or wire transfer. The real IRS initiates contact through postal mail, never by phone, and never demands immediate payment by unusual methods.</p>
+
+    <h3>Tech support scams</h3>
+    <p>A caller (or a pop-up on your screen) claims your computer has been compromised and offers to fix it if you grant remote access. Once connected, the scammer may install actual malware, steal banking credentials, or charge hundreds of dollars for fake repairs. Legitimate tech companies do not make unsolicited calls about your computer's security.</p>
+
+    <h3>"Can you hear me?" scams</h3>
+    <p>The caller asks a simple question designed to get you to say "yes," which may be recorded and used to authorize fraudulent charges. While the real-world prevalence of this specific tactic is debated, the broader principle is sound: be cautious about what you confirm to unknown callers.</p>
+
+    <h3>Warrant and arrest threats</h3>
+    <p>Callers impersonate law enforcement, claiming there is a warrant for your arrest due to missed jury duty, unpaid fines, or identity theft involving your Social Security number. They demand immediate payment to resolve the issue. Real law enforcement does not call to collect payments over the phone.</p>
+
+    <div class="warning-box">
+      <div class="box-label">Warning</div>
+      <p>If you receive a threatening call from someone claiming to be a government agency, hang up. Look up the agency's official phone number independently and call them directly to verify.</p>
+    </div>
+
+    <!-- 4. ONLINE SHOPPING -->
+    <h2 id="shopping">4. Online Shopping Scams</h2>
+    <p>E-commerce fraud accelerated dramatically during and after the pandemic. The FTC reports that online shopping scams are consistently among the most reported fraud categories.</p>
+
+    <h3>Fake retail websites</h3>
+    <p>Scammers create convincing replicas of popular stores or invent entirely new brands with professional-looking sites. These sites often appear in social media ads promoting deep discounts. Red flags include recently registered domains, missing contact information, prices that are 70-90% below retail, and no social media presence.</p>
+
+    <h3>Too-good-to-be-true deals</h3>
+    <p>Whether on fake sites or even on legitimate marketplaces, dramatically underpriced items are a hallmark of fraud. If a product typically sells for $300 and someone lists it for $40, the listing is almost certainly a scam, a counterfeit, or a bait-and-switch.</p>
+
+    <h3>Counterfeit goods</h3>
+    <p>Some scam sellers do ship products, but the items are cheap counterfeits. This is especially common with electronics, designer clothing, and cosmetics. Counterfeit electronics can be genuinely dangerous, with documented cases of battery fires and electrical failures.</p>
+
+    <h3>Non-delivery scams</h3>
+    <p>After payment, the seller provides a fake tracking number, stops responding to messages, and never ships anything. On peer-to-peer platforms, scammers may ask to move the transaction off-platform (to avoid buyer protections) before disappearing with payment.</p>
+
+    <div class="amber-box">
+      <div class="box-label">Shopping Safety Tip</div>
+      <p>Always pay with a credit card when shopping online. Credit cards offer chargeback protections that debit cards, wire transfers, and payment apps typically do not. If a seller insists on payment via gift cards, cryptocurrency, or wire transfer, walk away.</p>
+    </div>
+
+    <!-- 5. ROMANCE SCAMS -->
+    <h2 id="romance">5. Romance Scams</h2>
+    <p>Romance scams are among the most financially and emotionally devastating forms of fraud. Victims lost over $1.3 billion to romance scams in 2022 alone according to the FTC, with individual losses frequently reaching tens or hundreds of thousands of dollars.</p>
+
+    <h3>How they work</h3>
+    <p>Scammers create attractive fake profiles on dating apps, social media, or even dating-adjacent platforms like Words With Friends. They invest weeks or months building emotional intimacy, exchanging messages daily, sharing fabricated personal stories, and creating a sense of deep connection. The fake persona is often a military member, oil rig worker, doctor, or overseas professional&mdash;any role that explains why they cannot meet in person.</p>
+
+    <h3>The ask</h3>
+    <p>Once trust is established, a crisis emerges: a medical emergency, a travel problem, a business setback, legal trouble. The scammer needs money, but frames it as a temporary loan or an investment in the couple's shared future. Victims often send multiple payments over months or years before recognizing the pattern.</p>
+
+    <h3>Pig butchering scams</h3>
+    <p>A particularly cruel variant that blends romance scams with investment fraud. The term comes from the concept of "fattening the pig before slaughter." The scammer builds a romantic relationship, then introduces the victim to a fake investment platform (typically cryptocurrency). The victim sees fabricated returns, invests more, and eventually tries to withdraw&mdash;only to discover the platform and the relationship were both fake. Losses in pig butchering schemes routinely exceed six figures.</p>
+
+    <div class="warning-box">
+      <div class="box-label">Red Flags</div>
+      <p>A person you have never met in person asks for money, refuses video calls, claims to be overseas, has a profile with only a few professional-looking photos, and their story has a romantic-movie quality. Reverse image search their profile photos&mdash;scammers overwhelmingly use stolen images.</p>
+    </div>
+
+    <!-- 6. CRYPTO SCAMS -->
+    <h2 id="crypto">6. Cryptocurrency Scams</h2>
+    <p>Cryptocurrency's combination of complexity, hype, and irreversible transactions makes it an ideal environment for fraud. The FTC reported that crypto was the most common payment method in investment scam losses.</p>
+
+    <h3>Fake exchanges and wallets</h3>
+    <p>Scam platforms mimic legitimate exchanges, complete with real-time charts and professional interfaces. Victims deposit cryptocurrency and may even see fabricated "gains." When they attempt to withdraw, they are asked to pay fees, taxes, or verification charges. The funds are already gone.</p>
+
+    <h3>Rug pulls</h3>
+    <p>Developers create a new token, generate hype through social media and influencer promotion, wait for the price to rise as buyers flood in, then suddenly withdraw all liquidity and abandon the project. The token's value crashes to zero and investors lose everything.</p>
+
+    <h3>Pump and dump</h3>
+    <p>Organized groups coordinate to buy a low-value token, artificially inflate its price through misleading social media posts and manufactured urgency, then sell their holdings at the peak. Latecomers who bought during the hype are left holding worthless tokens.</p>
+
+    <h3>Recovery scams</h3>
+    <p>After someone loses money to a crypto scam, they may search online for help recovering their funds. This search leads them to "recovery specialists" who are themselves scammers. They charge upfront fees, request access to wallets, and steal whatever remains. This double victimization is increasingly common.</p>
+
+    <div class="warning-box">
+      <div class="box-label">Critical Warning</div>
+      <p>No legitimate service can guarantee recovery of stolen cryptocurrency. Anyone who claims they can recover your crypto for an upfront fee is running a recovery scam. Report the original theft to the FBI's IC3 instead.</p>
+    </div>
+
+    <!-- 7. JOB SCAMS -->
+    <h2 id="job">7. Job and Employment Scams</h2>
+    <p>Job scams exploit people during one of their most vulnerable moments: when they need income. These schemes increased dramatically with the rise of remote work.</p>
+
+    <h3>Fake remote job offers</h3>
+    <p>Victims receive unsolicited offers for high-paying, flexible remote positions. The "employer" conducts a brief interview over text or messaging app (never video), then extends an offer. Before starting, the victim must purchase equipment, pay for training, or provide banking information for "direct deposit setup." The job never materializes.</p>
+
+    <h3>Check overpayment scams</h3>
+    <p>A new "employer" sends a check for more than the agreed amount and asks the employee to deposit it and wire the excess back. The check is fraudulent and eventually bounces, but the wired funds are gone. Victims are responsible for the full amount of the bad check.</p>
+
+    <h3>Reshipping mules</h3>
+    <p>Victims are hired to receive packages at home and reship them to another address. In reality, the packages contain goods purchased with stolen credit cards, and the "employee" is unknowingly serving as a money mule. This can result in criminal liability for the victim.</p>
+
+    <div class="info-box">
+      <div class="box-label">Job Scam Red Flags</div>
+      <p>The job was never posted publicly. The interview was conducted entirely by text. The pay is unusually high for minimal qualifications. You are asked to pay for anything upfront. The company cannot be verified through independent research.</p>
+    </div>
+
+    <!-- 8. EMERGING SCAMS -->
+    <h2 id="emerging">8. New and Emerging Scams</h2>
+    <p>Scam tactics evolve constantly. Here are the newest and fastest-growing schemes to watch for.</p>
+
+    <h3>AI-generated deepfake video calls</h3>
+    <p>Advances in artificial intelligence now allow scammers to create real-time video that mimics the appearance and voice of a known person. There have been documented cases of employees transferring large sums after receiving video calls that appeared to be from their CEO. Family emergency scams have also evolved, with scammers using AI voice cloning to impersonate a relative in distress.</p>
+
+    <h3>QR code scams (quishing)</h3>
+    <p>Fraudulent QR codes are placed over legitimate ones on parking meters, restaurant menus, and public signs. Scanning them redirects victims to phishing sites that harvest credentials or install malware. QR codes in phishing emails bypass many traditional email security filters because the malicious URL is embedded in an image rather than as clickable text.</p>
+
+    <h3>Social media impersonation</h3>
+    <p>Scammers clone existing social media profiles and send friend requests to the original account's connections. Once accepted, they use the trusted relationship to solicit money or personal information. Verified check marks, once a signal of legitimacy, have become less reliable on some platforms.</p>
+
+    <h3>Fake customer support on Twitter/X</h3>
+    <p>When users publicly complain about a company on social media, scam accounts posing as that company's support team reply within minutes. They direct victims to phishing sites or ask for account credentials under the guise of troubleshooting. These fake accounts often have nearly identical usernames and profile images.</p>
+
+    <h3>Brushing scams</h3>
+    <p>You receive packages you never ordered, typically containing cheap items like seeds, jewelry, or small electronics. The sender has your name and address and is using your identity to post fake verified purchase reviews on e-commerce platforms. While the immediate harm is low, it indicates your personal information has been compromised.</p>
+
+    <h3>Wrong number text scams</h3>
+    <p>A friendly text message arrives claiming to be for someone else. If you reply to correct them, the scammer engages in conversation, gradually building rapport before steering toward a romance scam or investment fraud. The "wrong number" was never an accident.</p>
+
+    <!-- 9. GIFT CARD SCAMS -->
+    <h2 id="giftcard">9. Gift Card Scams</h2>
+    <p>Gift cards have become one of the most common payment methods demanded by scammers. In 2023, the FTC reported that gift cards were the number one payment method in reported fraud cases.</p>
+
+    <h3>Why scammers prefer gift cards</h3>
+    <p>Gift cards are essentially untraceable cash. Once you read the card numbers to a scammer, they can drain the balance instantly from anywhere in the world. Unlike bank transfers or credit card payments, gift card transactions cannot be reversed or charged back. They can be quickly converted to cash or cryptocurrency through resale networks.</p>
+
+    <h3>How the pressure works</h3>
+    <p>The scammer creates a scenario where you must pay immediately using gift cards: back taxes owed to the IRS, bail for a family member, a utility bill about to result in disconnection. They instruct you to buy specific cards (Apple, Google Play, Amazon, Target), scratch off the back, and read the numbers over the phone. They may keep you on the line the entire time to prevent you from seeking outside advice.</p>
+
+    <div class="warning-box">
+      <div class="box-label">Absolute Rule</div>
+      <p>No legitimate business, government agency, or law enforcement entity will ever ask you to pay with gift cards. This is true 100% of the time, with zero exceptions. Any request to pay with gift cards is a scam.</p>
+    </div>
+
+    <!-- 10. REAL ESTATE SCAMS -->
+    <h2 id="realestate">10. Real Estate and Rental Scams</h2>
+    <p>With high housing costs and competitive markets, real estate fraud targets people who are desperate to secure housing or close on a home.</p>
+
+    <h3>Fake rental listings</h3>
+    <p>Scammers copy photos and descriptions from legitimate rental listings, post them at slightly below-market prices, and collect applications and deposits from multiple victims. Common signs include a landlord who is "out of the country," pressure to pay before seeing the property in person, and requests for deposits via wire transfer or payment apps.</p>
+
+    <h3>Wire fraud in home closings</h3>
+    <p>This is one of the highest-dollar scams in existence. Criminals compromise the email of a real estate agent, title company, or attorney, then send the home buyer altered wire instructions at closing. The buyer wires their down payment or entire purchase price to the scammer's account. Losses typically range from $50,000 to over $500,000 and are rarely recovered.</p>
+
+    <div class="amber-box">
+      <div class="box-label">Home Buying Safety</div>
+      <p>Always verify wire transfer instructions by calling your title company or closing attorney at a phone number you obtained independently&mdash;never from the email containing the wire instructions. One phone call can prevent a six-figure loss.</p>
+    </div>
+
+    <!-- 11. VERIFICATION -->
+    <h2 id="verify">11. How to Verify and Research</h2>
+    <p>Before engaging with any offer, opportunity, or request for money, take these verification steps.</p>
+
+    <ul>
+      <li><strong>Search the company or person's name + "scam"</strong> &mdash; A simple web search often reveals warnings from other victims.</li>
+      <li><strong>Check the Better Business Bureau (BBB)</strong> &mdash; Look up the business at bbb.org. Check for complaints, rating, and how long the business has been operating.</li>
+      <li><strong>Use scam databases</strong> &mdash; The FTC's Consumer Sentinel, AARP's Scam Tracking Map, and ScamAdviser.com maintain searchable records of known scams.</li>
+      <li><strong>Reverse image search</strong> &mdash; Upload profile photos to Google Images or TinEye. Scammers overwhelmingly use stolen photos that appear elsewhere online.</li>
+      <li><strong>Verify contact information independently</strong> &mdash; Do not use phone numbers or links provided in the suspicious communication. Look up the organization's real contact information through their official website or directory listing.</li>
+      <li><strong>Check domain registration</strong> &mdash; Use WHOIS lookup tools to see when a website was registered. Scam sites are typically days or weeks old.</li>
+      <li><strong>Ask someone you trust</strong> &mdash; Simply describing the situation to a friend, family member, or colleague out loud often makes red flags obvious that were invisible when you were emotionally engaged.</li>
+    </ul>
+
+    <!-- 12. IF SCAMMED -->
+    <h2 id="scammed">12. What to Do If You Have Been Scammed</h2>
+    <p>Act quickly. Speed matters for any chance of recovering funds or limiting further damage.</p>
+
+    <ol>
+      <li><strong>Contact your bank or credit card company immediately.</strong> Report unauthorized transactions. Request a fraud hold on your accounts. If you wired money, contact the receiving bank as well&mdash;wire transfers can sometimes be intercepted if reported within hours.</li>
+      <li><strong>Change your passwords.</strong> If you shared login credentials or a scammer had access to your device, change passwords for all financial accounts, email, and any account using the same password.</li>
+      <li><strong>File a report with the FTC</strong> at ReportFraud.ftc.gov. This feeds into a database used by thousands of law enforcement agencies.</li>
+      <li><strong>Report to the FBI's IC3</strong> (Internet Crime Complaint Center) at ic3.gov, especially for internet-based scams involving significant losses.</li>
+      <li><strong>File a local police report.</strong> While local police may have limited ability to investigate, the report creates an official record that can help with insurance claims, bank disputes, and other recovery efforts.</li>
+      <li><strong>Place a fraud alert or credit freeze</strong> with the three major credit bureaus (Equifax, Experian, TransUnion) if your Social Security number or identity information was compromised.</li>
+      <li><strong>Document everything.</strong> Save emails, text messages, screenshots, phone numbers, transaction records, and any other evidence. Do not delete communications with the scammer.</li>
+    </ol>
+
+    <div class="info-box">
+      <div class="box-label">Important</div>
+      <p>Do not feel ashamed. Scam victims include doctors, engineers, lawyers, law enforcement officers, and cybersecurity professionals. Reporting helps protect others and increases the chance of the scammer being identified.</p>
+    </div>
+
+    <!-- 13. VULNERABLE PEOPLE -->
+    <h2 id="vulnerable">13. Protecting Vulnerable People</h2>
+    <p>Certain groups are disproportionately targeted by scammers. Proactive protection can make a significant difference.</p>
+
+    <h3>Elderly family members</h3>
+    <p>Adults over 60 lost more than $3.4 billion to fraud in 2023 according to the FBI. Seniors are targeted because they often have savings, may be less familiar with digital technology, and are more likely to answer phone calls from unknown numbers. Steps to help include:</p>
+    <ul>
+      <li>Have regular, non-judgmental conversations about common scams.</li>
+      <li>Set up call-blocking apps and services on their phone.</li>
+      <li>Establish a rule: always call a trusted family member before sending money to anyone for any reason.</li>
+      <li>Help them add two-factor authentication to important accounts.</li>
+      <li>If they use a computer, install an ad blocker to reduce exposure to scam ads and pop-ups.</li>
+    </ul>
+
+    <h3>Children and teenagers</h3>
+    <p>Young people are increasingly targeted through gaming platforms, social media, and messaging apps. Scams targeting minors include fake giveaways, sextortion (threatening to share intimate images), and account theft. Teach children that:</p>
+    <ul>
+      <li>No legitimate company or person will ever ask for their password.</li>
+      <li>If someone online threatens them, they should tell a trusted adult immediately.</li>
+      <li>Free offers that require personal information are not actually free.</li>
+      <li>Online friends who ask for money or gift cards are not real friends.</li>
+    </ul>
+
+    <h3>People in crisis</h3>
+    <p>Individuals facing financial hardship, health emergencies, grief, or loneliness are especially vulnerable. Scammers specifically target these groups with fake loan offers, miracle cures, bereavement scams, and romance fraud. If someone you know is going through a difficult time, check in with them about any unusual financial requests they may have received.</p>
+
+    <div class="amber-box">
+      <div class="box-label">Community Defense</div>
+      <p>The most effective anti-scam tool is a social network where people feel comfortable saying "someone contacted me about this&mdash;does it seem legitimate?" Reducing shame around being targeted by scams is a community-level defense that protects everyone.</p>
+    </div>
+
+  </div><!-- /article-body -->
+
+</article>
+
+<footer>
+  <p>&copy; 2026 Public Cyber Defense Network. Educational resource for public cyber safety awareness.</p>
+</footer>
+
+</body>
+</html>

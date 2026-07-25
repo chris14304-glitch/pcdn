@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Privacy Guide - Public Cyber Defense Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 120px 2rem 4rem;
+}
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; margin-bottom: 2rem; transition: opacity var(--transition);
+}
+.back-link:hover { opacity: 0.8; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* ── ARTICLE HEADER ── */
+.article-header { margin-bottom: 3rem; }
+.article-category {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 1rem; display: block;
+}
+.article-header h1 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.2;
+  letter-spacing: -0.03em; margin-bottom: 1rem;
+}
+.article-meta {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  font-size: 0.82rem; color: var(--text-muted);
+}
+.article-meta span { display: flex; align-items: center; gap: 5px; }
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.1rem; margin-bottom: 1rem; letter-spacing: -0.01em;
+}
+.toc ol {
+  list-style: none; counter-reset: toc-counter;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.toc ol li { counter-increment: toc-counter; }
+.toc ol li a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;
+  display: flex; align-items: baseline; gap: 0.5rem;
+  padding: 4px 0; transition: color var(--transition);
+}
+.toc ol li a::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  color: var(--text-muted); font-size: 0.75rem; font-weight: 600;
+  min-width: 22px;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* ── ARTICLE CONTENT ── */
+.article-content h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.55rem; letter-spacing: -0.02em;
+  margin: 3rem 0 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.article-content h2:first-of-type { border-top: none; padding-top: 0; }
+
+.article-content h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.2rem; letter-spacing: -0.01em;
+  margin: 2rem 0 0.75rem;
+}
+
+.article-content p {
+  color: var(--text-secondary); font-size: 0.95rem;
+  line-height: 1.85; margin-bottom: 1.25rem;
+}
+
+.article-content ul, .article-content ol {
+  color: var(--text-secondary); font-size: 0.95rem;
+  line-height: 1.85; margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.article-content li { margin-bottom: 0.4rem; }
+.article-content li strong { color: var(--text-primary); }
+
+.article-content a {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(91,141,239,0.3);
+  transition: border-color var(--transition);
+}
+.article-content a:hover { border-color: var(--accent); }
+
+/* ── TIP BOX ── */
+.tip-box {
+  background: var(--success-bg); border: 1px solid rgba(74, 186, 138, 0.2);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start;
+}
+.tip-box .box-icon {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(74, 186, 138, 0.15); display: flex;
+  align-items: center; justify-content: center; color: var(--success);
+  font-size: 0.9rem; font-weight: 700;
+}
+.tip-box .box-content h4 {
+  font-size: 0.88rem; font-weight: 600; color: var(--success); margin-bottom: 0.35rem;
+}
+.tip-box .box-content p {
+  font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0;
+}
+
+/* ── WARNING BOX ── */
+.warning-box {
+  background: var(--alert-amber-bg); border: 1px solid rgba(232, 168, 56, 0.2);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start;
+}
+.warning-box .box-icon {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(232, 168, 56, 0.15); display: flex;
+  align-items: center; justify-content: center; color: var(--alert-amber);
+  font-size: 0.9rem; font-weight: 700;
+}
+.warning-box .box-content h4 {
+  font-size: 0.88rem; font-weight: 600; color: var(--alert-amber); margin-bottom: 0.35rem;
+}
+.warning-box .box-content p {
+  font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0;
+}
+
+/* ── DANGER BOX ── */
+.danger-box {
+  background: var(--alert-red-bg); border: 1px solid rgba(232, 85, 85, 0.2);
+  border-radius: var(--radius-sm); padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0; display: flex; gap: 1rem; align-items: flex-start;
+}
+.danger-box .box-icon {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(232, 85, 85, 0.15); display: flex;
+  align-items: center; justify-content: center; color: var(--alert-red);
+  font-size: 0.9rem; font-weight: 700;
+}
+.danger-box .box-content h4 {
+  font-size: 0.88rem; font-weight: 600; color: var(--alert-red); margin-bottom: 0.35rem;
+}
+.danger-box .box-content p {
+  font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0;
+}
+
+/* ── CHECKLIST ── */
+.checklist {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 1.75rem 2rem; margin: 2rem 0;
+}
+.checklist h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.15rem; margin-bottom: 1rem;
+}
+.checklist ul { list-style: none; padding: 0; }
+.checklist li {
+  padding: 0.5rem 0; border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary); font-size: 0.9rem;
+  display: flex; align-items: baseline; gap: 0.75rem;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '';
+  flex-shrink: 0; width: 18px; height: 18px;
+  border: 1.5px solid var(--accent); border-radius: 4px;
+  display: inline-block; position: relative; top: 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 3rem 0 2rem; margin-top: 3rem;
+}
+.footer-inner {
+  max-width: 820px; margin: 0 auto; padding: 0 2rem;
+  text-align: center;
+}
+.footer-inner p {
+  font-size: 0.78rem; color: var(--text-muted); line-height: 1.8;
+}
+.footer-inner a {
+  color: var(--text-secondary); text-decoration: none;
+  transition: color var(--transition);
+}
+.footer-inner a:hover { color: var(--text-primary); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .article-wrapper { padding: 100px 1.25rem 3rem; }
+  .toc { padding: 1.25rem 1.5rem; }
+  .tip-box, .warning-box, .danger-box { flex-direction: column; gap: 0.75rem; }
+  .nav-links { display: none; }
+  .checklist { padding: 1.25rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="article-wrapper">
+
+  <!-- BACK LINK -->
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Home
+  </a>
+
+  <!-- ARTICLE HEADER -->
+  <header class="article-header">
+    <span class="article-category">Privacy Guide</span>
+    <h1>Digital Privacy: Taking Control of Your Personal Data</h1>
+    <div class="article-meta">
+      <span>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 4.5V8l2.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        18 min read
+      </span>
+      <span>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2h4l1.5 2H14v9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Beginner - Intermediate
+      </span>
+      <span>Last updated: March 2026</span>
+    </div>
+  </header>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#what-is-privacy">What Digital Privacy Means and Why It Matters</a></li>
+      <li><a href="#data-collection">How Companies Collect and Use Your Data</a></li>
+      <li><a href="#social-media">Social Media Privacy</a></li>
+      <li><a href="#browser-privacy">Browser Privacy and Tracking</a></li>
+      <li><a href="#privacy-tools">Privacy-Focused Tools and Alternatives</a></li>
+      <li><a href="#app-permissions">App Permissions on Your Phone</a></li>
+      <li><a href="#data-brokers">Data Brokers and Your Rights</a></li>
+      <li><a href="#smart-home">Smart Home Devices and Privacy</a></li>
+      <li><a href="#photos-metadata">Photos and Metadata</a></li>
+      <li><a href="#childrens-privacy">Children's Privacy Online</a></li>
+      <li><a href="#privacy-laws">Privacy Laws and Your Rights</a></li>
+      <li><a href="#privacy-checklist">Practical Privacy Checklist</a></li>
+    </ol>
+  </div>
+
+  <!-- ARTICLE CONTENT -->
+  <div class="article-content">
+
+    <!-- SECTION 1 -->
+    <h2 id="what-is-privacy">What Digital Privacy Means and Why It Matters</h2>
+    <p>Digital privacy is your ability to control what personal information is collected about you, who has access to it, and how it gets used. In the modern age, almost every online action you take generates data: the websites you visit, the messages you send, the products you browse, and even the physical places you go with your phone in your pocket.</p>
+    <p>Privacy matters because personal data is valuable. Companies use it to build detailed profiles about you for advertising, insurance companies can use it to assess risk, employers may screen candidates based on it, and criminals can exploit it for identity theft and fraud. Even if you believe you have nothing to hide, the aggregation of seemingly harmless data points can reveal deeply personal details about your health, finances, relationships, and beliefs.</p>
+    <p>The erosion of privacy rarely happens in a single dramatic event. It happens gradually, one permission granted at a time, one default setting left unchanged, one terms-of-service agreement accepted without reading. Taking control of your digital privacy is not about going off the grid. It is about making informed choices about what you share and with whom.</p>
+
+    <!-- SECTION 2 -->
+    <h2 id="data-collection">How Companies Collect and Use Your Data</h2>
+    <p>Most people are unaware of the sheer volume and variety of data that companies collect. Understanding what is being gathered is the first step toward protecting yourself.</p>
+
+    <h3>What Companies Collect</h3>
+    <ul>
+      <li><strong>Location data:</strong> Your phone's GPS, Wi-Fi connections, and cell tower triangulation allow apps to track your movements with remarkable precision, often even when you think location services are off.</li>
+      <li><strong>Browsing history:</strong> Websites, search engines, and internet service providers can log every page you visit, how long you stayed, and what you clicked on.</li>
+      <li><strong>Contacts and relationships:</strong> Many apps request access to your contact list, mapping out your social network. Some messaging apps upload your entire address book to their servers.</li>
+      <li><strong>Microphone and camera:</strong> Apps with microphone or camera permissions can potentially access these sensors at any time. While most legitimate apps only use them when actively in use, the permission itself grants broad access.</li>
+      <li><strong>Typing patterns and device data:</strong> Keyboard apps may log what you type. Device fingerprinting collects your screen resolution, operating system, installed fonts, and browser plugins to create a unique identifier.</li>
+      <li><strong>Purchase history:</strong> Online retailers, payment processors, and loyalty programs build detailed profiles of your spending habits, preferences, and financial status.</li>
+    </ul>
+
+    <h3>How They Use It</h3>
+    <p>Collected data feeds targeted advertising, which is the primary revenue model for most free online services. Beyond advertising, data is used for algorithmic content recommendations, credit scoring, insurance underwriting, political campaigning, and is frequently sold to third-party data brokers. In many cases, the data outlives the company that collected it, ending up in places you never anticipated.</p>
+
+    <div class="warning-box">
+      <div class="box-icon">!</div>
+      <div class="box-content">
+        <h4>The "Free" Product Trap</h4>
+        <p>If a product is free, you are often the product. Free apps and services fund themselves by collecting and monetizing your data. This does not mean all free tools are harmful, but it is important to understand the trade-off you are making.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <h2 id="social-media">Social Media Privacy</h2>
+    <p>Social media platforms are among the most aggressive data collectors, and users often voluntarily share far more than they realize.</p>
+
+    <h3>The Risks of Oversharing</h3>
+    <p>Posting vacation photos in real time announces that your home is empty. Sharing your birthday, hometown, pet's name, and school mascot provides answers to common security questions. Tagging your location at a workplace or gym establishes a predictable routine. Criminals and stalkers actively monitor social media for exactly this kind of information.</p>
+
+    <h3>Privacy Settings You Should Review</h3>
+    <ul>
+      <li><strong>Facebook:</strong> Set your profile and posts to "Friends Only," disable facial recognition, limit who can find you by phone number or email, and review which third-party apps have access to your account in the Apps and Websites settings.</li>
+      <li><strong>Instagram:</strong> Switch to a private account if you do not need public visibility. Disable activity status so others cannot see when you are online. Review tagged photos before they appear on your profile.</li>
+      <li><strong>TikTok:</strong> Set your account to private, disable the option to allow others to find you via contacts, turn off personalized ads, and restrict who can download your videos or duet with your content.</li>
+    </ul>
+
+    <h3>What Metadata Reveals</h3>
+    <p>Even when you are careful about what you post, metadata tells its own story. The time you post reveals your daily routine. The devices you use reveal your economic status. The people who interact with your posts reveal your social circle. Platforms use all of this to refine the advertising profile they build around you, often with more accuracy than the content of your posts themselves.</p>
+
+    <div class="tip-box">
+      <div class="box-icon">i</div>
+      <div class="box-content">
+        <h4>Tip: Conduct a Social Media Audit</h4>
+        <p>Search for your own name on multiple search engines. You may be surprised by what is publicly visible. Review old posts and remove anything that reveals sensitive information like your address, daily schedule, or security question answers.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <h2 id="browser-privacy">Browser Privacy and Tracking</h2>
+    <p>Your web browser is a primary vector for surveillance. Companies use multiple techniques to follow your activity across the internet.</p>
+
+    <h3>Tracking Pixels</h3>
+    <p>A tracking pixel is a tiny, invisible image (often just 1x1 pixel) embedded in a webpage or email. When your browser loads it, the pixel reports back to the server, confirming that you opened the email or visited the page, along with your IP address, browser type, and the time of your visit. These pixels are used extensively in marketing emails and across websites.</p>
+
+    <h3>Browser Fingerprinting</h3>
+    <p>Even without cookies, websites can identify you through browser fingerprinting. This technique collects dozens of data points about your browser configuration: your screen resolution, installed fonts, timezone, language settings, hardware capabilities, and more. Combined, these create a unique fingerprint that can track you across websites with high accuracy, even in private browsing mode.</p>
+
+    <h3>The Incognito Mode Myth</h3>
+    <div class="danger-box">
+      <div class="box-icon">X</div>
+      <div class="box-content">
+        <h4>Incognito Mode Does Not Make You Invisible</h4>
+        <p>Private or incognito mode only prevents your browser from saving your history, cookies, and form data locally. Your internet service provider can still see every site you visit. Your employer or school network administrator can still monitor your traffic. Websites can still track you through fingerprinting and IP address. Incognito mode is useful for keeping your local browsing history clean, but it provides virtually no protection against online tracking.</p>
+      </div>
+    </div>
+
+    <h3>Cookies: First-Party vs. Third-Party</h3>
+    <p>First-party cookies are set by the website you are visiting and typically serve functional purposes like keeping you logged in. Third-party cookies are set by advertisers and tracking companies embedded on that website, and they follow you across every other site where that tracker is present. While major browsers are phasing out third-party cookies, many alternative tracking methods are already in use.</p>
+
+    <!-- SECTION 5 -->
+    <h2 id="privacy-tools">Privacy-Focused Tools and Alternatives</h2>
+    <p>Switching to privacy-respecting tools is one of the most effective steps you can take. Here are proven alternatives to common services.</p>
+
+    <h3>Messaging: Signal</h3>
+    <p>Signal provides end-to-end encrypted messaging and voice calls. Unlike WhatsApp (owned by Meta), Signal is operated by a non-profit foundation, collects virtually no metadata, and its code is fully open source. Signal is widely recommended by security researchers and privacy advocates as the gold standard for private communication.</p>
+
+    <h3>Browsing: DuckDuckGo and Brave</h3>
+    <p>DuckDuckGo is a search engine that does not track your search history or build a profile on you. Brave is a web browser built on the Chromium engine that blocks ads and trackers by default, includes built-in fingerprinting protection, and offers a Tor integration for enhanced anonymity. Both are free and function as drop-in replacements for Google Search and Chrome.</p>
+
+    <h3>Email: ProtonMail</h3>
+    <p>ProtonMail provides end-to-end encrypted email hosted in Switzerland, which has strong privacy laws. Emails between ProtonMail users are automatically encrypted. ProtonMail also offers a free tier and does not scan your emails for advertising purposes, unlike Gmail and other major providers.</p>
+
+    <div class="tip-box">
+      <div class="box-icon">i</div>
+      <div class="box-content">
+        <h4>Tip: Start with One Switch</h4>
+        <p>You do not have to change everything at once. Start by switching your default search engine to DuckDuckGo. It takes 30 seconds and immediately reduces the amount of data being collected about your searches. Then make additional changes at your own pace.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <h2 id="app-permissions">App Permissions on Your Phone</h2>
+    <p>Most people install apps and accept every permission request without thinking. Over time, this grants dozens of apps access to sensitive capabilities they do not actually need.</p>
+
+    <h3>How to Audit Your Permissions</h3>
+    <ul>
+      <li><strong>On iPhone:</strong> Go to Settings &gt; Privacy &amp; Security. Tap each category (Location Services, Contacts, Microphone, Camera, etc.) to see which apps have access. Change any permission to "Never" or "While Using the App" if the app does not need it full-time.</li>
+      <li><strong>On Android:</strong> Go to Settings &gt; Privacy &gt; Permission Manager. Review each permission category and revoke access for apps that do not need it. Android also allows you to grant one-time permissions for location, camera, and microphone.</li>
+    </ul>
+
+    <h3>Permissions to Watch Closely</h3>
+    <ul>
+      <li><strong>Location:</strong> Very few apps genuinely need your location at all times. Weather apps, maps, and ride-sharing apps need it while in use. A flashlight app or a game does not.</li>
+      <li><strong>Microphone:</strong> Only grant microphone access to communication apps, voice recorders, and video apps. Revoke it from everything else.</li>
+      <li><strong>Contacts:</strong> Many apps request contacts to "find friends," but this uploads your entire address book to their servers. Deny this unless the feature is essential to you.</li>
+      <li><strong>Camera:</strong> Grant camera access only to apps where you specifically need to take photos or videos.</li>
+    </ul>
+
+    <div class="warning-box">
+      <div class="box-icon">!</div>
+      <div class="box-content">
+        <h4>Check Permissions Quarterly</h4>
+        <p>New app updates can request additional permissions, and apps you no longer use may still have access to your data. Set a reminder to review your app permissions every three months.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <h2 id="data-brokers">Data Brokers and Your Rights</h2>
+    <p>Data brokers are companies that collect, aggregate, and sell personal information. They compile data from public records, online activity, purchase histories, social media, and other sources to create detailed profiles on individuals. These profiles are then sold to advertisers, employers, landlords, insurance companies, and sometimes to other individuals.</p>
+
+    <h3>What Data Brokers Know About You</h3>
+    <p>A single data broker profile can include your full name, date of birth, current and past addresses, phone numbers, email addresses, relatives' names, estimated income, political affiliation, health interests, purchase habits, and much more. Major data brokers like Acxiom, Spokeo, and Whitepages collectively hold data on hundreds of millions of people.</p>
+
+    <h3>How to Opt Out</h3>
+    <ul>
+      <li><strong>Manual opt-out:</strong> Most data brokers are legally required to honor removal requests, but each broker has its own process. You will need to visit each site individually, locate their opt-out page, verify your identity, and submit a request. This is tedious but free.</li>
+      <li><strong>Automated services:</strong> Services like DeleteMe and Privacy Duck handle the opt-out process on your behalf for a subscription fee. They submit removal requests to dozens of brokers and periodically re-check to make sure your data has not been re-added.</li>
+    </ul>
+
+    <h3>Your Legal Rights</h3>
+    <p>Under the California Consumer Privacy Act (CCPA), California residents have the right to know what data a company holds on them, to request deletion of that data, and to opt out of the sale of their personal information. Under the EU's General Data Protection Regulation (GDPR), all EU residents have similar rights, plus the right to data portability and the right to restrict processing. Even if you do not live in these jurisdictions, many companies honor these requests globally to simplify compliance.</p>
+
+    <!-- SECTION 8 -->
+    <h2 id="smart-home">Smart Home Devices and Privacy</h2>
+    <p>Smart home devices introduce internet-connected microphones, cameras, and sensors into the most private spaces in your life. While convenient, they come with significant privacy trade-offs.</p>
+
+    <h3>Voice Assistants: Always Listening</h3>
+    <p>Devices like Amazon Alexa and Google Home are designed to listen continuously for their wake word. While manufacturers state that audio is only recorded and transmitted after the wake word is detected, independent research has shown that these devices can and do activate by mistake, recording and transmitting private conversations. Some manufacturers have also employed human reviewers to listen to recordings for quality improvement purposes.</p>
+
+    <h3>Ring Doorbells and Security Cameras</h3>
+    <p>Internet-connected cameras like Ring doorbells upload video to cloud servers. Ring has faced scrutiny over data-sharing partnerships with law enforcement agencies, sometimes without requiring a warrant. Video footage captured by your doorbell may also capture neighbors, delivery workers, and passersby, raising privacy concerns beyond your own household.</p>
+
+    <h3>Smart TVs</h3>
+    <p>Many smart TVs use automatic content recognition (ACR) to monitor what you watch, whether it is cable TV, streaming, or even content from connected devices. This viewing data is used for targeted advertising. Check your TV's privacy settings to disable ACR and limit data collection.</p>
+
+    <div class="tip-box">
+      <div class="box-icon">i</div>
+      <div class="box-content">
+        <h4>Tip: Use the Mute Button</h4>
+        <p>Most smart speakers have a physical mute button that electrically disconnects the microphone. Use it when you are not actively using the device. For smart TVs, disable ACR in the settings and consider whether you truly need the smart features, or whether a simple streaming stick would suffice.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <h2 id="photos-metadata">Photos and Metadata</h2>
+    <p>Every digital photo you take contains more information than just the image itself. Embedded within each file is EXIF (Exchangeable Image File Format) data that can reveal a surprising amount about you.</p>
+
+    <h3>What EXIF Data Contains</h3>
+    <ul>
+      <li><strong>GPS coordinates:</strong> If location services are enabled for your camera app, the exact latitude and longitude where the photo was taken is embedded in the file.</li>
+      <li><strong>Date and time:</strong> The precise moment the photo was captured.</li>
+      <li><strong>Device information:</strong> The make and model of your phone or camera, lens information, and sometimes a unique device serial number.</li>
+      <li><strong>Camera settings:</strong> Aperture, shutter speed, ISO, and whether the flash was used.</li>
+    </ul>
+
+    <div class="danger-box">
+      <div class="box-icon">X</div>
+      <div class="box-content">
+        <h4>Real-World Risk: Location Tracking Through Photos</h4>
+        <p>Photos posted online with GPS data intact can reveal your home address, workplace, children's school, and daily routine. This information has been used by stalkers, burglars, and other bad actors. Always strip metadata before sharing photos publicly.</p>
+      </div>
+    </div>
+
+    <h3>How to Strip Metadata</h3>
+    <ul>
+      <li><strong>On iPhone:</strong> When sharing a photo, tap "Options" at the top of the share sheet and toggle off "Location" and "All Photos Data."</li>
+      <li><strong>On Android:</strong> Open the photo in Google Photos, tap the three-dot menu, select "Edit," then strip location data. Alternatively, disable geotagging in your camera app settings.</li>
+      <li><strong>On desktop:</strong> On Windows, right-click the file, go to Properties &gt; Details, and click "Remove Properties and Personal Information." On macOS, use the Preview app or a tool like ImageOptim.</li>
+    </ul>
+
+    <!-- SECTION 10 -->
+    <h2 id="childrens-privacy">Children's Privacy Online</h2>
+    <p>Children are especially vulnerable online because they lack the judgment to understand what information is sensitive and because their data, once collected, follows them for life.</p>
+
+    <h3>COPPA: The Children's Online Privacy Protection Act</h3>
+    <p>In the United States, COPPA prohibits the collection of personal information from children under 13 without verifiable parental consent. This law requires websites and apps directed at children to post clear privacy policies, obtain consent before collecting data, and give parents the ability to review and delete their child's information. However, enforcement is imperfect, and many children access platforms meant for older users.</p>
+
+    <h3>Keeping Kids Safe</h3>
+    <ul>
+      <li><strong>Monitor app usage:</strong> Know what apps your children are using and review the permissions those apps have been granted.</li>
+      <li><strong>Use parental controls:</strong> Both iOS (Screen Time) and Android (Family Link) offer built-in parental control features that restrict app downloads, limit screen time, and filter content.</li>
+      <li><strong>Educate, do not just restrict:</strong> Teach children why privacy matters. Explain that personal information shared online can be permanent and visible to strangers. Help them understand that not everything online is truthful.</li>
+      <li><strong>Limit sharenting:</strong> Be mindful of how much you share about your children on your own social media. Photos, school names, and activity locations create a digital footprint for your child before they can consent to it.</li>
+    </ul>
+
+    <div class="warning-box">
+      <div class="box-icon">!</div>
+      <div class="box-content">
+        <h4>Think Before You Post About Your Kids</h4>
+        <p>Once a photo or personal detail about your child is posted online, you lose control over it. It can be screenshotted, shared, and indexed by search engines. Consider whether your child, as a future adult, would consent to what you are sharing about them today.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 11 -->
+    <h2 id="privacy-laws">Privacy Laws and Your Rights</h2>
+    <p>Privacy legislation is evolving rapidly as governments recognize the need to protect citizens' data. Understanding your rights empowers you to exercise them.</p>
+
+    <h3>GDPR (General Data Protection Regulation)</h3>
+    <p>The GDPR, enacted by the European Union in 2018, is the most comprehensive privacy law globally. It grants EU residents the right to access their data, correct inaccuracies, request deletion (the "right to be forgotten"), restrict processing, and port their data to another service. Companies that violate GDPR face fines of up to 4% of their annual global revenue. Many companies apply GDPR protections to all users worldwide rather than maintaining separate systems.</p>
+
+    <h3>CCPA (California Consumer Privacy Act)</h3>
+    <p>The CCPA gives California residents the right to know what personal data businesses collect about them, the right to delete that data, the right to opt out of data sales, and protection against discrimination for exercising these rights. The California Privacy Rights Act (CPRA) expanded these protections further. Other US states are enacting similar legislation.</p>
+
+    <h3>How to Exercise Your Rights</h3>
+    <ul>
+      <li><strong>Submit data access requests:</strong> Most major companies have a privacy portal or contact form where you can request a copy of all data they hold on you.</li>
+      <li><strong>Request deletion:</strong> You can ask companies to delete your personal data. They are generally required to comply within 30 to 45 days.</li>
+      <li><strong>Opt out of data sales:</strong> Look for "Do Not Sell My Personal Information" links, which CCPA requires businesses to provide. Under GDPR, you can withdraw consent for data processing at any time.</li>
+    </ul>
+
+    <!-- SECTION 12 -->
+    <h2 id="privacy-checklist">Practical Privacy Checklist</h2>
+    <p>Privacy is not a one-time setup. It requires periodic review and maintenance. Use this checklist as a starting point and revisit it quarterly.</p>
+
+    <div class="checklist">
+      <h3>Your Privacy Action Items</h3>
+      <ul>
+        <li>Audit app permissions on your phone and revoke any that are unnecessary</li>
+        <li>Switch to an encrypted messaging app like Signal for sensitive conversations</li>
+        <li>Change your default search engine to DuckDuckGo or another privacy-focused alternative</li>
+        <li>Review and tighten privacy settings on all social media accounts</li>
+        <li>Enable two-factor authentication on all important accounts (email, banking, social media)</li>
+        <li>Disable location services for apps that do not need them</li>
+        <li>Strip metadata from photos before sharing them publicly</li>
+        <li>Opt out of data broker sites or subscribe to a removal service</li>
+        <li>Check your smart home device settings and disable unnecessary data collection</li>
+        <li>Review privacy settings on your smart TV and disable automatic content recognition</li>
+        <li>Use a privacy-focused browser like Brave or Firefox with tracking protection enabled</li>
+        <li>Set a quarterly calendar reminder to repeat this audit</li>
+        <li>Search your own name online and request removal of any unwanted personal information</li>
+        <li>Consider using a VPN on public Wi-Fi networks to encrypt your internet traffic</li>
+        <li>Review and clean up old online accounts you no longer use</li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      <div class="box-icon">i</div>
+      <div class="box-content">
+        <h4>Remember: Progress Over Perfection</h4>
+        <p>Complete privacy is nearly impossible in the modern digital world, and pursuing it can be paralyzing. Instead, focus on making steady improvements. Every permission you revoke, every privacy setting you tighten, and every tracker you block is a step in the right direction. The goal is not invisibility; it is informed control over your own data.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p style="margin-bottom: 0.75rem;">
+      <a href="../index.html" style="color: var(--accent); font-weight: 500;">Public Cyber Defense Network</a>
+    </p>
+    <p>Independent cybersecurity awareness organization. No services. No sales. Just information.</p>
+    <p style="margin-top: 1rem; font-style: italic; font-size: 0.75rem;">
+      This guide is for educational purposes only. Privacy tools and laws mentioned may change over time. Always verify current information before making decisions.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

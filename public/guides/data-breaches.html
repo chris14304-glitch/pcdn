@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Data Breaches - PCDN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0b1120;
+  --bg-surface: #111827;
+  --bg-card: #1a2332;
+  --bg-card-hover: #1f2a3d;
+  --border-subtle: rgba(99, 149, 237, 0.1);
+  --border-hover: rgba(99, 149, 237, 0.25);
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.12);
+  --accent-glow: rgba(91, 141, 239, 0.06);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b97ad;
+  --text-muted: #5a6578;
+  --alert-amber: #e8a838;
+  --alert-amber-bg: rgba(232, 168, 56, 0.08);
+  --alert-red: #e85555;
+  --alert-red-bg: rgba(232, 85, 85, 0.08);
+  --success: #4aba8a;
+  --success-bg: rgba(74, 186, 138, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.15);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.35), 0 12px 36px rgba(0,0,0,0.2);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 17, 32, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-primary);
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-logo-text { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; letter-spacing: 0.01em; transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--text-primary); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 120px 2rem 5rem;
+}
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none; font-size: 0.88rem;
+  font-weight: 500; margin-bottom: 2rem; transition: color var(--transition);
+}
+.back-link:hover { color: var(--text-primary); }
+.back-link svg { width: 16px; height: 16px; }
+
+.article-meta {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.article-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--alert-red-bg); border: 1px solid rgba(232, 85, 85, 0.2);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 600; color: var(--alert-red);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.article-date {
+  font-size: 0.82rem; color: var(--text-muted);
+}
+
+.article-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.15; letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+.article-title em { font-style: italic; color: var(--accent); font-weight: 300; }
+
+.article-subtitle {
+  color: var(--text-secondary); font-size: 1.1rem;
+  line-height: 1.8; margin-bottom: 2.5rem; max-width: 680px;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.1rem; margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+.toc ol {
+  list-style: none; counter-reset: toc-counter;
+  padding: 0;
+}
+.toc ol li { counter-increment: toc-counter; margin-bottom: 0.5rem; }
+.toc ol li a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.92rem; transition: color var(--transition);
+  display: flex; align-items: baseline; gap: 0.6rem;
+}
+.toc ol li a::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  color: var(--accent); font-size: 0.78rem; font-weight: 600;
+  min-width: 1.4rem;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* ── ARTICLE CONTENT ── */
+.article-content h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.55rem; letter-spacing: -0.02em;
+  margin: 3rem 0 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.article-content h2:first-child { border-top: none; margin-top: 0; }
+
+.article-content h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.2rem; letter-spacing: -0.01em;
+  margin: 2rem 0 0.75rem;
+  color: var(--text-primary);
+}
+
+.article-content p {
+  color: var(--text-secondary); font-size: 0.98rem;
+  line-height: 1.85; margin-bottom: 1.25rem;
+}
+
+.article-content strong { color: var(--text-primary); font-weight: 600; }
+
+.article-content ul, .article-content ol {
+  color: var(--text-secondary); font-size: 0.95rem;
+  line-height: 1.8; margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.article-content li { margin-bottom: 0.4rem; }
+.article-content li strong { color: var(--text-primary); }
+
+.article-content a {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(91,141,239,0.3);
+  transition: border-color var(--transition);
+}
+.article-content a:hover { border-color: var(--accent); }
+
+/* ── WARNING / INFO BOXES ── */
+.warning-box {
+  background: var(--alert-red-bg);
+  border: 1px solid rgba(232, 85, 85, 0.2);
+  border-left: 4px solid var(--alert-red);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.warning-box-title {
+  font-weight: 700; font-size: 0.88rem;
+  color: var(--alert-red); margin-bottom: 0.4rem;
+  display: flex; align-items: center; gap: 8px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.warning-box p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0; }
+
+.info-box {
+  background: var(--accent-soft);
+  border: 1px solid rgba(91, 141, 239, 0.15);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.info-box-title {
+  font-weight: 700; font-size: 0.88rem;
+  color: var(--accent); margin-bottom: 0.4rem;
+  display: flex; align-items: center; gap: 8px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.info-box p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0; }
+
+.amber-box {
+  background: var(--alert-amber-bg);
+  border: 1px solid rgba(232, 168, 56, 0.2);
+  border-left: 4px solid var(--alert-amber);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.amber-box-title {
+  font-weight: 700; font-size: 0.88rem;
+  color: var(--alert-amber); margin-bottom: 0.4rem;
+  display: flex; align-items: center; gap: 8px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.amber-box p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0; }
+
+/* ── BREACH TABLE ── */
+.breach-table-wrapper {
+  overflow-x: auto;
+  margin: 1.5rem 0 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+}
+.breach-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.breach-table thead {
+  background: var(--bg-card);
+}
+.breach-table th {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+.breach-table td {
+  padding: 0.8rem 1rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+.breach-table tbody tr:last-child td { border-bottom: none; }
+.breach-table tbody tr:hover { background: var(--accent-glow); }
+.breach-table .org-name { color: var(--text-primary); font-weight: 600; white-space: nowrap; }
+.breach-table .severity-critical {
+  color: var(--alert-red); font-weight: 600;
+}
+.breach-table .severity-high {
+  color: var(--alert-amber); font-weight: 600;
+}
+
+/* ── CHECKLIST ── */
+.checklist {
+  list-style: none; padding: 0; margin: 1.5rem 0;
+}
+.checklist li {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary); font-size: 0.95rem;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist-icon {
+  flex-shrink: 0; width: 22px; height: 22px;
+  background: var(--accent-soft); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.checklist-icon svg { width: 14px; height: 14px; }
+
+/* ── COMPARISON CARDS ── */
+.compare-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin: 1.5rem 0;
+}
+.compare-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+.compare-card-title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.1rem; margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+.compare-card p, .compare-card li {
+  color: var(--text-secondary); font-size: 0.9rem;
+}
+.compare-card ul { padding-left: 1.2rem; margin-top: 0.5rem; }
+.compare-card li { margin-bottom: 0.3rem; }
+
+/* ── FOOTER ── */
+.article-footer {
+  margin-top: 4rem; padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+.article-footer p {
+  color: var(--text-muted); font-size: 0.82rem;
+}
+.article-footer a { color: var(--accent); text-decoration: none; }
+.article-footer a:hover { color: var(--text-primary); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .article-wrapper { padding: 100px 1.25rem 3rem; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .breach-table { font-size: 0.82rem; }
+  .breach-table th, .breach-table td { padding: 0.6rem 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2L4 7v7c0 6.075 4.25 11.425 10 12.75 5.75-1.325 10-6.675 10-12.75V7L14 2z" stroke="#5b8def" stroke-width="1.5" fill="rgba(91,141,239,0.08)"/>
+        <path d="M10 14l3 3 5-6" stroke="#5b8def" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="nav-logo-text">Public Cyber Defense Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#what-we-do">What We Do</a></li>
+      <li><a href="../index.html#alerts">Alerts</a></li>
+      <li><a href="../index.html#guides">Guides</a></li>
+      <li><a href="../index.html#about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="article-wrapper">
+
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Home
+  </a>
+
+  <div class="article-meta">
+    <span class="article-tag">Critical Threat</span>
+    <span class="article-date">PCDN Guide &middot; Last updated March 2026</span>
+  </div>
+
+  <h1 class="article-title">Understanding <em>Data Breaches</em></h1>
+  <p class="article-subtitle">
+    Data breaches are among the most damaging cybersecurity events for individuals and organizations alike. This guide explains how they happen, the largest incidents in history, what data is at risk, and the concrete steps you can take to protect yourself.
+  </p>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#what-is-a-breach">What Is a Data Breach?</a></li>
+      <li><a href="#how-breaches-happen">How Breaches Happen</a></li>
+      <li><a href="#major-breaches">Major Historic Breaches</a></li>
+      <li><a href="#recent-breaches">Recent and Emerging Breaches</a></li>
+      <li><a href="#what-gets-stolen">What Data Gets Stolen</a></li>
+      <li><a href="#lifecycle">The Lifecycle of Stolen Data</a></li>
+      <li><a href="#what-to-do">What to Do After a Breach Affects You</a></li>
+      <li><a href="#freeze-vs-alert">Credit Freeze vs. Fraud Alert</a></li>
+      <li><a href="#notification-laws">Data Breach Notification Laws</a></li>
+      <li><a href="#staying-proactive">How to Stay Proactive</a></li>
+    </ol>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <div class="article-content">
+
+    <h2 id="what-is-a-breach">What Is a Data Breach?</h2>
+    <p>
+      A <strong>data breach</strong> occurs when unauthorized individuals gain access to sensitive, protected, or confidential information. This can include personal names, Social Security numbers, financial account details, login credentials, health records, and proprietary business data. Breaches differ from simple security incidents in that data is confirmed to have been accessed or exfiltrated by an unauthorized party, not merely exposed.
+    </p>
+    <p>
+      The impact of a breach extends far beyond the initial disclosure. Victims face years of potential identity theft, financial fraud, and privacy violations. Organizations suffer regulatory fines, litigation costs, reputational damage, and loss of customer trust. According to industry reports, the average cost of a data breach to a company now exceeds four million dollars, with breaches in healthcare and financial sectors costing substantially more.
+    </p>
+
+    <div class="warning-box">
+      <div class="warning-box-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L1 13.5h14L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Critical Reality
+      </div>
+      <p>If you have been on the internet for any significant period, there is a strong probability your data has already been compromised in at least one breach. The question is not whether your data has been exposed, but how many times and what you can do about it now.</p>
+    </div>
+
+    <h2 id="how-breaches-happen">How Breaches Happen</h2>
+    <p>
+      Breaches are not caused by a single method. Attackers exploit a wide range of technical and human vulnerabilities to gain access to data stores. Understanding these attack vectors is the first step toward meaningful defense.
+    </p>
+
+    <h3>SQL Injection</h3>
+    <p>
+      SQL injection remains one of the most common web application vulnerabilities. Attackers insert malicious SQL code into input fields or URL parameters that interact with a database. If the application does not properly sanitize inputs, the attacker can read, modify, or delete database contents. Entire tables of usernames, passwords, and personal data can be extracted in minutes through automated injection tools.
+    </p>
+
+    <h3>Stolen or Compromised Credentials</h3>
+    <p>
+      Credentials obtained from phishing campaigns, previous breaches, or brute-force attacks provide direct entry into systems. When employees reuse passwords across personal and corporate accounts, a breach at one service can cascade into corporate network access. Credential stuffing attacks, where stolen username-password pairs are tested against thousands of sites, succeed at alarming rates because of widespread password reuse.
+    </p>
+
+    <h3>Insider Threats</h3>
+    <p>
+      Not all breaches originate from outside the organization. Disgruntled employees, contractors with excessive access privileges, or careless staff who mishandle data can all cause breaches. Insider threats are particularly difficult to detect because the actors already have legitimate access to systems and data.
+    </p>
+
+    <h3>Misconfigured Databases and Cloud Storage</h3>
+    <p>
+      Cloud-hosted databases and storage buckets are frequently left exposed to the public internet due to configuration errors. Elasticsearch instances, MongoDB databases, and AWS S3 buckets without proper access controls have been responsible for exposing billions of records. These are often discovered by security researchers or attackers using automated scanning tools that trawl the internet for open databases.
+    </p>
+
+    <h3>Zero-Day Exploits</h3>
+    <p>
+      Zero-day vulnerabilities are previously unknown software flaws that have no available patch at the time of exploitation. Nation-state actors and sophisticated criminal groups use zero-days to penetrate well-defended organizations. Because there is no patch available, even organizations with strong security practices can fall victim to these attacks.
+    </p>
+
+    <h3>Third-Party Vendor Compromises</h3>
+    <p>
+      Organizations often share data with vendors, partners, and service providers. A breach at any point in this supply chain can expose the original organization's data. The Target breach of 2013 is a defining example: attackers gained access to Target's network through credentials stolen from an HVAC vendor. Modern supply chain attacks have grown even more sophisticated, targeting widely used software dependencies and managed service providers.
+    </p>
+
+    <h2 id="major-breaches">Major Historic Breaches</h2>
+    <p>
+      The following table presents some of the most significant data breaches in history, measured by the number of records compromised and the sensitivity of the data involved.
+    </p>
+
+    <div class="breach-table-wrapper">
+      <table class="breach-table">
+        <thead>
+          <tr>
+            <th>Organization</th>
+            <th>Year</th>
+            <th>Records Affected</th>
+            <th>Data Exposed</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="org-name">Yahoo</td>
+            <td>2013-2014</td>
+            <td>3 billion accounts</td>
+            <td>Names, emails, phone numbers, security questions, hashed passwords</td>
+            <td class="severity-critical">Critical</td>
+          </tr>
+          <tr>
+            <td class="org-name">Equifax</td>
+            <td>2017</td>
+            <td>147 million people</td>
+            <td>SSNs, birth dates, addresses, driver's license numbers, credit card numbers</td>
+            <td class="severity-critical">Critical</td>
+          </tr>
+          <tr>
+            <td class="org-name">Marriott / Starwood</td>
+            <td>2018</td>
+            <td>500 million guest records</td>
+            <td>Names, addresses, passport numbers, travel dates, payment card details</td>
+            <td class="severity-critical">Critical</td>
+          </tr>
+          <tr>
+            <td class="org-name">Facebook / Cambridge Analytica</td>
+            <td>2018</td>
+            <td>87 million profiles</td>
+            <td>Profile data, likes, friend networks misused for political profiling</td>
+            <td class="severity-high">High</td>
+          </tr>
+          <tr>
+            <td class="org-name">Capital One</td>
+            <td>2019</td>
+            <td>100 million applications</td>
+            <td>Credit applications, SSNs, bank account numbers</td>
+            <td class="severity-critical">Critical</td>
+          </tr>
+          <tr>
+            <td class="org-name">Sony PlayStation Network</td>
+            <td>2011</td>
+            <td>77 million accounts</td>
+            <td>Names, addresses, emails, birth dates, login credentials, purchase history</td>
+            <td class="severity-high">High</td>
+          </tr>
+          <tr>
+            <td class="org-name">Target</td>
+            <td>2013</td>
+            <td>40 million credit cards</td>
+            <td>Credit and debit card numbers, CVVs, expiration dates (via HVAC vendor)</td>
+            <td class="severity-critical">Critical</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>Yahoo (2013-2014)</strong> stands as the largest data breach in history. Initially disclosed as affecting one billion accounts, Yahoo later revised the figure upward to all three billion user accounts. The breach went undetected for years and was only fully disclosed during acquisition negotiations with Verizon, which reduced its purchase offer by hundreds of millions of dollars.
+    </p>
+    <p>
+      <strong>Equifax (2017)</strong> is widely considered one of the most damaging breaches due to the nature of the data exposed. Social Security numbers, birth dates, and financial data for 147 million people were compromised through an unpatched Apache Struts vulnerability. Equifax executives were criticized for a delayed and mismanaged disclosure process and the company ultimately paid over $700 million in settlements.
+    </p>
+    <p>
+      <strong>Target (2013)</strong> demonstrated the danger of third-party access. Attackers infiltrated Target's payment systems by first compromising the network credentials of Fazio Mechanical Services, an HVAC and refrigeration contractor. The breach resulted in 40 million stolen credit and debit card numbers during the holiday shopping season. This incident fundamentally changed how organizations evaluate vendor security.
+    </p>
+
+    <h2 id="recent-breaches">Recent and Emerging Breaches</h2>
+    <p>
+      Data breaches have continued to grow in frequency and sophistication in recent years. Several incidents stand out for their scope and the lessons they carry.
+    </p>
+
+    <h3>T-Mobile (2021-2023)</h3>
+    <p>
+      T-Mobile suffered multiple breaches in rapid succession. The 2021 breach exposed personal data of more than 76 million customers, including SSNs and driver's license information. Additional breaches in 2022 and January 2023 affected millions more. The repeated nature of these incidents raised serious questions about the company's security infrastructure and incident response capabilities.
+    </p>
+
+    <h3>LastPass (2022)</h3>
+    <p>
+      The LastPass breach was particularly alarming because it targeted a password manager, a tool people use specifically to improve their security. Attackers compromised a developer's home computer to gain access to LastPass cloud storage, ultimately obtaining encrypted password vaults. While the vaults remain encrypted, users with weak master passwords face the risk of brute-force decryption over time.
+    </p>
+
+    <div class="warning-box">
+      <div class="warning-box-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L1 13.5h14L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Key Lesson
+      </div>
+      <p>The LastPass breach illustrates that even security-focused products are not immune to compromise. Your master password must be strong and unique. If you used LastPass at the time of the breach, consider rotating all passwords stored in your vault.</p>
+    </div>
+
+    <h3>MOVEit (2023)</h3>
+    <p>
+      The MOVEit Transfer vulnerability, exploited by the Cl0p ransomware group, became one of the most widespread supply chain breaches in history. MOVEit is a managed file transfer tool used by thousands of organizations worldwide. A zero-day SQL injection flaw allowed attackers to access data from organizations that used the software, resulting in a cascading wave of disclosures from government agencies, banks, universities, and healthcare providers. Over 2,500 organizations and roughly 65 million individuals were affected.
+    </p>
+
+    <h3>23andMe (2023)</h3>
+    <p>
+      The 23andMe breach exposed the deeply personal genetic data of approximately 6.9 million users. Attackers used credential stuffing to access roughly 14,000 accounts directly, then leveraged the DNA Relatives feature to scrape data from millions of connected profiles. This breach highlighted the unique risks of genetic data, which cannot be changed like a password, and the privacy implications of interconnected social features in sensitive platforms.
+    </p>
+
+    <h2 id="what-gets-stolen">What Data Gets Stolen</h2>
+    <p>
+      The type of data compromised in a breach determines the severity of the impact on affected individuals. Different categories of data carry different levels of risk.
+    </p>
+    <ul>
+      <li><strong>Personally Identifiable Information (PII):</strong> Full names, addresses, phone numbers, dates of birth, and government-issued ID numbers. This data forms the foundation for identity theft.</li>
+      <li><strong>Financial Data:</strong> Credit card numbers, bank account details, tax records, and credit reports. Financial data enables direct monetary theft and fraudulent account creation.</li>
+      <li><strong>Health Records:</strong> Medical histories, diagnoses, prescription data, and insurance information. Health data is among the most valuable on the dark web because it enables insurance fraud and cannot easily be changed.</li>
+      <li><strong>Login Credentials:</strong> Usernames, email addresses, and passwords (whether hashed, encrypted, or in plaintext). Credential data fuels further attacks through credential stuffing across other services.</li>
+      <li><strong>Social Security Numbers:</strong> SSNs are the single most dangerous piece of data to have exposed, as they serve as a universal identifier in the United States for credit, taxes, employment, and government benefits.</li>
+      <li><strong>Genetic and Biometric Data:</strong> DNA profiles, fingerprints, and facial recognition templates. Unlike passwords, biometric data is permanent and cannot be reset.</li>
+    </ul>
+
+    <h2 id="lifecycle">The Lifecycle of Stolen Data</h2>
+    <p>
+      Understanding what happens to data after a breach helps explain why the consequences can persist for years.
+    </p>
+
+    <h3>Stage 1: Exfiltration and Initial Sale</h3>
+    <p>
+      Immediately after a breach, attackers may attempt to sell the data in bulk on dark web marketplaces. Fresh data commands premium prices. Complete identity sets (known as "fullz") that include a name, SSN, date of birth, and financial details can sell for a significant amount per record, while credit card numbers sell for less. Data is typically sold through encrypted channels on Tor-accessible forums.
+    </p>
+
+    <h3>Stage 2: Credential Stuffing and Account Takeover</h3>
+    <p>
+      Stolen email and password combinations are fed into automated tools that test them against banking sites, social media platforms, email providers, and e-commerce sites. Because people reuse passwords extensively, these attacks have high success rates. A single breached credential pair from a low-value site can unlock access to a victim's banking or email account.
+    </p>
+
+    <h3>Stage 3: Identity Theft and Fraud</h3>
+    <p>
+      With sufficient personal data, criminals open new credit accounts, file fraudulent tax returns, obtain medical services under victims' identities, or create synthetic identities that blend real and fabricated information. Synthetic identity fraud is one of the fastest-growing categories of financial crime, and it can take years before victims discover the activity.
+    </p>
+
+    <h3>Stage 4: Data Recycling</h3>
+    <p>
+      Breach data does not disappear after its initial use. Databases are repackaged, combined with data from other breaches, and resold repeatedly. Data from a breach that occurred years ago can resurface in new compiled datasets, extending the window of risk indefinitely.
+    </p>
+
+    <div class="amber-box">
+      <div class="amber-box-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Important
+      </div>
+      <p>Your data from a breach five years ago may still be circulating and creating risk today. There is no expiration date on stolen data. Proactive monitoring is essential regardless of how long ago a breach occurred.</p>
+    </div>
+
+    <h2 id="what-to-do">What to Do After a Breach Affects You</h2>
+    <p>
+      If you receive notification that your data was part of a breach, or if you discover a compromise through a monitoring service, take the following steps immediately and in order.
+    </p>
+
+    <ul class="checklist">
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Change your passwords immediately.</strong> Start with the breached service, then change the password on any other account where you used the same or a similar password. Use a password manager to generate unique, complex passwords for each account.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Enable two-factor authentication (2FA).</strong> Turn on 2FA on every account that supports it, prioritizing email, banking, and social media. Use an authenticator app or hardware key rather than SMS codes when possible.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Freeze your credit.</strong> Contact all three credit bureaus (Equifax, Experian, TransUnion) and place a security freeze. This prevents anyone from opening new credit accounts in your name. Freezes are free and can be temporarily lifted when you need to apply for credit.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Monitor your financial accounts.</strong> Review bank and credit card statements for unauthorized transactions. Set up real-time transaction alerts through your bank's app. Report any suspicious charges immediately.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Check Have I Been Pwned.</strong> Visit haveibeenpwned.com to see a comprehensive list of breaches linked to your email address. Register for breach notifications so you are alerted to future compromises as soon as they are cataloged.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>Review and secure your email.</strong> Check your email account for unfamiliar forwarding rules, connected devices, or authorized applications. Attackers often establish persistence in email accounts to intercept password reset links.</span>
+      </li>
+      <li>
+        <span class="checklist-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><strong>File an identity theft report if warranted.</strong> If you see evidence of misuse, file a report at IdentityTheft.gov (FTC) and with your local police department. These reports are necessary for disputing fraudulent accounts.</span>
+      </li>
+    </ul>
+
+    <h2 id="freeze-vs-alert">Credit Freeze vs. Fraud Alert</h2>
+    <p>
+      Two of the most important tools available to breach victims are credit freezes and fraud alerts. They serve different purposes and can be used together.
+    </p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">Credit Freeze</div>
+        <p>A credit freeze (also called a security freeze) <strong>blocks all access</strong> to your credit report by new creditors. No one, including you, can open new credit accounts until the freeze is lifted.</p>
+        <ul>
+          <li>Must be placed separately at each of the three bureaus: Equifax, Experian, and TransUnion</li>
+          <li>Free to place and free to lift under federal law</li>
+          <li>Does not affect your credit score</li>
+          <li>Remains in effect until you lift it</li>
+          <li>Can be temporarily lifted for specific creditors using a PIN or password</li>
+          <li>Strongest protection against new account fraud</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">Fraud Alert</div>
+        <p>A fraud alert <strong>flags your credit file</strong> so that lenders must take extra steps to verify your identity before issuing credit. It does not block access entirely.</p>
+        <ul>
+          <li>Only requires contacting one bureau; it automatically propagates to the other two</li>
+          <li>Initial fraud alert lasts one year and is renewable</li>
+          <li>Extended fraud alert (seven years) available for confirmed identity theft victims</li>
+          <li>Free to place</li>
+          <li>Does not require a PIN to apply for credit</li>
+          <li>Weaker protection than a freeze but easier to manage</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        PCDN Recommendation
+      </div>
+      <p>We recommend placing a credit freeze at all three bureaus as a baseline security measure, even if you have not been notified of a breach. You can temporarily lift the freeze in minutes when you need to apply for credit. A fraud alert can be added as an additional layer.</p>
+    </div>
+
+    <h2 id="notification-laws">Data Breach Notification Laws</h2>
+    <p>
+      In the United States, all 50 states have enacted data breach notification laws that require companies to inform affected individuals when their personal data has been compromised. While the specifics vary by jurisdiction, most laws share common requirements.
+    </p>
+    <ul>
+      <li><strong>Notification timing:</strong> Most states require notification within 30 to 60 days of discovering the breach. Some states, such as Florida, require notification within 30 days, while others allow up to 90 days. Companies that operate nationally generally follow the shortest applicable timeline.</li>
+      <li><strong>What triggers notification:</strong> Notification is typically required when unencrypted personal information (names combined with SSNs, financial account data, or government IDs) is accessed by unauthorized parties. Many states have expanded definitions to include health data, biometric data, and login credentials.</li>
+      <li><strong>Method of notification:</strong> Companies must notify individuals through written letters, email, or (for very large breaches) public media notices. Many breaches also require notification to state attorneys general.</li>
+      <li><strong>Free credit monitoring:</strong> While not universally required, many companies offer free credit monitoring services (typically for one to two years) as part of their breach response. Always enroll if offered, but do not rely on it as your sole protection.</li>
+    </ul>
+    <p>
+      At the federal level, sector-specific regulations such as HIPAA (health data) and the Gramm-Leach-Bliley Act (financial data) impose additional notification and security requirements. The European Union's General Data Protection Regulation (GDPR) requires notification to supervisory authorities within 72 hours and can impose fines up to four percent of annual global revenue for non-compliance.
+    </p>
+
+    <h2 id="staying-proactive">How to Stay Proactive</h2>
+    <p>
+      The best defense against data breach consequences is preparation. Assume your data will be compromised and build systems that minimize the damage when it happens.
+    </p>
+
+    <h3>Use a Unique Password for Every Account</h3>
+    <p>
+      This is the single most impactful practice you can adopt. A password manager makes this practical by generating and storing complex, unique passwords for every site. If one site is breached, the credentials are useless everywhere else. Choose a password manager with a strong security track record and protect it with a long, memorable, and unique master password.
+    </p>
+
+    <h3>Enroll in Breach Monitoring Services</h3>
+    <p>
+      Services like Have I Been Pwned offer free email-based alerts when your address appears in new breach datasets. Many password managers also include built-in breach monitoring that checks your stored passwords against known compromised credential databases. Your bank or credit card provider may also offer dark web monitoring as part of their services.
+    </p>
+
+    <h3>Minimize Your Data Footprint</h3>
+    <p>
+      The less data organizations hold about you, the less there is to be breached. Decline to provide optional information on forms. Delete old accounts you no longer use. Request data deletion from services under applicable privacy laws. Use email aliases or a forwarding service to limit exposure of your primary email address.
+    </p>
+
+    <h3>Keep Software Updated</h3>
+    <p>
+      Many breaches exploit known vulnerabilities in outdated software. Enable automatic updates on your operating system, browsers, and applications. This applies equally to mobile devices, which are increasingly targeted as primary authentication endpoints.
+    </p>
+
+    <h3>Review Your Accounts Regularly</h3>
+    <p>
+      Set a recurring schedule (monthly or quarterly) to review your financial statements, check your credit reports (available for free at AnnualCreditReport.com), and verify the connected devices and authorized applications on your critical accounts. Early detection of unauthorized activity dramatically reduces the damage.
+    </p>
+
+    <div class="info-box">
+      <div class="info-box-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4M8 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Summary
+      </div>
+      <p>Data breaches are a persistent and escalating threat. You cannot prevent organizations from being breached, but you can control how prepared you are for the fallout. Use unique passwords, freeze your credit, enable 2FA on everything, and monitor your accounts actively. These steps will not make you immune, but they will make you a far more difficult target for criminals to exploit.</p>
+    </div>
+
+  </div><!-- /article-content -->
+
+  <div class="article-footer">
+    <p>&copy; 2026 Public Cyber Defense Network &middot; <a href="../index.html">Return to Home</a></p>
+  </div>
+
+</article>
+
+</body>
+</html>
